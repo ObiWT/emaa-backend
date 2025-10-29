@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>sk.emaa</groupId>
+  <artifactId>emaa-system</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <!-- ✅ Pridanie Spring Boot Parent, ktorý definuje verzie závislostí -->
+  <parent>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-parent</artifactId>
+      <version>3.4.4</version>  <!-- Skontroluj najnovšiu verziu na https://spring.io/projects/spring-boot -->
+      <relativePath/> <!-- Dôležité pre standalone projekty -->
+  </parent>
+
+  <dependencies>
+      <!-- ✅ Spring Boot Starter Web -->
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-web</artifactId>
+      </dependency>
+
+      <!-- ✅ Servlet API (Tomcat poskytne runtime) -->
+      <dependency>
+          <groupId>jakarta.servlet</groupId>
+          <artifactId>jakarta.servlet-api</artifactId>
+          <scope>provided</scope>
+      </dependency>
+
+      <!-- ✅ Spring Boot Starter Tomcat (potrebné pre WAR) -->
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+          <scope>provided</scope>
+      </dependency>
+      
+      <dependency>
+	  	  <groupId>org.springframework.boot</groupId>
+	  	  <artifactId>spring-boot-starter-actuator</artifactId>
+	  </dependency>
+	  
+	  <!-- pridanie JWT tokenu-->
+	  <dependency>
+		  <groupId>io.jsonwebtoken</groupId>
+		  <artifactId>jjwt-api</artifactId>
+		  <version>0.11.5</version>
+	  </dependency>
+	  <dependency>
+	      <groupId>io.jsonwebtoken</groupId>
+	      <artifactId>jjwt-impl</artifactId>
+	      <version>0.11.5</version>
+	      <scope>runtime</scope>
+	  </dependency>
+	  <dependency>
+	      <groupId>io.jsonwebtoken</groupId>
+	      <artifactId>jjwt-jackson</artifactId>
+	      <version>0.11.5</version>
+	      <scope>runtime</scope>
+	  </dependency>
+	  
+	  <dependency>
+		  <groupId>org.springframework.boot</groupId>
+		  <artifactId>spring-boot-starter-security</artifactId>
+	  </dependency>
+
+		
+  </dependencies>
+
+  <build>
+      <plugins>
+          <!-- ✅ Maven War Plugin -->
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-war-plugin</artifactId>
+          </plugin>
+		  <!-- ✅ Spring Boot Maven Plugin -->
+          <plugin>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-maven-plugin</artifactId>
+          </plugin>
+      </plugins>
+  </build>
+
+</project>
