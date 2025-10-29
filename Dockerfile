@@ -11,4 +11,5 @@ COPY target/emaa-system-0.0.1-SNAPSHOT.war /app/app.war
 EXPOSE 8080
 
 # Spustíme aplikáciu
-ENTRYPOINT ["java", "-jar", "app.war"]
+#ENTRYPOINT ["java", "-jar", "app.war"]
+ENTRYPOINT ["sh", "-c", "java -jar app.war --server.port=$PORT"]
