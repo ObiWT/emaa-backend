@@ -32,8 +32,8 @@ public class SecurityConfig {
             .formLogin(AbstractHttpConfigurer::disable) // 👈 vypne defaultné presmerovanie
             .httpBasic(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
+            	.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // ✅ povolenie preflight
                 .requestMatchers("/api/login").permitAll()
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // ✅ povolenie preflight
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
