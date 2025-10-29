@@ -17,7 +17,7 @@ import sk.emaa.dto.LoginRequest;
 @RequestMapping("/api")
 @CrossOrigin(origins = {
 		"http://localhost:4200", 
-		"https://emaa-backend-sc6q.onrender.com"
+		"https://emaa-frontend.onrender.com"
 })
 public class LoginController {
 
