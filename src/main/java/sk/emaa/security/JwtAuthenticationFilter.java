@@ -20,8 +20,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+		
+		System.out.println("JwtAuthenticationFilter: Request Method = " + request.getMethod() + ", URI = " + request.getRequestURI());
+
+	    // OPTIONS request
+	    if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+	        System.out.println("JwtAuthenticationFilter: OPTIONS request - passing through");
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
 
         String authHeader = request.getHeader("Authorization");
+        System.out.println("JwtAuthenticationFilter: Authorization header = " + authHeader);
 
         // 🔹 ak v hlavičke nie je token, pokračuj normálne
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

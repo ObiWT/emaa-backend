@@ -17,6 +17,9 @@ public class SecurityConfig {
 
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		
+		System.out.println("SecurityConfig: Vytváram SecurityFilterChain");
+		
         http
             .cors(withDefaults()) // 💡 toto aktivuje CORS podľa nižšieho beanu
             .csrf(csrf -> csrf.disable())
@@ -24,12 +27,17 @@ public class SecurityConfig {
                 .requestMatchers("/api/login").permitAll()
                 .anyRequest().authenticated()
             );
+        
+        System.out.println("SecurityConfig: SecurityFilterChain hotový");
 
         return http.build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+    	
+    	System.out.println("SecurityConfig: Vytváram CorsConfigurationSource");
+    	
         CorsConfiguration configuration = new CorsConfiguration();
         
         configuration.setAllowedOrigins(Arrays.asList("https://emaa-frontend.onrender.com", "http://localhost:4200"));
@@ -40,6 +48,9 @@ public class SecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+        
+        System.out.println("SecurityConfig: CorsConfigurationSource hotový");
+        
         return source;
     }
     
