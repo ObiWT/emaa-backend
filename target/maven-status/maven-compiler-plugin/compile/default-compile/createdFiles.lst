@@ -4,4 +4,6 @@ sk\emaa\controller\LoginController.class
 sk\emaa\util\JwtUtil.class
 sk\emaa\controller\HelloWorld.class
 sk\emaa\dto\LoginRequest.class
+sk\emaa\config\GlobalCorsConfig$1.class
+sk\emaa\config\GlobalCorsConfig.class
 sk\emaa\Application.class

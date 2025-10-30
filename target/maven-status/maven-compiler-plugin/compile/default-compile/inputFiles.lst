@@ -1,4 +1,5 @@
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\Application.java
+D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\config\GlobalCorsConfig.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\config\SecurityConfig.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\controller\HelloWorld.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\controller\LoginController.java

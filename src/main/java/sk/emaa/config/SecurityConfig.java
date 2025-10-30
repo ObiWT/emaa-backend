@@ -48,7 +48,7 @@ public class SecurityConfig {
         
         configuration.setAllowedOrigins(Arrays.asList("https://emaa-frontend.onrender.com", "http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "Origin"));
         configuration.setAllowCredentials(true); // ak používaš cookies/session
         configuration.setMaxAge(3600L);
 
