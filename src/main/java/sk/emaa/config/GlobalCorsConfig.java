@@ -3,6 +3,8 @@ package sk.emaa.config;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -18,12 +20,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class GlobalCorsConfig {
+	
+	private static final Logger logger = LoggerFactory.getLogger(GlobalCorsConfig.class);
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE) // 💥 spustí sa pred všetkým
     public CorsFilter corsFilter() {
     	
-    	System.out.println("GlobalCorsConfig: CorsFilter bean inicializovaný");
+    	logger.info("GlobalCorsConfig: CorsFilter bean inicializovaný");
     	
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(Arrays.asList(
@@ -41,7 +45,7 @@ public class GlobalCorsConfig {
             @Override
             protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                     throws ServletException, IOException {
-                System.out.println("GlobalCorsConfig: CorsFilter prechádza request " + request.getMethod() + " " + request.getRequestURI());
+            	logger.info("GlobalCorsConfig: CorsFilter prechádza request " + request.getMethod() + " " + request.getRequestURI());
                 super.doFilterInternal(request, response, filterChain);
             }
         };
