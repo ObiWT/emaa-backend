@@ -4,6 +4,8 @@
 package sk.emaa.model.entity.tables.records;
 
 
+import java.time.LocalDate;
+
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
 
@@ -131,16 +133,16 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     }
 
     /**
-     * Setter for <code>public.student.zip</code>.
+     * Setter for <code>public.student.zip_code</code>.
      */
-    public void setZip(String value) {
+    public void setZipCode(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>public.student.zip</code>.
+     * Getter for <code>public.student.zip_code</code>.
      */
-    public String getZip() {
+    public String getZipCode() {
         return (String) get(8);
     }
 
@@ -228,6 +230,20 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         return (Integer) get(14);
     }
 
+    /**
+     * Setter for <code>public.student.birthdate</code>.
+     */
+    public void setBirthdate(LocalDate value) {
+        set(15, value);
+    }
+
+    /**
+     * Getter for <code>public.student.birthdate</code>.
+     */
+    public LocalDate getBirthdate() {
+        return (LocalDate) get(15);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -251,7 +267,7 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     /**
      * Create a detached, initialised StudentRecord
      */
-    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zip, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean active, Integer credit) {
+    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean active, Integer credit, LocalDate birthdate) {
         super(Student.STUDENT);
 
         setId(id);
@@ -262,13 +278,14 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         setStreet(street);
         setStreetNo(streetNo);
         setCity(city);
-        setZip(zip);
+        setZipCode(zipCode);
         setMobil(mobil);
         setEmail(email);
         setSchoolId(schoolId);
         setVegetarian(vegetarian);
         setActive(active);
         setCredit(credit);
+        setBirthdate(birthdate);
         resetChangedOnNotNull();
     }
 }

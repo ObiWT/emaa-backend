@@ -4,6 +4,7 @@
 package sk.emaa.model.entity.tables;
 
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -99,9 +100,9 @@ public class Student extends TableImpl<StudentRecord> {
     public final TableField<StudentRecord, String> CITY = createField(DSL.name("city"), SQLDataType.VARCHAR(100), this, "");
 
     /**
-     * The column <code>public.student.zip</code>.
+     * The column <code>public.student.zip_code</code>.
      */
-    public final TableField<StudentRecord, String> ZIP = createField(DSL.name("zip"), SQLDataType.VARCHAR(20), this, "");
+    public final TableField<StudentRecord, String> ZIP_CODE = createField(DSL.name("zip_code"), SQLDataType.VARCHAR(20), this, "");
 
     /**
      * The column <code>public.student.mobil</code>.
@@ -132,6 +133,11 @@ public class Student extends TableImpl<StudentRecord> {
      * The column <code>public.student.credit</code>.
      */
     public final TableField<StudentRecord, Integer> CREDIT = createField(DSL.name("credit"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>public.student.birthdate</code>.
+     */
+    public final TableField<StudentRecord, LocalDate> BIRTHDATE = createField(DSL.name("birthdate"), SQLDataType.LOCALDATE, this, "");
 
     private Student(Name alias, Table<StudentRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

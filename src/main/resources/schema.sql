@@ -20,13 +20,14 @@ CREATE TABLE students (
     street VARCHAR(100),
     street_no VARCHAR(20),
     city VARCHAR(100),
-    zip VARCHAR(20),
+    zip_code VARCHAR(20),
     mobil VARCHAR(20),
     email VARCHAR(100),
     school_id INT REFERENCES school(id),
     vegetarian BOOLEAN,
     active BOOLEAN,
-    credit INT DEFAULT 0
+    credit INT DEFAULT 0,
+    birthdate DATE
 );
 
 CREATE TABLE training (
