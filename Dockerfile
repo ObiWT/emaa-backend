@@ -8,7 +8,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Maven build – jOOQ codegen sa spustí, použije ENV premenné
-RUN mvn clean package -DskipTests -DgenerateJooq=true
+RUN mvn clean package -DskipTests
 
 # 2️⃣ Runtime stage (ľahký obraz)
 FROM openjdk:21-jdk-slim

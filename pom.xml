@@ -193,7 +193,7 @@
                 </database>
                 <target>
                   <packageName>sk.emaa.model.entity</packageName>
-                  <directory>${project.build.directory}/generated-sources/jooq</directory>
+                  <directory>${project.basedir}/src/main/java</directory>
                 </target>
               </generator>
             </configuration>
