@@ -10,26 +10,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
 import sk.emaa.dto.LoginRequest;
+import sk.emaa.service.AuthService;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class LoginController {
+	
+	private final AuthService authService;
 
 	@PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-		String username = request.username();
-		String password = request.password();
-		System.out.println("USERNAME: " + username + " and PASSWORD: " + password);
 		
-		if ("admin".equals(username) && "admin".equals(password)) {
-			String fakeToken = "abc123xyz456";
-			Map<String, String> response = new HashMap<String, String>();
-			response.put("token", fakeToken);
-			return ResponseEntity.ok(response);
-		} else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
+		try {
+            String token = authService.login(request.username(), request.password());
+
+            // vraciame JSON s tokenom
+            return ResponseEntity.ok(Map.of("token", token));
+
+        } catch (RuntimeException e) {
+            // ak niečo nevyjde (zlé heslo, neexistujúci user)
+            return ResponseEntity.status(401).body(Map.of("error", e.getMessage()));
+        }
     }
 	
 	

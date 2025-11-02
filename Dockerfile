@@ -1,15 +1,24 @@
-# Používame oficiálny JDK 21 obraz
-FROM openjdk:21-jdk-slim
+# 1️⃣ Build stage
+FROM maven:3.9.0-eclipse-temurin-21 AS build
 
-# Nastavíme pracovný adresár
 WORKDIR /app
 
-# Kopírujeme WAR súbor z buildu do kontajnera
-COPY target/emaa-system-0.0.1-SNAPSHOT.war /app/app.war
+# Skopíruj POM a zdrojový kód
+COPY pom.xml .
+COPY src ./src
 
-# Otvoríme port 8080 (Spring Boot default)
+# Maven build – jOOQ codegen sa spustí, použije ENV premenné
+RUN mvn clean package -DskipTests
+
+# 2️⃣ Runtime stage (ľahký obraz)
+FROM openjdk:21-jdk-slim
+
+WORKDIR /app
+
+# Skopíruj WAR z build stage
+COPY --from=build /app/target/emaa-system-0.0.1-SNAPSHOT.war /app/app.war
+
 EXPOSE 8080
 
-# Spustíme aplikáciu
-#ENTRYPOINT ["java", "-jar", "app.war"]
+# Spustenie WAR na porte z ENV (Render)
 ENTRYPOINT ["sh", "-c", "java -jar app.war --server.port=$PORT"]
