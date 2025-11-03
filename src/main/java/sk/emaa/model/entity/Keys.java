@@ -11,15 +11,17 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
 import sk.emaa.model.entity.tables.Attendance;
+import sk.emaa.model.entity.tables.CreditTransaction;
 import sk.emaa.model.entity.tables.School;
 import sk.emaa.model.entity.tables.Student;
 import sk.emaa.model.entity.tables.Training;
-import sk.emaa.model.entity.tables.User;
+import sk.emaa.model.entity.tables.UserAccount;
 import sk.emaa.model.entity.tables.records.AttendanceRecord;
+import sk.emaa.model.entity.tables.records.CreditTransactionRecord;
 import sk.emaa.model.entity.tables.records.SchoolRecord;
 import sk.emaa.model.entity.tables.records.StudentRecord;
 import sk.emaa.model.entity.tables.records.TrainingRecord;
-import sk.emaa.model.entity.tables.records.UserRecord;
+import sk.emaa.model.entity.tables.records.UserAccountRecord;
 
 
 /**
@@ -33,19 +35,21 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<AttendanceRecord> ATTENDANCES_PKEY = Internal.createUniqueKey(Attendance.ATTENDANCE, DSL.name("attendances_pkey"), new TableField[] { Attendance.ATTENDANCE.ID }, true);
+    public static final UniqueKey<AttendanceRecord> ATTENDANCE_PKEY = Internal.createUniqueKey(Attendance.ATTENDANCE, DSL.name("attendance_pkey"), new TableField[] { Attendance.ATTENDANCE.ID }, true);
+    public static final UniqueKey<CreditTransactionRecord> CREDIT_TRANSACTION_PKEY = Internal.createUniqueKey(CreditTransaction.CREDIT_TRANSACTION, DSL.name("credit_transaction_pkey"), new TableField[] { CreditTransaction.CREDIT_TRANSACTION.ID }, true);
     public static final UniqueKey<SchoolRecord> SCHOOL_PKEY = Internal.createUniqueKey(School.SCHOOL, DSL.name("school_pkey"), new TableField[] { School.SCHOOL.ID }, true);
-    public static final UniqueKey<StudentRecord> STUDENTS_PKEY = Internal.createUniqueKey(Student.STUDENT, DSL.name("students_pkey"), new TableField[] { Student.STUDENT.ID }, true);
+    public static final UniqueKey<StudentRecord> STUDENT_PKEY = Internal.createUniqueKey(Student.STUDENT, DSL.name("student_pkey"), new TableField[] { Student.STUDENT.ID }, true);
     public static final UniqueKey<TrainingRecord> TRAINING_PKEY = Internal.createUniqueKey(Training.TRAINING, DSL.name("training_pkey"), new TableField[] { Training.TRAINING.ID }, true);
-    public static final UniqueKey<UserRecord> USERS_PKEY = Internal.createUniqueKey(User.USER, DSL.name("users_pkey"), new TableField[] { User.USER.ID }, true);
+    public static final UniqueKey<UserAccountRecord> USERS_PKEY = Internal.createUniqueKey(UserAccount.USER_ACCOUNT, DSL.name("users_pkey"), new TableField[] { UserAccount.USER_ACCOUNT.ID }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<AttendanceRecord, StudentRecord> ATTENDANCE__ATTENDANCES_STUDENT_ID_FKEY = Internal.createForeignKey(Attendance.ATTENDANCE, DSL.name("attendances_student_id_fkey"), new TableField[] { Attendance.ATTENDANCE.STUDENT_ID }, Keys.STUDENTS_PKEY, new TableField[] { Student.STUDENT.ID }, true);
-    public static final ForeignKey<AttendanceRecord, TrainingRecord> ATTENDANCE__ATTENDANCES_TRAINING_ID_FKEY = Internal.createForeignKey(Attendance.ATTENDANCE, DSL.name("attendances_training_id_fkey"), new TableField[] { Attendance.ATTENDANCE.TRAINING_ID }, Keys.TRAINING_PKEY, new TableField[] { Training.TRAINING.ID }, true);
-    public static final ForeignKey<StudentRecord, SchoolRecord> STUDENT__STUDENTS_SCHOOL_ID_FKEY = Internal.createForeignKey(Student.STUDENT, DSL.name("students_school_id_fkey"), new TableField[] { Student.STUDENT.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
+    public static final ForeignKey<AttendanceRecord, StudentRecord> ATTENDANCE__ATTENDANCE_STUDENT_ID_FKEY = Internal.createForeignKey(Attendance.ATTENDANCE, DSL.name("attendance_student_id_fkey"), new TableField[] { Attendance.ATTENDANCE.STUDENT_ID }, Keys.STUDENT_PKEY, new TableField[] { Student.STUDENT.ID }, true);
+    public static final ForeignKey<AttendanceRecord, TrainingRecord> ATTENDANCE__ATTENDANCE_TRAINING_ID_FKEY = Internal.createForeignKey(Attendance.ATTENDANCE, DSL.name("attendance_training_id_fkey"), new TableField[] { Attendance.ATTENDANCE.TRAINING_ID }, Keys.TRAINING_PKEY, new TableField[] { Training.TRAINING.ID }, true);
+    public static final ForeignKey<CreditTransactionRecord, StudentRecord> CREDIT_TRANSACTION__CREDIT_TRANSACTION_STUDENT_ID_FKEY = Internal.createForeignKey(CreditTransaction.CREDIT_TRANSACTION, DSL.name("credit_transaction_student_id_fkey"), new TableField[] { CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID }, Keys.STUDENT_PKEY, new TableField[] { Student.STUDENT.ID }, true);
+    public static final ForeignKey<StudentRecord, SchoolRecord> STUDENT__STUDENT_SCHOOL_ID_FKEY = Internal.createForeignKey(Student.STUDENT, DSL.name("student_school_id_fkey"), new TableField[] { Student.STUDENT.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
     public static final ForeignKey<TrainingRecord, SchoolRecord> TRAINING__TRAINING_SCHOOL_ID_FKEY = Internal.createForeignKey(Training.TRAINING, DSL.name("training_school_id_fkey"), new TableField[] { Training.TRAINING.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
-    public static final ForeignKey<UserRecord, SchoolRecord> USER__USERS_SCHOOL_ID_FKEY = Internal.createForeignKey(User.USER, DSL.name("users_school_id_fkey"), new TableField[] { User.USER.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
+    public static final ForeignKey<UserAccountRecord, SchoolRecord> USER_ACCOUNT__USERS_SCHOOL_ID_FKEY = Internal.createForeignKey(UserAccount.USER_ACCOUNT, DSL.name("users_school_id_fkey"), new TableField[] { UserAccount.USER_ACCOUNT.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
 }

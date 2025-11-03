@@ -32,7 +32,7 @@ import sk.emaa.model.entity.Keys;
 import sk.emaa.model.entity.Public;
 import sk.emaa.model.entity.tables.Student.StudentPath;
 import sk.emaa.model.entity.tables.Training.TrainingPath;
-import sk.emaa.model.entity.tables.User.UserPath;
+import sk.emaa.model.entity.tables.UserAccount.UserAccountPath;
 import sk.emaa.model.entity.tables.records.SchoolRecord;
 
 
@@ -157,7 +157,7 @@ public class School extends TableImpl<SchoolRecord> {
      */
     public StudentPath student() {
         if (_student == null)
-            _student = new StudentPath(this, null, Keys.STUDENT__STUDENTS_SCHOOL_ID_FKEY.getInverseKey());
+            _student = new StudentPath(this, null, Keys.STUDENT__STUDENT_SCHOOL_ID_FKEY.getInverseKey());
 
         return _student;
     }
@@ -175,16 +175,17 @@ public class School extends TableImpl<SchoolRecord> {
         return _training;
     }
 
-    private transient UserPath _user;
+    private transient UserAccountPath _userAccount;
 
     /**
-     * Get the implicit to-many join path to the <code>public.user</code> table
+     * Get the implicit to-many join path to the
+     * <code>public.user_account</code> table
      */
-    public UserPath user() {
-        if (_user == null)
-            _user = new UserPath(this, null, Keys.USER__USERS_SCHOOL_ID_FKEY.getInverseKey());
+    public UserAccountPath userAccount() {
+        if (_userAccount == null)
+            _userAccount = new UserAccountPath(this, null, Keys.USER_ACCOUNT__USERS_SCHOOL_ID_FKEY.getInverseKey());
 
-        return _user;
+        return _userAccount;
     }
 
     @Override

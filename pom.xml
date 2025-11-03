@@ -104,10 +104,10 @@
 
       <!-- ✅ Lombok -->
       <dependency>
-          <groupId>org.projectlombok</groupId>
-          <artifactId>lombok</artifactId>
-          <scope>provided</scope>
-      </dependency>
+	    <groupId>org.projectlombok</groupId>
+	    <artifactId>lombok</artifactId>
+	    <optional>true</optional>
+	</dependency>
       
       <!-- DSLContext -->
       <dependency>

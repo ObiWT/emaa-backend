@@ -13,10 +13,11 @@ import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 
 import sk.emaa.model.entity.tables.Attendance;
+import sk.emaa.model.entity.tables.CreditTransaction;
 import sk.emaa.model.entity.tables.School;
 import sk.emaa.model.entity.tables.Student;
 import sk.emaa.model.entity.tables.Training;
-import sk.emaa.model.entity.tables.User;
+import sk.emaa.model.entity.tables.UserAccount;
 
 
 /**
@@ -38,6 +39,11 @@ public class Public extends SchemaImpl {
     public final Attendance ATTENDANCE = Attendance.ATTENDANCE;
 
     /**
+     * The table <code>public.credit_transaction</code>.
+     */
+    public final CreditTransaction CREDIT_TRANSACTION = CreditTransaction.CREDIT_TRANSACTION;
+
+    /**
      * The table <code>public.school</code>.
      */
     public final School SCHOOL = School.SCHOOL;
@@ -53,9 +59,9 @@ public class Public extends SchemaImpl {
     public final Training TRAINING = Training.TRAINING;
 
     /**
-     * The table <code>public.user</code>.
+     * The table <code>public.user_account</code>.
      */
-    public final User USER = User.USER;
+    public final UserAccount USER_ACCOUNT = UserAccount.USER_ACCOUNT;
 
     /**
      * No further instances allowed
@@ -73,8 +79,6 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Sequence<?>> getSequences() {
         return Arrays.asList(
-            Sequences.ATTENDANCES_ID_SEQ,
-            Sequences.STUDENTS_ID_SEQ,
             Sequences.USERS_ID_SEQ
         );
     }
@@ -83,10 +87,11 @@ public class Public extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             Attendance.ATTENDANCE,
+            CreditTransaction.CREDIT_TRANSACTION,
             School.SCHOOL,
             Student.STUDENT,
             Training.TRAINING,
-            User.USER
+            UserAccount.USER_ACCOUNT
         );
     }
 }

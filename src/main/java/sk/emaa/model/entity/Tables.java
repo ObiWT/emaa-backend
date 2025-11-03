@@ -5,10 +5,11 @@ package sk.emaa.model.entity;
 
 
 import sk.emaa.model.entity.tables.Attendance;
+import sk.emaa.model.entity.tables.CreditTransaction;
 import sk.emaa.model.entity.tables.School;
 import sk.emaa.model.entity.tables.Student;
 import sk.emaa.model.entity.tables.Training;
-import sk.emaa.model.entity.tables.User;
+import sk.emaa.model.entity.tables.UserAccount;
 
 
 /**
@@ -21,6 +22,11 @@ public class Tables {
      * The table <code>public.attendance</code>.
      */
     public static final Attendance ATTENDANCE = Attendance.ATTENDANCE;
+
+    /**
+     * The table <code>public.credit_transaction</code>.
+     */
+    public static final CreditTransaction CREDIT_TRANSACTION = CreditTransaction.CREDIT_TRANSACTION;
 
     /**
      * The table <code>public.school</code>.
@@ -38,7 +44,7 @@ public class Tables {
     public static final Training TRAINING = Training.TRAINING;
 
     /**
-     * The table <code>public.user</code>.
+     * The table <code>public.user_account</code>.
      */
-    public static final User USER = User.USER;
+    public static final UserAccount USER_ACCOUNT = UserAccount.USER_ACCOUNT;
 }

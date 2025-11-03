@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.jooq.Check;
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
@@ -28,12 +29,14 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import sk.emaa.model.entity.Keys;
 import sk.emaa.model.entity.Public;
 import sk.emaa.model.entity.tables.Attendance.AttendancePath;
+import sk.emaa.model.entity.tables.CreditTransaction.CreditTransactionPath;
 import sk.emaa.model.entity.tables.School.SchoolPath;
 import sk.emaa.model.entity.tables.records.StudentRecord;
 
@@ -127,12 +130,17 @@ public class Student extends TableImpl<StudentRecord> {
     /**
      * The column <code>public.student.active</code>.
      */
-    public final TableField<StudentRecord, Boolean> ACTIVE = createField(DSL.name("active"), SQLDataType.BOOLEAN, this, "");
+    public final TableField<StudentRecord, Boolean> ACTIVE = createField(DSL.name("active"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("true"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>public.student.credit</code>.
      */
     public final TableField<StudentRecord, Integer> CREDIT = createField(DSL.name("credit"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>public.student.payment_type</code>.
+     */
+    public final TableField<StudentRecord, String> PAYMENT_TYPE = createField(DSL.name("payment_type"), SQLDataType.VARCHAR(10), this, "");
 
     /**
      * The column <code>public.student.birthdate</code>.
@@ -213,12 +221,12 @@ public class Student extends TableImpl<StudentRecord> {
 
     @Override
     public UniqueKey<StudentRecord> getPrimaryKey() {
-        return Keys.STUDENTS_PKEY;
+        return Keys.STUDENT_PKEY;
     }
 
     @Override
     public List<ForeignKey<StudentRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.STUDENT__STUDENTS_SCHOOL_ID_FKEY);
+        return Arrays.asList(Keys.STUDENT__STUDENT_SCHOOL_ID_FKEY);
     }
 
     private transient SchoolPath _school;
@@ -228,7 +236,7 @@ public class Student extends TableImpl<StudentRecord> {
      */
     public SchoolPath school() {
         if (_school == null)
-            _school = new SchoolPath(this, Keys.STUDENT__STUDENTS_SCHOOL_ID_FKEY, null);
+            _school = new SchoolPath(this, Keys.STUDENT__STUDENT_SCHOOL_ID_FKEY, null);
 
         return _school;
     }
@@ -241,9 +249,29 @@ public class Student extends TableImpl<StudentRecord> {
      */
     public AttendancePath attendance() {
         if (_attendance == null)
-            _attendance = new AttendancePath(this, null, Keys.ATTENDANCE__ATTENDANCES_STUDENT_ID_FKEY.getInverseKey());
+            _attendance = new AttendancePath(this, null, Keys.ATTENDANCE__ATTENDANCE_STUDENT_ID_FKEY.getInverseKey());
 
         return _attendance;
+    }
+
+    private transient CreditTransactionPath _creditTransaction;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.credit_transaction</code> table
+     */
+    public CreditTransactionPath creditTransaction() {
+        if (_creditTransaction == null)
+            _creditTransaction = new CreditTransactionPath(this, null, Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_STUDENT_ID_FKEY.getInverseKey());
+
+        return _creditTransaction;
+    }
+
+    @Override
+    public List<Check<StudentRecord>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("student_payment_type_check"), "(((payment_type)::text = ANY ((ARRAY['MONTHLY'::character varying, 'CREDIT'::character varying])::text[])))", true)
+        );
     }
 
     @Override

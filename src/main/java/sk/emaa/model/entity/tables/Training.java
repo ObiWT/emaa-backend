@@ -176,7 +176,7 @@ public class Training extends TableImpl<TrainingRecord> {
      */
     public AttendancePath attendance() {
         if (_attendance == null)
-            _attendance = new AttendancePath(this, null, Keys.ATTENDANCE__ATTENDANCES_TRAINING_ID_FKEY.getInverseKey());
+            _attendance = new AttendancePath(this, null, Keys.ATTENDANCE__ATTENDANCE_TRAINING_ID_FKEY.getInverseKey());
 
         return _attendance;
     }

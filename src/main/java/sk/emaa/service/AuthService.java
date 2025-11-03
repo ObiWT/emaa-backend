@@ -5,8 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import sk.emaa.model.entity.tables.User;
-import sk.emaa.model.entity.tables.records.UserRecord;
+import sk.emaa.model.entity.tables.UserAccount;
+import sk.emaa.model.entity.tables.records.UserAccountRecord;
 import sk.emaa.security.JwtTokenProvider;
 
 @Service
@@ -18,8 +18,8 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     
     public String login(String username, String password) {
-        UserRecord user = dsl.selectFrom(User.USER)
-                .where(User.USER.USERNAME.eq(username))
+        UserAccountRecord user = dsl.selectFrom(UserAccount.USER_ACCOUNT)
+                .where(UserAccount.USER_ACCOUNT.USERNAME.eq(username))
                 .fetchOne();
 
         if (user == null) {

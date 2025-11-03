@@ -153,12 +153,12 @@ public class Attendance extends TableImpl<AttendanceRecord> {
 
     @Override
     public UniqueKey<AttendanceRecord> getPrimaryKey() {
-        return Keys.ATTENDANCES_PKEY;
+        return Keys.ATTENDANCE_PKEY;
     }
 
     @Override
     public List<ForeignKey<AttendanceRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.ATTENDANCE__ATTENDANCES_STUDENT_ID_FKEY, Keys.ATTENDANCE__ATTENDANCES_TRAINING_ID_FKEY);
+        return Arrays.asList(Keys.ATTENDANCE__ATTENDANCE_STUDENT_ID_FKEY, Keys.ATTENDANCE__ATTENDANCE_TRAINING_ID_FKEY);
     }
 
     private transient StudentPath _student;
@@ -168,7 +168,7 @@ public class Attendance extends TableImpl<AttendanceRecord> {
      */
     public StudentPath student() {
         if (_student == null)
-            _student = new StudentPath(this, Keys.ATTENDANCE__ATTENDANCES_STUDENT_ID_FKEY, null);
+            _student = new StudentPath(this, Keys.ATTENDANCE__ATTENDANCE_STUDENT_ID_FKEY, null);
 
         return _student;
     }
@@ -180,7 +180,7 @@ public class Attendance extends TableImpl<AttendanceRecord> {
      */
     public TrainingPath training() {
         if (_training == null)
-            _training = new TrainingPath(this, Keys.ATTENDANCE__ATTENDANCES_TRAINING_ID_FKEY, null);
+            _training = new TrainingPath(this, Keys.ATTENDANCE__ATTENDANCE_TRAINING_ID_FKEY, null);
 
         return _training;
     }

@@ -1,17 +1,20 @@
+-- 🏫 Škola
 CREATE TABLE school (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     address VARCHAR(200)
 );
 
-CREATE TABLE users (
+-- 👤 Používateľ (tréner/admin)
+CREATE TABLE user_account (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     password VARCHAR(100) NOT NULL,
     school_id INT REFERENCES school(id)
 );
 
-CREATE TABLE students (
+-- 🎓 Študent
+CREATE TABLE student (
     id SERIAL PRIMARY KEY,
     firstname VARCHAR(50) NOT NULL,
     lastname VARCHAR(50) NOT NULL,
@@ -25,20 +28,32 @@ CREATE TABLE students (
     email VARCHAR(100),
     school_id INT REFERENCES school(id),
     vegetarian BOOLEAN,
-    active BOOLEAN,
-    credit INT DEFAULT 0,
+    active BOOLEAN DEFAULT TRUE,
+    credit INT DEFAULT 0,              -- 🔹 aktuálny zostatok kreditu
+    payment_type VARCHAR(10) CHECK (payment_type IN ('MONTHLY', 'CREDIT')),  -- 🔹 spôsob platby
     birthdate DATE
 );
 
+-- 🏋️‍♂️ Tréning
 CREATE TABLE training (
     id SERIAL PRIMARY KEY,
     date DATE NOT NULL,
     school_id INT REFERENCES school(id)
 );
 
-CREATE TABLE attendances (
+-- 📋 Dochádzka
+CREATE TABLE attendance (
     id SERIAL PRIMARY KEY,
-    student_id INT NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+    student_id INT NOT NULL REFERENCES student(id) ON DELETE CASCADE,
     training_id INT NOT NULL REFERENCES training(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- 💳 História kreditných transakcií (dobitia / odpočty)
+CREATE TABLE credit_transaction (
+    id SERIAL PRIMARY KEY,
+    student_id INT NOT NULL REFERENCES student(id) ON DELETE CASCADE,
+    amount INT NOT NULL,                      -- kladné = dobitie, záporné = odpočet
+    description VARCHAR(200),
     created_at TIMESTAMP DEFAULT NOW()
 );
