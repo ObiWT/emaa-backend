@@ -30,7 +30,7 @@ CREATE TABLE student (
     vegetarian BOOLEAN,
     active BOOLEAN DEFAULT TRUE,
     credit INT DEFAULT 0,              -- 🔹 aktuálny zostatok kreditu
-    payment_type VARCHAR(10) CHECK (payment_type IN ('MONTHLY', 'CREDIT')),  -- 🔹 spôsob platby
+    payment_type VARCHAR(10) CHECK (payment_type IN ('MONTHLY', 'CREDIT', 'NO_PAYMENT')),  -- 🔹 spôsob platby
     birthdate DATE
 );
 

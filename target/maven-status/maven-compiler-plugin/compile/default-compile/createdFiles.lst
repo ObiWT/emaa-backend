@@ -3,6 +3,7 @@ sk\emaa\security\JwtAuthenticationFilter.class
 sk\emaa\model\entity\tables\records\AttendanceRecord.class
 sk\emaa\model\entity\tables\School$SchoolPath.class
 sk\emaa\model\entity\tables\records\StudentRecord.class
+sk\emaa\controller\StudentController.class
 sk\emaa\model\entity\DefaultCatalog.class
 sk\emaa\model\entity\tables\CreditTransaction.class
 sk\emaa\model\entity\tables\records\CreditTransactionRecord.class
@@ -22,7 +23,9 @@ sk\emaa\model\entity\Public.class
 sk\emaa\config\GlobalCorsConfig$1.class
 sk\emaa\model\entity\tables\CreditTransaction$CreditTransactionPath.class
 sk\emaa\model\entity\tables\Student.class
+sk\emaa\dto\StudentDto.class
 sk\emaa\Application.class
+sk\emaa\service\StudentService.class
 sk\emaa\model\entity\tables\Training.class
 sk\emaa\model\entity\Keys.class
 sk\emaa\model\entity\Tables.class

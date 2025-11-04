@@ -3,7 +3,9 @@ C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\config\GlobalCorsConfig.java
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\config\SecurityConfig.java
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\controller\HelloWorld.java
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\controller\LoginController.java
+C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\controller\StudentController.java
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\dto\LoginRequest.java
+C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\dto\StudentDto.java
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\model\entity\DefaultCatalog.java
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\model\entity\Keys.java
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\model\entity\Public.java
@@ -24,5 +26,6 @@ C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\model\entity\tables\UserAcco
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\security\JwtAuthenticationFilter.java
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\security\JwtTokenProvider.java
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\service\AuthService.java
+C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\service\StudentService.java
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\util\JwtUtil.java
 C:\Users\Obi\git\emaa-backend\src\main\java\sk\emaa\util\PasswordGenerator.java

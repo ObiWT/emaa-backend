@@ -231,31 +231,31 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     }
 
     /**
-     * Setter for <code>public.student.payment_type</code>.
-     */
-    public void setPaymentType(String value) {
-        set(15, value);
-    }
-
-    /**
-     * Getter for <code>public.student.payment_type</code>.
-     */
-    public String getPaymentType() {
-        return (String) get(15);
-    }
-
-    /**
      * Setter for <code>public.student.birthdate</code>.
      */
     public void setBirthdate(LocalDate value) {
-        set(16, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>public.student.birthdate</code>.
      */
     public LocalDate getBirthdate() {
-        return (LocalDate) get(16);
+        return (LocalDate) get(15);
+    }
+
+    /**
+     * Setter for <code>public.student.payment_type</code>.
+     */
+    public void setPaymentType(String value) {
+        set(16, value);
+    }
+
+    /**
+     * Getter for <code>public.student.payment_type</code>.
+     */
+    public String getPaymentType() {
+        return (String) get(16);
     }
 
     // -------------------------------------------------------------------------
@@ -281,7 +281,7 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     /**
      * Create a detached, initialised StudentRecord
      */
-    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean active, Integer credit, String paymentType, LocalDate birthdate) {
+    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean active, Integer credit, LocalDate birthdate, String paymentType) {
         super(Student.STUDENT);
 
         setId(id);
@@ -299,8 +299,8 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         setVegetarian(vegetarian);
         setActive(active);
         setCredit(credit);
-        setPaymentType(paymentType);
         setBirthdate(birthdate);
+        setPaymentType(paymentType);
         resetChangedOnNotNull();
     }
 }
