@@ -11,7 +11,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # 2️⃣ Runtime stage (ľahký obraz)
-FROM openjdk:21-jdk
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
