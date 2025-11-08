@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import sk.emaa.dto.LoginRequest;
-import sk.emaa.service.AuthService;
+import sk.emaa.service.LoginService;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class LoginController {
 	
-	private final AuthService authService;
+	private final LoginService authService;
 
 	@PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {

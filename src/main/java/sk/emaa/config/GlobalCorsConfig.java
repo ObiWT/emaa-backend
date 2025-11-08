@@ -18,11 +18,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Configuration
+//@Configuration
 public class GlobalCorsConfig {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GlobalCorsConfig.class);
-
+/*
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE) // 💥 spustí sa pred všetkým
     public CorsFilter corsFilter() {
@@ -30,9 +30,10 @@ public class GlobalCorsConfig {
     	logger.info("GlobalCorsConfig: CorsFilter bean inicializovaný");
     	
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList(
+        config.setAllowedOriginPatterns(Arrays.asList(
             "https://emaa-frontend.onrender.com",
-            "http://localhost:4200"
+            "http://localhost:*",
+            "http://192.168.*:*"
         ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
@@ -49,5 +50,5 @@ public class GlobalCorsConfig {
                 super.doFilterInternal(request, response, filterChain);
             }
         };
-    }
+    }+*/
 }

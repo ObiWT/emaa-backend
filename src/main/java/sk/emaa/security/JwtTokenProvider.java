@@ -29,9 +29,11 @@ public class JwtTokenProvider {
     /**
      * Vytvorenie JWT tokenu pre daného používateľa a jeho rolu
      */
-    public String createToken(String username, String role) {
+    public String createToken(String username, String role, Integer schoolId, String schoolName) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("role", role);
+        claims.put("schoolId", schoolId);
+        claims.put("schoolName", schoolName);
 
         Date now = new Date();
         Date expiry = new Date(now.getTime() + validityInMs);

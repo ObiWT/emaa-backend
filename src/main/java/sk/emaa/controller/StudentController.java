@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import sk.emaa.dto.LoginRequest;
 import sk.emaa.dto.StudentDto;
 import sk.emaa.service.StudentService;
 
@@ -29,18 +27,18 @@ public class StudentController {
 	}
 	
 	@PostMapping("/student")
-	void createStudent(@RequestBody StudentDto student) {
+	public void createStudent(@RequestBody StudentDto student) {
 		studentService.createStudent(student);
 	}
 	
 	@PutMapping("/student")
-	void updateStudent() {
-		
+	public void updateStudent(@RequestBody StudentDto student) {
+	    studentService.updateStudent(student);
 	}
 	
-	@GetMapping("/student")
-	void getStudent() {
-		
+	@GetMapping("/student/{id}")
+	public StudentDto getStudent(@PathVariable int id) {
+		return studentService.getStudent(id);
 	}
 
 }

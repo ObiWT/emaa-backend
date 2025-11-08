@@ -28,7 +28,13 @@ public class StudentService {
 
 	public void createStudent(StudentDto student) {
 		StudentRecord studentRecord = mapToRecord(student);
+		
+		// 👇 povieme jOOQ, že ID sa nemá zahrnúť do INSERT-u
+		studentRecord.changed(Student.STUDENT.ID, false);
+		
 		dsl.insertInto(Student.STUDENT)
+		   .set(studentRecord)
+		   /*
 	       .set(Student.STUDENT.FIRSTNAME, studentRecord.getFirstname())
 	       .set(Student.STUDENT.LASTNAME, studentRecord.getLastname())
 	       .set(Student.STUDENT.GENDER, studentRecord.getGender())
@@ -45,11 +51,15 @@ public class StudentService {
 	       .set(Student.STUDENT.SCHOOL_ID, studentRecord.getSchoolId())
 	       .set(Student.STUDENT.VEGETARIAN, studentRecord.getVegetarian())
 	       .set(Student.STUDENT.BIRTHDATE, studentRecord.getBirthdate())
+	       */
 	       .execute();
 	}
 	
-	public void updateStudent(StudentRecord student) {
+	public void updateStudent(StudentDto student) {
+		StudentRecord studentRecord = mapToRecord(student);
 	    dsl.update(Student.STUDENT)
+	       .set(studentRecord)
+	       /*
 	       .set(Student.STUDENT.FIRSTNAME, student.getFirstname())
 	       .set(Student.STUDENT.LASTNAME, student.getLastname())
 	       .set(Student.STUDENT.GENDER, student.getGender())
@@ -66,15 +76,16 @@ public class StudentService {
 	       .set(Student.STUDENT.CREDIT, student.getCredit())
 	       .set(Student.STUDENT.BIRTHDATE, student.getBirthdate())
 	       .set(Student.STUDENT.PAYMENT_TYPE, student.getPaymentType())
+	       */
 	       .where(Student.STUDENT.ID.eq(student.getId()))
 	       .execute();
 	}
 
-	public StudentRecord getStudent(int id) {
+	public StudentDto getStudent(int id) {
 		StudentRecord student = dsl.selectFrom(Student.STUDENT)
                 .where(Student.STUDENT.ID.eq(id))
                 .fetchOne();
-		return student;
+		return student != null ? mapToDto(student) : null; // alebo Optional<StudentDto>
 	}
 	
 	private StudentDto mapToDto(StudentRecord record) {
@@ -115,7 +126,11 @@ public class StudentService {
 	    record.setSchoolId(dto.getSchoolId());
 	    record.setVegetarian(dto.getVegetarian());
 	    record.setActive(dto.getActive());
-	    record.setCredit(dto.getCredit());
+	    if ("CREDIT".equals(dto.getPaymentType())) {
+	        record.setCredit(dto.getCredit());
+	    } else {
+	        record.setCredit(0);
+	    }
 	    record.setBirthdate(dto.getBirthdate() != null ? LocalDate.parse(dto.getBirthdate()) : null);
 	    record.setPaymentType(dto.getPaymentType());
 	    return record;

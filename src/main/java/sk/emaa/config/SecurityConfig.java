@@ -32,7 +32,7 @@ public class SecurityConfig {
             .cors(withDefaults()) // 💡 toto aktivuje CORS podľa nižšieho beanu
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/login").permitAll()
+                .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
             );
         
@@ -41,26 +41,30 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-    	
-    	logger.info("SecurityConfig: Vytváram CorsConfigurationSource");
-    	
-        CorsConfiguration configuration = new CorsConfiguration();
-        
-        configuration.setAllowedOrigins(Arrays.asList("https://emaa-frontend.onrender.com", "http://localhost:4200"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
-        configuration.setAllowCredentials(true); // ak používaš cookies/session
-        configuration.setMaxAge(3600L);
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        
-        logger.info("SecurityConfig: CorsConfigurationSource hotový");
-        
-        return source;
-    }
+	    logger.info("SecurityConfig: Vytváram CorsConfigurationSource");
+
+	    CorsConfiguration configuration = new CorsConfiguration();
+
+	    configuration.setAllowedOriginPatterns(Arrays.asList(
+	        "https://emaa-frontend.onrender.com",
+	        "http://localhost:*",
+	        "http://192.168.*:*"
+	    ));
+	    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+	    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
+	    configuration.setAllowCredentials(true);
+	    configuration.setMaxAge(3600L);
+
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    source.registerCorsConfiguration("/**", configuration);
+
+	    logger.info("SecurityConfig: CorsConfigurationSource hotový");
+
+	    return source;
+	}
     
     @Bean
     public PasswordEncoder passwordEncoder() {
