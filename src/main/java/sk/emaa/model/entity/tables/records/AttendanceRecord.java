@@ -4,8 +4,6 @@
 package sk.emaa.model.entity.tables.records;
 
 
-import java.time.LocalDateTime;
-
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
 
@@ -63,17 +61,17 @@ public class AttendanceRecord extends UpdatableRecordImpl<AttendanceRecord> {
     }
 
     /**
-     * Setter for <code>public.attendance.created_at</code>.
+     * Setter for <code>public.attendance.present</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
+    public void setPresent(Boolean value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>public.attendance.created_at</code>.
+     * Getter for <code>public.attendance.present</code>.
      */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(3);
+    public Boolean getPresent() {
+        return (Boolean) get(3);
     }
 
     // -------------------------------------------------------------------------
@@ -99,13 +97,13 @@ public class AttendanceRecord extends UpdatableRecordImpl<AttendanceRecord> {
     /**
      * Create a detached, initialised AttendanceRecord
      */
-    public AttendanceRecord(Integer id, Integer studentId, Integer trainingId, LocalDateTime createdAt) {
+    public AttendanceRecord(Integer id, Integer studentId, Integer trainingId, Boolean present) {
         super(Attendance.ATTENDANCE);
 
         setId(id);
         setStudentId(studentId);
         setTrainingId(trainingId);
-        setCreatedAt(createdAt);
+        setPresent(present);
         resetChangedOnNotNull();
     }
 }

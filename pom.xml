@@ -9,7 +9,6 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
 
-  <!-- ✅ Spring Boot Parent -->
   <parent>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-parent</artifactId>
@@ -18,33 +17,28 @@
   </parent>
 
   <dependencies>
-      <!-- ✅ Spring Boot Starter Web -->
       <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-web</artifactId>
       </dependency>
 
-      <!-- ✅ Servlet API -->
       <dependency>
           <groupId>jakarta.servlet</groupId>
           <artifactId>jakarta.servlet-api</artifactId>
           <scope>provided</scope>
       </dependency>
 
-      <!-- ✅ Tomcat runtime -->
       <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-tomcat</artifactId>
           <scope>provided</scope>
       </dependency>
 
-      <!-- ✅ Spring Boot Actuator -->
       <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-actuator</artifactId>
       </dependency>
 
-      <!-- ✅ JWT -->
       <dependency>
           <groupId>io.jsonwebtoken</groupId>
           <artifactId>jjwt-api</artifactId>
@@ -63,51 +57,38 @@
           <scope>runtime</scope>
       </dependency>
 
-      <!-- ✅ Spring Security -->
       <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-security</artifactId>
       </dependency>
 
-      <!-- ✅ PostgreSQL -->
       <dependency>
           <groupId>org.postgresql</groupId>
           <artifactId>postgresql</artifactId>
       </dependency>
 
-      <!-- ❌ JPA zakomentované, používame jOOQ -->
-      <!--
-      <dependency>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-data-jpa</artifactId>
-      </dependency>
-      -->
-
-      <!-- ✅ Hibernate (iba ak ho niekde potrebuješ) -->
+      <!-- asi nepotrebujem, ke dmam JOOQ :-) -->
       <dependency>
           <groupId>org.hibernate</groupId>
           <artifactId>hibernate-core</artifactId>
           <version>6.3.0.Final</version>
       </dependency>
 
-      <!-- ✅ jOOQ runtime -->
       <dependency>
           <groupId>org.jooq</groupId>
           <artifactId>jooq</artifactId>
       </dependency>
 
-      <!-- ✅ jOOQ codegen -->
       <dependency>
           <groupId>org.jooq</groupId>
           <artifactId>jooq-codegen</artifactId>
       </dependency>
 
-      <!-- ✅ Lombok -->
       <dependency>
 	    <groupId>org.projectlombok</groupId>
 	    <artifactId>lombok</artifactId>
-	    <optional>true</optional>
-	</dependency>
+	    <scope>provided</scope>
+	  </dependency>
       
       <!-- DSLContext -->
       <dependency>
@@ -119,19 +100,17 @@
 
   <build>
     <plugins>
-        <!-- ✅ WAR plugin -->
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
         </plugin>
 
-        <!-- ✅ Spring Boot Maven Plugin -->
         <plugin>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
         </plugin>
 
-        <!-- ✅ build-helper: pridá generované triedy ako zdrojový kód -->
+        <!-- build-helper: pridá generované triedy ako zdrojový kód -->
         <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>

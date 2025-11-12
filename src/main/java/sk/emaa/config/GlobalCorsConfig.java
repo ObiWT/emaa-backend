@@ -18,11 +18,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-//@Configuration
+@Configuration
 public class GlobalCorsConfig {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GlobalCorsConfig.class);
-/*
+
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE) // 💥 spustí sa pred všetkým
     public CorsFilter corsFilter() {
@@ -50,5 +50,5 @@ public class GlobalCorsConfig {
                 super.doFilterInternal(request, response, filterChain);
             }
         };
-    }+*/
+    }
 }

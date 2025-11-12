@@ -1,10 +1,15 @@
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\Application.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\config\GlobalCorsConfig.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\config\SecurityConfig.java
+D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\controller\AttendanceController.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\controller\LoginController.java
+D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\controller\PaymentController.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\controller\StudentController.java
-D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\dto\LoginRequest.java
+D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\dto\AttendanceDto.java
+D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\dto\CreditTransactionDto.java
+D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\dto\LoginDto.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\dto\StudentDto.java
+D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\dto\TrainingDto.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\model\entity\DefaultCatalog.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\model\entity\Keys.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\model\entity\Public.java
@@ -24,6 +29,9 @@ D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\model\entit
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\model\entity\tables\UserAccount.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\security\JwtAuthenticationFilter.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\security\JwtTokenProvider.java
+D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\service\AttendanceService.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\service\LoginService.java
+D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\service\PaymentService.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\service\StudentService.java
+D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\util\AppConstants.java
 D:\programovanie\eclipse-workspace\emaa-system\src\main\java\sk\emaa\util\JwtUtil.java

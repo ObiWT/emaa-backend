@@ -1,11 +1,11 @@
--- 🏫 Škola
+-- Škola
 CREATE TABLE school (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     address VARCHAR(200)
 );
 
--- 👤 Používateľ (tréner/admin)
+-- Používateľ (tréner/admin)
 CREATE TABLE user_account (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE user_account (
     school_id INT REFERENCES school(id)
 );
 
--- 🎓 Študent
+-- Študent
 CREATE TABLE student (
     id SERIAL PRIMARY KEY,
     firstname VARCHAR(50) NOT NULL,
@@ -34,22 +34,22 @@ CREATE TABLE student (
     birthdate DATE
 );
 
--- 🏋️‍♂️ Tréning
+-- Tréning
 CREATE TABLE training (
     id SERIAL PRIMARY KEY,
     date DATE NOT NULL,
     school_id INT REFERENCES school(id)
 );
 
--- 📋 Dochádzka
+-- Dochádzka
 CREATE TABLE attendance (
     id SERIAL PRIMARY KEY,
     student_id INT NOT NULL REFERENCES student(id) ON DELETE CASCADE,
     training_id INT NOT NULL REFERENCES training(id) ON DELETE CASCADE,
-    created_at TIMESTAMP DEFAULT NOW()
+    present BOOLEAN
 );
 
--- 💳 História kreditných transakcií (dobitia / odpočty)
+-- História platobných transakcií (dobitia / odpočty)
 CREATE TABLE credit_transaction (
     id SERIAL PRIMARY KEY,
     student_id INT NOT NULL REFERENCES student(id) ON DELETE CASCADE,

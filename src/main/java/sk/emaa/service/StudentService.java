@@ -29,29 +29,11 @@ public class StudentService {
 	public void createStudent(StudentDto student) {
 		StudentRecord studentRecord = mapToRecord(student);
 		
-		// 👇 povieme jOOQ, že ID sa nemá zahrnúť do INSERT-u
+		// ID nezahrnúť do INSERT-u
 		studentRecord.changed(Student.STUDENT.ID, false);
 		
 		dsl.insertInto(Student.STUDENT)
 		   .set(studentRecord)
-		   /*
-	       .set(Student.STUDENT.FIRSTNAME, studentRecord.getFirstname())
-	       .set(Student.STUDENT.LASTNAME, studentRecord.getLastname())
-	       .set(Student.STUDENT.GENDER, studentRecord.getGender())
-	       .set(Student.STUDENT.PAYMENT_TYPE, studentRecord.getPaymentType())
-	       .set(Student.STUDENT.CREDIT, studentRecord.getCredit())
-	       .set(Student.STUDENT.ACTIVE, studentRecord.getActive())
-	       .set(Student.STUDENT.ID_CARD, studentRecord.getIdCard())
-	       .set(Student.STUDENT.STREET, studentRecord.getStreet())
-	       .set(Student.STUDENT.STREET_NO, studentRecord.getStreetNo())
-	       .set(Student.STUDENT.CITY, studentRecord.getCity())
-	       .set(Student.STUDENT.ZIP_CODE, studentRecord.getZipCode())
-	       .set(Student.STUDENT.MOBIL, studentRecord.getMobil())
-	       .set(Student.STUDENT.EMAIL, studentRecord.getEmail())
-	       .set(Student.STUDENT.SCHOOL_ID, studentRecord.getSchoolId())
-	       .set(Student.STUDENT.VEGETARIAN, studentRecord.getVegetarian())
-	       .set(Student.STUDENT.BIRTHDATE, studentRecord.getBirthdate())
-	       */
 	       .execute();
 	}
 	
@@ -59,24 +41,6 @@ public class StudentService {
 		StudentRecord studentRecord = mapToRecord(student);
 	    dsl.update(Student.STUDENT)
 	       .set(studentRecord)
-	       /*
-	       .set(Student.STUDENT.FIRSTNAME, student.getFirstname())
-	       .set(Student.STUDENT.LASTNAME, student.getLastname())
-	       .set(Student.STUDENT.GENDER, student.getGender())
-	       .set(Student.STUDENT.ID_CARD, student.getIdCard())
-	       .set(Student.STUDENT.STREET, student.getStreet())
-	       .set(Student.STUDENT.STREET_NO, student.getStreetNo())
-	       .set(Student.STUDENT.ZIP_CODE, student.getZipCode())
-	       .set(Student.STUDENT.CITY, student.getCity())
-	       .set(Student.STUDENT.MOBIL, student.getMobil())
-	       .set(Student.STUDENT.EMAIL, student.getEmail())
-	       .set(Student.STUDENT.SCHOOL_ID, student.getSchoolId())
-	       .set(Student.STUDENT.VEGETARIAN, student.getVegetarian())
-	       .set(Student.STUDENT.ACTIVE, student.getActive())
-	       .set(Student.STUDENT.CREDIT, student.getCredit())
-	       .set(Student.STUDENT.BIRTHDATE, student.getBirthdate())
-	       .set(Student.STUDENT.PAYMENT_TYPE, student.getPaymentType())
-	       */
 	       .where(Student.STUDENT.ID.eq(student.getId()))
 	       .execute();
 	}
@@ -135,6 +99,5 @@ public class StudentService {
 	    record.setPaymentType(dto.getPaymentType());
 	    return record;
 	}
-
 
 }

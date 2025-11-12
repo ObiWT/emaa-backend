@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import sk.emaa.dto.LoginRequest;
+import sk.emaa.dto.LoginDto;
 import sk.emaa.service.LoginService;
 
 @RestController
@@ -20,7 +20,7 @@ public class LoginController {
 	private final LoginService authService;
 
 	@PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginDto request) {
 		
 		try {
             String token = authService.login(request.username(), request.password());
@@ -33,6 +33,5 @@ public class LoginController {
             return ResponseEntity.status(401).body(Map.of("error", e.getMessage()));
         }
     }
-	
 	
 }

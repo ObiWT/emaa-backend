@@ -4,7 +4,6 @@
 package sk.emaa.model.entity.tables;
 
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -75,9 +74,9 @@ public class Attendance extends TableImpl<AttendanceRecord> {
     public final TableField<AttendanceRecord, Integer> TRAINING_ID = createField(DSL.name("training_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>public.attendance.created_at</code>.
+     * The column <code>public.attendance.present</code>.
      */
-    public final TableField<AttendanceRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<AttendanceRecord, Boolean> PRESENT = createField(DSL.name("present"), SQLDataType.BOOLEAN, this, "");
 
     private Attendance(Name alias, Table<AttendanceRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

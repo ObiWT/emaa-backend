@@ -29,7 +29,7 @@ public class SecurityConfig {
 		logger.info("SecurityConfig: Vytváram SecurityFilterChain");
 		
         http
-            .cors(withDefaults()) // 💡 toto aktivuje CORS podľa nižšieho beanu
+            .cors(withDefaults()) // aktivuje CORS podľa nižšieho beanu
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/**").permitAll()
@@ -49,9 +49,9 @@ public class SecurityConfig {
 	    CorsConfiguration configuration = new CorsConfiguration();
 
 	    configuration.setAllowedOriginPatterns(Arrays.asList(
-	        "https://emaa-frontend.onrender.com",
-	        "http://localhost:*",
-	        "http://192.168.*:*"
+    		"https://emaa-frontend.onrender.com",
+    	    "http://localhost:*",
+    	    "http://192.168.*:*"
 	    ));
 	    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 	    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
