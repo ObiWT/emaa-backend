@@ -4,12 +4,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import sk.emaa.dto.StudentDto;
+import sk.emaa.model.entity.tables.CreditTransaction;
 import sk.emaa.model.entity.tables.Student;
+import sk.emaa.model.entity.tables.records.CreditTransactionRecord;
 import sk.emaa.model.entity.tables.records.StudentRecord;
+import sk.emaa.util.AppConstants;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +55,33 @@ public class StudentService {
                 .fetchOne();
 		return student != null ? mapToDto(student) : null; // alebo Optional<StudentDto>
 	}
+	
+	public StudentDto addCredit(int studentId, int amountToAdd) {
+        return dsl.<StudentDto>transactionResult(configuration -> {
+            DSLContext ctx = DSL.using(configuration);
+
+            // 1️⃣ Zvýš kredit študenta
+            ctx.update(Student.STUDENT)
+               .set(Student.STUDENT.CREDIT, Student.STUDENT.CREDIT.plus(amountToAdd))
+               .where(Student.STUDENT.ID.eq(studentId))
+               .execute();
+
+            // 2️⃣ Záznam o dobití do CREDIT_TRANSACTION
+            CreditTransactionRecord tx = ctx.newRecord(CreditTransaction.CREDIT_TRANSACTION);
+            tx.setStudentId(studentId);
+            tx.setAmount(amountToAdd * AppConstants.creditPayment);
+            tx.setDescription("DOBITIE KREDITU");
+            //tx.setCreatedAt(LocalDateTime.now()); // môžeš aj vynechať, keďže má DEFAULT NOW()
+            tx.store(); 
+
+            // 3️⃣ Načítaj aktualizovaného študenta
+            StudentRecord updated = ctx.selectFrom(Student.STUDENT)
+                    .where(Student.STUDENT.ID.eq(studentId))
+                    .fetchOne();
+
+            return updated != null ? mapToDto(updated) : null;
+        });
+    }
 	
 	private StudentDto mapToDto(StudentRecord record) {
 	    StudentDto dto = new StudentDto();

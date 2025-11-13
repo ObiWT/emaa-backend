@@ -9,7 +9,6 @@ import sk.emaa.dto.CreditTransactionDto;
 import sk.emaa.model.entity.tables.CreditTransaction;
 import sk.emaa.model.entity.tables.records.CreditTransactionRecord;
 import sk.emaa.util.AppConstants;
-
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
@@ -51,6 +50,6 @@ public class PaymentService {
             record.getDescription(),
             record.getCreatedAt()
         );
-    }
+    }    
 
 }
