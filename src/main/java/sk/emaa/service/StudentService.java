@@ -60,13 +60,13 @@ public class StudentService {
         return dsl.<StudentDto>transactionResult(configuration -> {
             DSLContext ctx = DSL.using(configuration);
 
-            // 1️⃣ Zvýš kredit študenta
+            // 1️. Zvýš kredit študenta
             ctx.update(Student.STUDENT)
                .set(Student.STUDENT.CREDIT, Student.STUDENT.CREDIT.plus(amountToAdd))
                .where(Student.STUDENT.ID.eq(studentId))
                .execute();
 
-            // 2️⃣ Záznam o dobití do CREDIT_TRANSACTION
+            // 2️. Záznam o dobití do CREDIT_TRANSACTION
             CreditTransactionRecord tx = ctx.newRecord(CreditTransaction.CREDIT_TRANSACTION);
             tx.setStudentId(studentId);
             tx.setAmount(amountToAdd * AppConstants.creditPayment);
@@ -74,7 +74,7 @@ public class StudentService {
             //tx.setCreatedAt(LocalDateTime.now()); // môžeš aj vynechať, keďže má DEFAULT NOW()
             tx.store(); 
 
-            // 3️⃣ Načítaj aktualizovaného študenta
+            // 3️. Načítaj aktualizovaného študenta
             StudentRecord updated = ctx.selectFrom(Student.STUDENT)
                     .where(Student.STUDENT.ID.eq(studentId))
                     .fetchOne();

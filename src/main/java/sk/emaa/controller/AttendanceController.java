@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import sk.emaa.dto.AttendanceDto;
 import sk.emaa.dto.TrainingDto;
 import sk.emaa.service.AttendanceService;
 
@@ -20,15 +21,14 @@ public class AttendanceController {
 	private final AttendanceService attendanceService;
 
 	@PostMapping("/training")
-    public ResponseEntity<?> addTraining(@RequestBody TrainingDto request) {
+    public void addTraining(@RequestBody TrainingDto request) {
 		attendanceService.addTraining(request);
-		return null;
     }
 	
 	@GetMapping("/attendance/{schoolId}/{month}/{year}")
-    public ResponseEntity<?> getAttendance(@PathVariable int schoolId, @PathVariable int month, @PathVariable int year) {
-		attendanceService.getAttendance(schoolId, month, year);
-		return null;
+    public ResponseEntity<AttendanceDto> getAttendance(@PathVariable int schoolId, @PathVariable int month, @PathVariable int year) {
+		AttendanceDto dto = attendanceService.getAttendance(schoolId, month, year);
+		return ResponseEntity.ok(dto);
     }
 	
 }

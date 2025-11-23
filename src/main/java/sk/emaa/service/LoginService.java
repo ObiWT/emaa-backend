@@ -14,7 +14,7 @@ import sk.emaa.security.JwtTokenProvider;
 public class LoginService {
 
     private final DSLContext dsl;
-    private final PasswordEncoder passwordEncoder;;
+    private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     
     public String login(String username, String password) {

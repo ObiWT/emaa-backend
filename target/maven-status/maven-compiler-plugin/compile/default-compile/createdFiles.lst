@@ -31,6 +31,7 @@ sk\emaa\service\LoginService.class
 sk\emaa\controller\AttendanceController.class
 sk\emaa\dto\StudentDto.class
 sk\emaa\Application.class
+sk\emaa\dto\StudentAttendanceDto.class
 sk\emaa\service\StudentService.class
 sk\emaa\model\entity\tables\Training.class
 sk\emaa\model\entity\Keys.class

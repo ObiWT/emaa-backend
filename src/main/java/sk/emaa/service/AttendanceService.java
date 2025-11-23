@@ -1,6 +1,14 @@
 package sk.emaa.service;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -8,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import sk.emaa.dto.AttendanceDto;
+import sk.emaa.dto.StudentAttendanceDto;
 import sk.emaa.dto.TrainingDto;
 import sk.emaa.model.entity.tables.Attendance;
 import sk.emaa.model.entity.tables.Student;
@@ -55,8 +64,66 @@ public class AttendanceService {
 	    });
 	}
 	
-	public List<AttendanceDto> getAttendance(int schoolId, int month, int year) {
-		// TODO implement
-		return null;
+	public AttendanceDto getAttendance(int schoolId, int month, int year) {
+
+	    YearMonth yearMonth = YearMonth.of(year, month);
+	    LocalDate start = yearMonth.atDay(1);
+	    LocalDate end = yearMonth.atEndOfMonth();
+
+	    var records = dsl.select(
+	            Student.STUDENT.ID.as("student_id"),
+	            Student.STUDENT.FIRSTNAME,
+	            Student.STUDENT.LASTNAME,
+	            Training.TRAINING.ID.as("training_id"),
+	            Training.TRAINING.DATE.as("training_date"),
+	            Attendance.ATTENDANCE.PRESENT
+	        )
+	        .from(Student.STUDENT)
+	        .join(Attendance.ATTENDANCE)
+	            .on(Attendance.ATTENDANCE.STUDENT_ID.eq(Student.STUDENT.ID))
+	        .join(Training.TRAINING)
+	            .on(Training.TRAINING.ID.eq(Attendance.ATTENDANCE.TRAINING_ID))
+	        .where(Student.STUDENT.SCHOOL_ID.eq(schoolId))
+	        .and(Training.TRAINING.DATE.between(start, end))
+	        .orderBy(Student.STUDENT.LASTNAME.asc(), Training.TRAINING.DATE.asc())
+	        .fetch();
+
+	    Map<Integer, Map<LocalDate, Boolean>> attendanceMap = new LinkedHashMap<>();
+	    Map<Integer, String> firstnames = new HashMap<>();
+	    Map<Integer, String> lastnames = new HashMap<>();
+	    Set<LocalDate> trainingDates = new TreeSet<>();
+
+	    for (var r : records) {
+	        int studentId = r.get("student_id", Integer.class);
+	        String firstname = r.get(Student.STUDENT.FIRSTNAME);
+	        String lastname = r.get(Student.STUDENT.LASTNAME);
+	        LocalDate date = r.get("training_date", LocalDate.class);
+	        Boolean present = r.get(Attendance.ATTENDANCE.PRESENT);
+
+	        trainingDates.add(date);
+
+	        firstnames.putIfAbsent(studentId, firstname);
+	        lastnames.putIfAbsent(studentId, lastname);
+
+	        attendanceMap
+	            .computeIfAbsent(studentId, id -> new LinkedHashMap<>())
+	            .put(date, present);
+	    }
+
+	    // vytvorenie recordov
+	    List<StudentAttendanceDto> studentDtos = attendanceMap.entrySet()
+	        .stream()
+	        .map(entry -> new StudentAttendanceDto(
+	                firstnames.get(entry.getKey()),
+	                lastnames.get(entry.getKey()),
+	                entry.getValue()
+	        ))
+	        .toList();
+
+	    return new AttendanceDto(
+	        new ArrayList<>(trainingDates),
+	        studentDtos
+	    );
 	}
+
 }
