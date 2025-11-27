@@ -71,6 +71,7 @@ public class StudentService {
             tx.setStudentId(studentId);
             tx.setAmount(amountToAdd * AppConstants.creditPayment);
             tx.setDescription("DOBITIE KREDITU");
+            tx.setPaymentType(AppConstants.paymentType_credit);
             //tx.setCreatedAt(LocalDateTime.now()); // môžeš aj vynechať, keďže má DEFAULT NOW()
             tx.store(); 
 

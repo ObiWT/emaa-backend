@@ -1,4 +1,5 @@
 sk\emaa\security\JwtTokenProvider.class
+sk\emaa\dto\AttendanceItemDto.class
 sk\emaa\security\JwtAuthenticationFilter.class
 sk\emaa\service\AttendanceService.class
 sk\emaa\model\entity\tables\records\AttendanceRecord.class

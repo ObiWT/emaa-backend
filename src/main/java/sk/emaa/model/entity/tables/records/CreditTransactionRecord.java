@@ -90,6 +90,20 @@ public class CreditTransactionRecord extends UpdatableRecordImpl<CreditTransacti
         return (LocalDateTime) get(4);
     }
 
+    /**
+     * Setter for <code>public.credit_transaction.payment_type</code>.
+     */
+    public void setPaymentType(String value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>public.credit_transaction.payment_type</code>.
+     */
+    public String getPaymentType() {
+        return (String) get(5);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -113,7 +127,7 @@ public class CreditTransactionRecord extends UpdatableRecordImpl<CreditTransacti
     /**
      * Create a detached, initialised CreditTransactionRecord
      */
-    public CreditTransactionRecord(Integer id, Integer studentId, Integer amount, String description, LocalDateTime createdAt) {
+    public CreditTransactionRecord(Integer id, Integer studentId, Integer amount, String description, LocalDateTime createdAt, String paymentType) {
         super(CreditTransaction.CREDIT_TRANSACTION);
 
         setId(id);
@@ -121,6 +135,7 @@ public class CreditTransactionRecord extends UpdatableRecordImpl<CreditTransacti
         setAmount(amount);
         setDescription(description);
         setCreatedAt(createdAt);
+        setPaymentType(paymentType);
         resetChangedOnNotNull();
     }
 }

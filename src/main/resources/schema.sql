@@ -55,5 +55,6 @@ CREATE TABLE credit_transaction (
     student_id INT NOT NULL REFERENCES student(id) ON DELETE CASCADE,
     amount INT NOT NULL,                      -- kladné = dobitie, záporné = odpočet
     description VARCHAR(200),
+    payment_type VARCHAR(20) NOT NULL DEFAULT 'CREDIT',
     created_at TIMESTAMP DEFAULT NOW()
 );
