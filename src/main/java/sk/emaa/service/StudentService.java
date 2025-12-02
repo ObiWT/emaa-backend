@@ -127,7 +127,7 @@ public class StudentService {
 	    } else {
 	        record.setCredit(0);
 	    }
-	    record.setBirthdate(dto.getBirthdate() != null ? LocalDate.parse(dto.getBirthdate()) : null);
+	    record.setBirthdate(dto.getBirthdate() != null && !dto.getBirthdate().isBlank() ? LocalDate.parse(dto.getBirthdate()) : null);
 	    record.setPaymentType(dto.getPaymentType());
 	    return record;
 	}
