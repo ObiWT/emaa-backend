@@ -99,6 +99,7 @@ public class StudentService {
 	    dto.setEmail(record.getEmail());
 	    dto.setSchoolId(record.getSchoolId());
 	    dto.setVegetarian(record.getVegetarian());
+	    dto.setGlutenFree(record.getGlutenFree());
 	    dto.setActive(record.getActive());
 	    dto.setCredit(record.getCredit());
 	    dto.setBirthdate(record.getBirthdate() != null ? record.getBirthdate().toString() : null);
@@ -121,8 +122,9 @@ public class StudentService {
 	    record.setEmail(dto.getEmail());
 	    record.setSchoolId(dto.getSchoolId());
 	    record.setVegetarian(dto.getVegetarian());
+	    record.setGlutenFree(dto.getGlutenFree());
 	    record.setActive(dto.getActive());
-	    if ("CREDIT".equals(dto.getPaymentType())) {
+	    if (AppConstants.paymentType_credit.equals(dto.getPaymentType())) {
 	        record.setCredit(dto.getCredit());
 	    } else {
 	        record.setCredit(0);

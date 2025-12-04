@@ -258,6 +258,20 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         return (String) get(16);
     }
 
+    /**
+     * Setter for <code>public.student.gluten_free</code>.
+     */
+    public void setGlutenFree(Boolean value) {
+        set(17, value);
+    }
+
+    /**
+     * Getter for <code>public.student.gluten_free</code>.
+     */
+    public Boolean getGlutenFree() {
+        return (Boolean) get(17);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -281,7 +295,7 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     /**
      * Create a detached, initialised StudentRecord
      */
-    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean active, Integer credit, LocalDate birthdate, String paymentType) {
+    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean active, Integer credit, LocalDate birthdate, String paymentType, Boolean glutenFree) {
         super(Student.STUDENT);
 
         setId(id);
@@ -301,6 +315,7 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         setCredit(credit);
         setBirthdate(birthdate);
         setPaymentType(paymentType);
+        setGlutenFree(glutenFree);
         resetChangedOnNotNull();
     }
 }

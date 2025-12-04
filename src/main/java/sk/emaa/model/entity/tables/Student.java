@@ -125,7 +125,7 @@ public class Student extends TableImpl<StudentRecord> {
     /**
      * The column <code>public.student.vegetarian</code>.
      */
-    public final TableField<StudentRecord, Boolean> VEGETARIAN = createField(DSL.name("vegetarian"), SQLDataType.BOOLEAN, this, "");
+    public final TableField<StudentRecord, Boolean> VEGETARIAN = createField(DSL.name("vegetarian"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>public.student.active</code>.
@@ -146,6 +146,11 @@ public class Student extends TableImpl<StudentRecord> {
      * The column <code>public.student.payment_type</code>.
      */
     public final TableField<StudentRecord, String> PAYMENT_TYPE = createField(DSL.name("payment_type"), SQLDataType.VARCHAR(10), this, "");
+
+    /**
+     * The column <code>public.student.gluten_free</code>.
+     */
+    public final TableField<StudentRecord, Boolean> GLUTEN_FREE = createField(DSL.name("gluten_free"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     private Student(Name alias, Table<StudentRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -27,7 +27,8 @@ CREATE TABLE student (
     mobil VARCHAR(20),
     email VARCHAR(100),
     school_id INT REFERENCES school(id),
-    vegetarian BOOLEAN,
+    vegetarian BOOLEAN DEFAULT FALSE,
+    gluten_free BOOLEAN DEFAULT FALSE,
     active BOOLEAN DEFAULT TRUE,
     credit INT DEFAULT 0,              -- 🔹 aktuálny zostatok kreditu
     payment_type VARCHAR(10) CHECK (payment_type IN ('MONTHLY', 'CREDIT', 'NO_PAYMENT')),  -- 🔹 spôsob platby

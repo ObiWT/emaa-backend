@@ -14,6 +14,7 @@ public class StudentDto {
     private String email;
     private Integer schoolId;
     private Boolean vegetarian;
+    private Boolean glutenFree;
     private Boolean active;
     private Integer credit;
     private String birthdate; // ISO string, napr. "2008-04-15"
@@ -122,6 +123,14 @@ public class StudentDto {
 
     public void setVegetarian(Boolean vegetarian) {
         this.vegetarian = vegetarian;
+    }
+    
+    public Boolean getGlutenFree() {
+        return glutenFree;
+    }
+
+    public void setGlutenFree(Boolean glutenFree) {
+        this.glutenFree = glutenFree;
     }
 
     public Boolean getActive() {
