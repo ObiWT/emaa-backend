@@ -90,6 +90,7 @@ public class AttendanceService {
 	            .on(Training.TRAINING.ID.eq(Attendance.ATTENDANCE.TRAINING_ID))
 	        .where(Student.STUDENT.SCHOOL_ID.eq(schoolId))
 	        .and(Training.TRAINING.DATE.between(start, end))
+	        .and(Student.STUDENT.ACTIVE.isTrue())
 	        .orderBy(Student.STUDENT.LASTNAME.asc(), Training.TRAINING.DATE.asc())
 	        .fetch();
 
