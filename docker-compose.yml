@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: emaa-test-db
+    environment:
+      POSTGRES_PASSWORD: emaa1234
+      POSTGRES_DB: emaa
+    ports:
+      - "5433:5432"
+    volumes:
+      - emaa_test_data:/var/lib/postgresql/data
+
+volumes:
+  emaa_test_data:

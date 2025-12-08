@@ -78,9 +78,11 @@ public class AttendanceService {
 	            Student.STUDENT.ID.as("student_id"),
 	            Student.STUDENT.FIRSTNAME,
 	            Student.STUDENT.LASTNAME,
-	            Attendance.ATTENDANCE.ID.as("attendance_id"),
+	            Student.STUDENT.PAYMENT_TYPE,
+	            Student.STUDENT.CREDIT,
 	            Training.TRAINING.ID.as("training_id"),
 	            Training.TRAINING.DATE.as("training_date"),
+	            Attendance.ATTENDANCE.ID.as("attendance_id"),
 	            Attendance.ATTENDANCE.PRESENT
 	        )
 	        .from(Student.STUDENT)
@@ -95,21 +97,49 @@ public class AttendanceService {
 	        .fetch();
 
 	    Map<Integer, Map<LocalDate, AttendanceItemDto>> attendanceMap = new LinkedHashMap<>();
+	    Map<Integer, Integer> studentIds = new HashMap<>();
 	    Map<Integer, String> firstnames = new HashMap<>();
 	    Map<Integer, String> lastnames = new HashMap<>();
+	    Map<Integer, Integer> credits = new HashMap<>();
+	    Map<Integer, String> paymentTypes = new HashMap<>();
 	    Set<LocalDate> trainingDates = new TreeSet<>();
+	    Map<Integer, Boolean> paidMap = new HashMap<>();
 
 	    for (var r : records) {
 	        int studentId = r.get("student_id", Integer.class);
 	        String firstname = r.get(Student.STUDENT.FIRSTNAME);
 	        String lastname = r.get(Student.STUDENT.LASTNAME);
+	        String paymentType = r.get(Student.STUDENT.PAYMENT_TYPE);
+	        int credit = r.get(Student.STUDENT.CREDIT);
 	        LocalDate date = r.get("training_date", LocalDate.class);
 	        Boolean present = r.get(Attendance.ATTENDANCE.PRESENT);
 	        int attendanceId = r.get("attendance_id", Integer.class);
+	        
+	        boolean paid;
+	        if (AppConstants.paymentType_monthly.equals(paymentType)) {
+	            // formát na porovnanie s aktuálnym mesiacom a rokom
+	            String monthYear = String.format("%02d/%d", month, year);
+
+	            Integer count = dsl.selectCount()
+	                .from(CreditTransaction.CREDIT_TRANSACTION)
+	                .where(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID.eq(studentId))
+	                .and(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION.eq(monthYear))
+	                .fetchOne(0, Integer.class);
+
+	            paid = (count != null && count > 0);
+	        } else if (AppConstants.paymentType_credit.equals(paymentType)) {
+	            paid = credit > 0;
+	        } else {
+	            paid = true; // NO_PAYMENT
+	        }
 
 	        trainingDates.add(date);
+	        studentIds.putIfAbsent(studentId, studentId);
 	        firstnames.putIfAbsent(studentId, firstname);
 	        lastnames.putIfAbsent(studentId, lastname);
+	        credits.putIfAbsent(studentId, credit);
+	        paymentTypes.putIfAbsent(studentId, paymentType);
+	        paidMap.putIfAbsent(studentId, paid);
 
 	        attendanceMap
 	            .computeIfAbsent(studentId, id -> new LinkedHashMap<>())
@@ -120,8 +150,12 @@ public class AttendanceService {
 	    List<StudentAttendanceDto> studentDtos = attendanceMap.entrySet()
 	        .stream()
 	        .map(entry -> new StudentAttendanceDto(
+	        		studentIds.get(entry.getKey()),
 	                firstnames.get(entry.getKey()),
 	                lastnames.get(entry.getKey()),
+	                credits.get(entry.getKey()),
+	                paymentTypes.get(entry.getKey()),
+	                paidMap.get(entry.getKey()),
 	                entry.getValue()
 	        ))
 	        .toList();

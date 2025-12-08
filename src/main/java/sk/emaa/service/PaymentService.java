@@ -38,7 +38,7 @@ public class PaymentService {
 		    // pre mesačných platcov triedime podľa MM/RRRR z description
 		    CreditTransactionRecord record = dsl.selectFrom(CreditTransaction.CREDIT_TRANSACTION)
 		        .where(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID.eq(studentId)
-		        .and(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE.eq("MONTHLY")))
+		        .and(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE.eq(AppConstants.paymentType_monthly)))
 		        .orderBy(
 		            DSL.substring(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION, 4, 4).cast(Integer.class).desc(), // YYYY
 		            DSL.substring(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION, 1, 2).cast(Integer.class).desc()  // MM
