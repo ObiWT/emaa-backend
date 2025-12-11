@@ -272,6 +272,34 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         return (Boolean) get(17);
     }
 
+    /**
+     * Setter for <code>public.student.base_payment_amount</code>.
+     */
+    public void setBasePaymentAmount(Integer value) {
+        set(18, value);
+    }
+
+    /**
+     * Getter for <code>public.student.base_payment_amount</code>.
+     */
+    public Integer getBasePaymentAmount() {
+        return (Integer) get(18);
+    }
+
+    /**
+     * Setter for <code>public.student.grade</code>.
+     */
+    public void setGrade(Integer value) {
+        set(19, value);
+    }
+
+    /**
+     * Getter for <code>public.student.grade</code>.
+     */
+    public Integer getGrade() {
+        return (Integer) get(19);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -295,7 +323,7 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     /**
      * Create a detached, initialised StudentRecord
      */
-    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean active, Integer credit, LocalDate birthdate, String paymentType, Boolean glutenFree) {
+    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean active, Integer credit, LocalDate birthdate, String paymentType, Boolean glutenFree, Integer basePaymentAmount, Integer grade) {
         super(Student.STUDENT);
 
         setId(id);
@@ -316,6 +344,8 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         setBirthdate(birthdate);
         setPaymentType(paymentType);
         setGlutenFree(glutenFree);
+        setBasePaymentAmount(basePaymentAmount);
+        setGrade(grade);
         resetChangedOnNotNull();
     }
 }

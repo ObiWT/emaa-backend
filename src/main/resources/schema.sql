@@ -30,8 +30,10 @@ CREATE TABLE student (
     vegetarian BOOLEAN DEFAULT FALSE,
     gluten_free BOOLEAN DEFAULT FALSE,
     active BOOLEAN DEFAULT TRUE,
-    credit INT DEFAULT 0,              -- 🔹 aktuálny zostatok kreditu
-    payment_type VARCHAR(10) CHECK (payment_type IN ('MONTHLY', 'CREDIT', 'NO_PAYMENT')),  -- 🔹 spôsob platby
+    credit INT DEFAULT 0,              -- aktuálny zostatok kreditu
+    payment_type VARCHAR(10) CHECK (payment_type IN ('MONTHLY', 'YEARLY', 'CREDIT', 'NO_PAYMENT')),  -- spôsob platby
+    base_payment_amount INT,
+    grade INT,
     birthdate DATE
 );
 

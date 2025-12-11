@@ -45,7 +45,7 @@ public class StudentService {
 		StudentRecord studentRecord = mapToRecord(student);
 	    dsl.update(Student.STUDENT)
 	       .set(studentRecord)
-	       .where(Student.STUDENT.ID.eq(student.getId()))
+	       .where(Student.STUDENT.ID.eq(student.id()))
 	       .execute();
 	}
 
@@ -56,7 +56,7 @@ public class StudentService {
 		return student != null ? mapToDto(student) : null; // alebo Optional<StudentDto>
 	}
 	
-	public StudentDto addCredit(int studentId, int amountToAdd) {
+	public StudentDto addCredit(int studentId, int amountToAdd, int basePaymentAmount) {
         return dsl.<StudentDto>transactionResult(configuration -> {
             DSLContext ctx = DSL.using(configuration);
 
@@ -69,7 +69,7 @@ public class StudentService {
             // 2️. Záznam o dobití do CREDIT_TRANSACTION
             CreditTransactionRecord tx = ctx.newRecord(CreditTransaction.CREDIT_TRANSACTION);
             tx.setStudentId(studentId);
-            tx.setAmount(amountToAdd * AppConstants.creditPayment);
+            tx.setAmount(amountToAdd * basePaymentAmount);
             tx.setDescription("DOBITIE KREDITU");
             tx.setPaymentType(AppConstants.paymentType_credit);
             //tx.setCreatedAt(LocalDateTime.now()); // môžeš aj vynechať, keďže má DEFAULT NOW()
@@ -85,52 +85,57 @@ public class StudentService {
     }
 	
 	private StudentDto mapToDto(StudentRecord record) {
-	    StudentDto dto = new StudentDto();
-	    dto.setId(record.getId());
-	    dto.setFirstname(record.getFirstname());
-	    dto.setLastname(record.getLastname());
-	    dto.setGender(record.getGender());
-	    dto.setIdCard(record.getIdCard());
-	    dto.setStreet(record.getStreet());
-	    dto.setStreetNo(record.getStreetNo());
-	    dto.setCity(record.getCity());
-	    dto.setZipCode(record.getZipCode());
-	    dto.setMobil(record.getMobil());
-	    dto.setEmail(record.getEmail());
-	    dto.setSchoolId(record.getSchoolId());
-	    dto.setVegetarian(record.getVegetarian());
-	    dto.setGlutenFree(record.getGlutenFree());
-	    dto.setActive(record.getActive());
-	    dto.setCredit(record.getCredit());
-	    dto.setBirthdate(record.getBirthdate() != null ? record.getBirthdate().toString() : null);
-	    dto.setPaymentType(record.getPaymentType());
+	    StudentDto dto = new StudentDto(
+	    	record.getId(),
+	    	record.getFirstname(),
+		    record.getLastname(),
+		    record.getGender(),
+		    record.getIdCard(),
+		    record.getStreet(),
+		    record.getStreetNo(),
+		    record.getCity(),
+		    record.getZipCode(),
+		    record.getMobil(),
+		    record.getEmail(),
+		    record.getSchoolId(),
+		    record.getVegetarian(),
+		    record.getGlutenFree(),
+		    record.getActive(),
+		    record.getCredit(),
+		    record.getBirthdate() != null ? record.getBirthdate().toString() : null,
+		    record.getPaymentType(),
+		    record.getBasePaymentAmount(),
+		    record.getGrade()
+		);
 	    return dto;
 	}
 	
 	private StudentRecord mapToRecord(StudentDto dto) {
 	    StudentRecord record = dsl.newRecord(Student.STUDENT);
-	    record.setId(dto.getId()); // pri create môže byť null
-	    record.setFirstname(dto.getFirstname());
-	    record.setLastname(dto.getLastname());
-	    record.setGender(dto.getGender());
-	    record.setIdCard(dto.getIdCard());
-	    record.setStreet(dto.getStreet());
-	    record.setStreetNo(dto.getStreetNo());
-	    record.setCity(dto.getCity());
-	    record.setZipCode(dto.getZipCode());
-	    record.setMobil(dto.getMobil());
-	    record.setEmail(dto.getEmail());
-	    record.setSchoolId(dto.getSchoolId());
-	    record.setVegetarian(dto.getVegetarian());
-	    record.setGlutenFree(dto.getGlutenFree());
-	    record.setActive(dto.getActive());
-	    if (AppConstants.paymentType_credit.equals(dto.getPaymentType())) {
-	        record.setCredit(dto.getCredit());
+	    record.setId(dto.id()); // pri create môže byť null
+	    record.setFirstname(dto.firstname());
+	    record.setLastname(dto.lastname());
+	    record.setGender(dto.gender());
+	    record.setIdCard(dto.idCard());
+	    record.setStreet(dto.street());
+	    record.setStreetNo(dto.streetNo());
+	    record.setCity(dto.city());
+	    record.setZipCode(dto.zipCode());
+	    record.setMobil(dto.mobil());
+	    record.setEmail(dto.email());
+	    record.setSchoolId(dto.schoolId());
+	    record.setVegetarian(dto.vegetarian());
+	    record.setGlutenFree(dto.glutenFree());
+	    record.setActive(dto.active());
+	    if (AppConstants.paymentType_credit.equals(dto.paymentType())) {
+	        record.setCredit(dto.credit());
 	    } else {
 	        record.setCredit(0);
 	    }
-	    record.setBirthdate(dto.getBirthdate() != null && !dto.getBirthdate().isBlank() ? LocalDate.parse(dto.getBirthdate()) : null);
-	    record.setPaymentType(dto.getPaymentType());
+	    record.setBirthdate(dto.birthdate() != null && !dto.birthdate().isBlank() ? LocalDate.parse(dto.birthdate()) : null);
+	    record.setPaymentType(dto.paymentType());
+	    record.setBasePaymentAmount(dto.basePaymentAmount());
+	    record.setGrade(dto.grade());
 	    return record;
 	}
 

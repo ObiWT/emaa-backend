@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -79,6 +80,7 @@ public class AttendanceService {
 	            Student.STUDENT.FIRSTNAME,
 	            Student.STUDENT.LASTNAME,
 	            Student.STUDENT.PAYMENT_TYPE,
+	            Student.STUDENT.BASE_PAYMENT_AMOUNT,
 	            Student.STUDENT.CREDIT,
 	            Training.TRAINING.ID.as("training_id"),
 	            Training.TRAINING.DATE.as("training_date"),
@@ -102,6 +104,7 @@ public class AttendanceService {
 	    Map<Integer, String> lastnames = new HashMap<>();
 	    Map<Integer, Integer> credits = new HashMap<>();
 	    Map<Integer, String> paymentTypes = new HashMap<>();
+	    Map<Integer, Integer> basePaymentAmounts = new HashMap<>();
 	    Set<LocalDate> trainingDates = new TreeSet<>();
 	    Map<Integer, Boolean> paidMap = new HashMap<>();
 
@@ -110,6 +113,7 @@ public class AttendanceService {
 	        String firstname = r.get(Student.STUDENT.FIRSTNAME);
 	        String lastname = r.get(Student.STUDENT.LASTNAME);
 	        String paymentType = r.get(Student.STUDENT.PAYMENT_TYPE);
+	        int basePaymentAmount = Optional.ofNullable(r.get(Student.STUDENT.BASE_PAYMENT_AMOUNT)).orElse(0);
 	        int credit = r.get(Student.STUDENT.CREDIT);
 	        LocalDate date = r.get("training_date", LocalDate.class);
 	        Boolean present = r.get(Attendance.ATTENDANCE.PRESENT);
@@ -139,6 +143,7 @@ public class AttendanceService {
 	        lastnames.putIfAbsent(studentId, lastname);
 	        credits.putIfAbsent(studentId, credit);
 	        paymentTypes.putIfAbsent(studentId, paymentType);
+	        basePaymentAmounts.putIfAbsent(studentId, basePaymentAmount);
 	        paidMap.putIfAbsent(studentId, paid);
 
 	        attendanceMap
@@ -155,6 +160,7 @@ public class AttendanceService {
 	                lastnames.get(entry.getKey()),
 	                credits.get(entry.getKey()),
 	                paymentTypes.get(entry.getKey()),
+	                basePaymentAmounts.get(entry.getKey()),
 	                paidMap.get(entry.getKey()),
 	                entry.getValue()
 	        ))
@@ -184,16 +190,20 @@ public class AttendanceService {
 	    int studentId = record.get(Attendance.ATTENDANCE.STUDENT_ID);
 
 	    // 2. Načítaj študenta
-	    var student = dsl.select(Student.STUDENT.PAYMENT_TYPE, Student.STUDENT.CREDIT)
-	                     .from(Student.STUDENT)
-	                     .where(Student.STUDENT.ID.eq(studentId))
-	                     .fetchOne();
+	    var student = dsl.select(
+	    		Student.STUDENT.PAYMENT_TYPE, 
+	    		Student.STUDENT.CREDIT, 
+	    		Student.STUDENT.BASE_PAYMENT_AMOUNT)
+             .from(Student.STUDENT)
+             .where(Student.STUDENT.ID.eq(studentId))
+             .fetchOne();
 
 	    if (student == null) 
 	    	throw new IllegalArgumentException("Student not found");
 
 	    String paymentType = student.get(Student.STUDENT.PAYMENT_TYPE);
-	    int credit = student.get(Student.STUDENT.CREDIT);
+	    int credit = Optional.ofNullable(student.get(Student.STUDENT.CREDIT)).orElse(0);
+	    int basePaymentAmount = Optional.ofNullable(student.get(Student.STUDENT.BASE_PAYMENT_AMOUNT)).orElse(0);
 
 	    // 3. Logika odpočtu/pripísania kreditu
 	    if (AppConstants.paymentType_credit.equals(paymentType)) {
@@ -211,7 +221,7 @@ public class AttendanceService {
 
 	            dsl.insertInto(CreditTransaction.CREDIT_TRANSACTION)
 	                .set(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID, studentId)
-	                .set(CreditTransaction.CREDIT_TRANSACTION.AMOUNT, delta * AppConstants.creditPayment) // vynasobim cenu jedneho treningu
+	                .set(CreditTransaction.CREDIT_TRANSACTION.AMOUNT, delta * basePaymentAmount) // vynasobim cenou jedneho treningu
 	                .set(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION, delta > 0 ? "Vrátenie kreditu" : "Odpočet kreditu")
 	                .set(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE, AppConstants.paymentType_credit)
 	                .execute();

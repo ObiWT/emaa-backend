@@ -152,6 +152,16 @@ public class Student extends TableImpl<StudentRecord> {
      */
     public final TableField<StudentRecord, Boolean> GLUTEN_FREE = createField(DSL.name("gluten_free"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
+    /**
+     * The column <code>public.student.base_payment_amount</code>.
+     */
+    public final TableField<StudentRecord, Integer> BASE_PAYMENT_AMOUNT = createField(DSL.name("base_payment_amount"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.student.grade</code>.
+     */
+    public final TableField<StudentRecord, Integer> GRADE = createField(DSL.name("grade"), SQLDataType.INTEGER, this, "");
+
     private Student(Name alias, Table<StudentRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
@@ -275,7 +285,7 @@ public class Student extends TableImpl<StudentRecord> {
     @Override
     public List<Check<StudentRecord>> getChecks() {
         return Arrays.asList(
-            Internal.createCheck(this, DSL.name("student_payment_type_check"), "(((payment_type)::text = ANY ((ARRAY['MONTHLY'::character varying, 'CREDIT'::character varying, 'NO_PAYMENT'::character varying])::text[])))", true)
+            Internal.createCheck(this, DSL.name("student_payment_type_check"), "(((payment_type)::text = ANY ((ARRAY['MONTHLY'::character varying, 'YEARLY'::character varying, 'CREDIT'::character varying, 'NO_PAYMENT'::character varying])::text[])))", true)
         );
     }
 

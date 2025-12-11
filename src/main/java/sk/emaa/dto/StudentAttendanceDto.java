@@ -9,6 +9,7 @@ public record StudentAttendanceDto (
 		String lastname,
 		int credit,
 		String paymentType,
+		int basePaymentAmount,
 		boolean paid, 
 		Map<LocalDate, AttendanceItemDto> attendance) {
 }

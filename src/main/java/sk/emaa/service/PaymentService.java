@@ -20,9 +20,19 @@ public class PaymentService {
 	public CreditTransactionRecord payForMonth(CreditTransactionDto creditTransactionDto) {
         return dsl.insertInto(CreditTransaction.CREDIT_TRANSACTION)
                   .set(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID, creditTransactionDto.studentId())
-                  .set(CreditTransaction.CREDIT_TRANSACTION.AMOUNT, AppConstants.monthlyPayment)
+                  .set(CreditTransaction.CREDIT_TRANSACTION.AMOUNT, creditTransactionDto.amount())
                   .set(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION, creditTransactionDto.description())
                   .set(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE, AppConstants.paymentType_monthly)
+                  .returning()
+                  .fetchOne();
+    }
+	
+	public CreditTransactionRecord payForYear(CreditTransactionDto creditTransactionDto) {
+        return dsl.insertInto(CreditTransaction.CREDIT_TRANSACTION)
+                  .set(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID, creditTransactionDto.studentId())
+                  .set(CreditTransaction.CREDIT_TRANSACTION.AMOUNT, creditTransactionDto.amount())
+                  .set(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION, creditTransactionDto.description())
+                  .set(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE, AppConstants.paymentType_yearly)
                   .returning()
                   .fetchOne();
     }
@@ -45,17 +55,23 @@ public class PaymentService {
 		        )
 		        .limit(1)
 		        .fetchOne();
-
+		    return record != null ? mapToDto(record) : null;
+		} else if (AppConstants.paymentType_yearly.equals(paymentType)) {
+			CreditTransactionRecord record = dsl.selectFrom(CreditTransaction.CREDIT_TRANSACTION)
+		        .where(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID.eq(studentId)
+		        .and(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE.eq(AppConstants.paymentType_yearly)))
+		        .orderBy(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION.cast(Integer.class).desc())
+		        .limit(1)
+		        .fetchOne();
 		    return record != null ? mapToDto(record) : null;
 		} else {
 		    // pre kreditových a iných berieme poslednú transakciu podľa created_at
 		    CreditTransactionRecord record = dsl.selectFrom(CreditTransaction.CREDIT_TRANSACTION)
 		        .where(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID.eq(studentId)
-		               .and(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE.eq(paymentType)))
+		        .and(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE.eq(paymentType)))
 		        .orderBy(CreditTransaction.CREDIT_TRANSACTION.CREATED_AT.desc())
 		        .limit(1)
 		        .fetchOne();
-
 		    return record != null ? mapToDto(record) : null;
 		}
     }

@@ -18,9 +18,14 @@ public class PaymentController {
 	
 	private final PaymentService paymentService;
 	
-	@PostMapping("/payment")
+	@PostMapping("/payment/monthly")
 	public void payForMonth(@RequestBody CreditTransactionDto creditTransactionDto) {
 		paymentService.payForMonth(creditTransactionDto);
+	}
+	
+	@PostMapping("/payment/yearly")
+	public void payForYear(@RequestBody CreditTransactionDto creditTransactionDto) {
+		paymentService.payForYear(creditTransactionDto);
 	}
 	
 	@GetMapping("/payment/{studentId}")
