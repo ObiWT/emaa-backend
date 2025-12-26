@@ -37,7 +37,8 @@ CREATE TABLE student (
     payment_type VARCHAR(10) CHECK (payment_type IN ('MONTHLY', 'YEARLY', 'CREDIT', 'NO_PAYMENT')),  -- spôsob platby
     base_payment_amount INT,
     grade INT,
-    birthdate DATE
+    birthdate DATE,
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
 -- Tréning

@@ -5,6 +5,7 @@ package sk.emaa.model.entity.tables;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -161,6 +162,11 @@ public class Student extends TableImpl<StudentRecord> {
      * The column <code>public.student.birthdate</code>.
      */
     public final TableField<StudentRecord, LocalDate> BIRTHDATE = createField(DSL.name("birthdate"), SQLDataType.LOCALDATE, this, "");
+
+    /**
+     * The column <code>public.student.created_at</code>.
+     */
+    public final TableField<StudentRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
 
     private Student(Name alias, Table<StudentRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

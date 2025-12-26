@@ -5,6 +5,7 @@ package sk.emaa.model.entity.tables.records;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
@@ -300,6 +301,20 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         return (LocalDate) get(19);
     }
 
+    /**
+     * Setter for <code>public.student.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(20, value);
+    }
+
+    /**
+     * Getter for <code>public.student.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(20);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -323,7 +338,7 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     /**
      * Create a detached, initialised StudentRecord
      */
-    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean glutenFree, Boolean active, Integer credit, String paymentType, Integer basePaymentAmount, Integer grade, LocalDate birthdate) {
+    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean glutenFree, Boolean active, Integer credit, String paymentType, Integer basePaymentAmount, Integer grade, LocalDate birthdate, LocalDateTime createdAt) {
         super(Student.STUDENT);
 
         setId(id);
@@ -346,6 +361,7 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         setBasePaymentAmount(basePaymentAmount);
         setGrade(grade);
         setBirthdate(birthdate);
+        setCreatedAt(createdAt);
         resetChangedOnNotNull();
     }
 }

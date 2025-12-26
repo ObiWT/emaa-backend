@@ -24,7 +24,9 @@ public class StudentService {
 	public List<StudentDto> loadStudents(int schoolId) {
 		List<StudentRecord> students = dsl.selectFrom(Student.STUDENT)
 				.where(Student.STUDENT.SCHOOL_ID.eq(schoolId))
+				.orderBy(Student.STUDENT.CREATED_AT.asc())
 				.fetch();
+		
 		return students.stream()
         	.map(this::mapToDto)
         	.toList();
