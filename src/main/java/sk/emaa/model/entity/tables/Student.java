@@ -128,6 +128,11 @@ public class Student extends TableImpl<StudentRecord> {
     public final TableField<StudentRecord, Boolean> VEGETARIAN = createField(DSL.name("vegetarian"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
+     * The column <code>public.student.gluten_free</code>.
+     */
+    public final TableField<StudentRecord, Boolean> GLUTEN_FREE = createField(DSL.name("gluten_free"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>public.student.active</code>.
      */
     public final TableField<StudentRecord, Boolean> ACTIVE = createField(DSL.name("active"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("true"), SQLDataType.BOOLEAN)), this, "");
@@ -138,19 +143,9 @@ public class Student extends TableImpl<StudentRecord> {
     public final TableField<StudentRecord, Integer> CREDIT = createField(DSL.name("credit"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>public.student.birthdate</code>.
-     */
-    public final TableField<StudentRecord, LocalDate> BIRTHDATE = createField(DSL.name("birthdate"), SQLDataType.LOCALDATE, this, "");
-
-    /**
      * The column <code>public.student.payment_type</code>.
      */
     public final TableField<StudentRecord, String> PAYMENT_TYPE = createField(DSL.name("payment_type"), SQLDataType.VARCHAR(10), this, "");
-
-    /**
-     * The column <code>public.student.gluten_free</code>.
-     */
-    public final TableField<StudentRecord, Boolean> GLUTEN_FREE = createField(DSL.name("gluten_free"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>public.student.base_payment_amount</code>.
@@ -161,6 +156,11 @@ public class Student extends TableImpl<StudentRecord> {
      * The column <code>public.student.grade</code>.
      */
     public final TableField<StudentRecord, Integer> GRADE = createField(DSL.name("grade"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.student.birthdate</code>.
+     */
+    public final TableField<StudentRecord, LocalDate> BIRTHDATE = createField(DSL.name("birthdate"), SQLDataType.LOCALDATE, this, "");
 
     private Student(Name alias, Table<StudentRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -203,45 +203,45 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     }
 
     /**
+     * Setter for <code>public.student.gluten_free</code>.
+     */
+    public void setGlutenFree(Boolean value) {
+        set(13, value);
+    }
+
+    /**
+     * Getter for <code>public.student.gluten_free</code>.
+     */
+    public Boolean getGlutenFree() {
+        return (Boolean) get(13);
+    }
+
+    /**
      * Setter for <code>public.student.active</code>.
      */
     public void setActive(Boolean value) {
-        set(13, value);
+        set(14, value);
     }
 
     /**
      * Getter for <code>public.student.active</code>.
      */
     public Boolean getActive() {
-        return (Boolean) get(13);
+        return (Boolean) get(14);
     }
 
     /**
      * Setter for <code>public.student.credit</code>.
      */
     public void setCredit(Integer value) {
-        set(14, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>public.student.credit</code>.
      */
     public Integer getCredit() {
-        return (Integer) get(14);
-    }
-
-    /**
-     * Setter for <code>public.student.birthdate</code>.
-     */
-    public void setBirthdate(LocalDate value) {
-        set(15, value);
-    }
-
-    /**
-     * Getter for <code>public.student.birthdate</code>.
-     */
-    public LocalDate getBirthdate() {
-        return (LocalDate) get(15);
+        return (Integer) get(15);
     }
 
     /**
@@ -259,45 +259,45 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     }
 
     /**
-     * Setter for <code>public.student.gluten_free</code>.
-     */
-    public void setGlutenFree(Boolean value) {
-        set(17, value);
-    }
-
-    /**
-     * Getter for <code>public.student.gluten_free</code>.
-     */
-    public Boolean getGlutenFree() {
-        return (Boolean) get(17);
-    }
-
-    /**
      * Setter for <code>public.student.base_payment_amount</code>.
      */
     public void setBasePaymentAmount(Integer value) {
-        set(18, value);
+        set(17, value);
     }
 
     /**
      * Getter for <code>public.student.base_payment_amount</code>.
      */
     public Integer getBasePaymentAmount() {
-        return (Integer) get(18);
+        return (Integer) get(17);
     }
 
     /**
      * Setter for <code>public.student.grade</code>.
      */
     public void setGrade(Integer value) {
-        set(19, value);
+        set(18, value);
     }
 
     /**
      * Getter for <code>public.student.grade</code>.
      */
     public Integer getGrade() {
-        return (Integer) get(19);
+        return (Integer) get(18);
+    }
+
+    /**
+     * Setter for <code>public.student.birthdate</code>.
+     */
+    public void setBirthdate(LocalDate value) {
+        set(19, value);
+    }
+
+    /**
+     * Getter for <code>public.student.birthdate</code>.
+     */
+    public LocalDate getBirthdate() {
+        return (LocalDate) get(19);
     }
 
     // -------------------------------------------------------------------------
@@ -323,7 +323,7 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     /**
      * Create a detached, initialised StudentRecord
      */
-    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean active, Integer credit, LocalDate birthdate, String paymentType, Boolean glutenFree, Integer basePaymentAmount, Integer grade) {
+    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean glutenFree, Boolean active, Integer credit, String paymentType, Integer basePaymentAmount, Integer grade, LocalDate birthdate) {
         super(Student.STUDENT);
 
         setId(id);
@@ -339,13 +339,13 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         setEmail(email);
         setSchoolId(schoolId);
         setVegetarian(vegetarian);
+        setGlutenFree(glutenFree);
         setActive(active);
         setCredit(credit);
-        setBirthdate(birthdate);
         setPaymentType(paymentType);
-        setGlutenFree(glutenFree);
         setBasePaymentAmount(basePaymentAmount);
         setGrade(grade);
+        setBirthdate(birthdate);
         resetChangedOnNotNull();
     }
 }

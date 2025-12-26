@@ -21,7 +21,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 	
-	private static final Logger logger = LoggerFactory.getLogger(SecurityFilterChain.class);
+	private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -69,7 +69,7 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         logger.info("SecurityConfig: Vytváram PasswordEncoder bean");
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(12);
     }
     
 }

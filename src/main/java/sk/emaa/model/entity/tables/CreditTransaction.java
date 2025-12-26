@@ -79,14 +79,14 @@ public class CreditTransaction extends TableImpl<CreditTransactionRecord> {
     public final TableField<CreditTransactionRecord, String> DESCRIPTION = createField(DSL.name("description"), SQLDataType.VARCHAR(200), this, "");
 
     /**
-     * The column <code>public.credit_transaction.created_at</code>.
-     */
-    public final TableField<CreditTransactionRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
      * The column <code>public.credit_transaction.payment_type</code>.
      */
     public final TableField<CreditTransactionRecord, String> PAYMENT_TYPE = createField(DSL.name("payment_type"), SQLDataType.VARCHAR(20).nullable(false).defaultValue(DSL.field(DSL.raw("'CREDIT'::character varying"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>public.credit_transaction.created_at</code>.
+     */
+    public final TableField<CreditTransactionRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
 
     private CreditTransaction(Name alias, Table<CreditTransactionRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

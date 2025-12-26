@@ -77,31 +77,31 @@ public class CreditTransactionRecord extends UpdatableRecordImpl<CreditTransacti
     }
 
     /**
-     * Setter for <code>public.credit_transaction.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>public.credit_transaction.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(4);
-    }
-
-    /**
      * Setter for <code>public.credit_transaction.payment_type</code>.
      */
     public void setPaymentType(String value) {
-        set(5, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>public.credit_transaction.payment_type</code>.
      */
     public String getPaymentType() {
-        return (String) get(5);
+        return (String) get(4);
+    }
+
+    /**
+     * Setter for <code>public.credit_transaction.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>public.credit_transaction.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(5);
     }
 
     // -------------------------------------------------------------------------
@@ -127,15 +127,15 @@ public class CreditTransactionRecord extends UpdatableRecordImpl<CreditTransacti
     /**
      * Create a detached, initialised CreditTransactionRecord
      */
-    public CreditTransactionRecord(Integer id, Integer studentId, Integer amount, String description, LocalDateTime createdAt, String paymentType) {
+    public CreditTransactionRecord(Integer id, Integer studentId, Integer amount, String description, String paymentType, LocalDateTime createdAt) {
         super(CreditTransaction.CREDIT_TRANSACTION);
 
         setId(id);
         setStudentId(studentId);
         setAmount(amount);
         setDescription(description);
-        setCreatedAt(createdAt);
         setPaymentType(paymentType);
+        setCreatedAt(createdAt);
         resetChangedOnNotNull();
     }
 }

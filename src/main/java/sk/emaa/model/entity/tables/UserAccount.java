@@ -151,12 +151,12 @@ public class UserAccount extends TableImpl<UserAccountRecord> {
 
     @Override
     public UniqueKey<UserAccountRecord> getPrimaryKey() {
-        return Keys.USERS_PKEY;
+        return Keys.USER_ACCOUNT_PKEY;
     }
 
     @Override
     public List<ForeignKey<UserAccountRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USER_ACCOUNT__USERS_SCHOOL_ID_FKEY);
+        return Arrays.asList(Keys.USER_ACCOUNT__USER_ACCOUNT_SCHOOL_ID_FKEY);
     }
 
     private transient SchoolPath _school;
@@ -166,7 +166,7 @@ public class UserAccount extends TableImpl<UserAccountRecord> {
      */
     public SchoolPath school() {
         if (_school == null)
-            _school = new SchoolPath(this, Keys.USER_ACCOUNT__USERS_SCHOOL_ID_FKEY, null);
+            _school = new SchoolPath(this, Keys.USER_ACCOUNT__USER_ACCOUNT_SCHOOL_ID_FKEY, null);
 
         return _school;
     }

@@ -60,6 +60,48 @@ public class SchoolRecord extends UpdatableRecordImpl<SchoolRecord> {
         return (String) get(2);
     }
 
+    /**
+     * Setter for <code>public.school.credit_payment</code>.
+     */
+    public void setCreditPayment(Integer value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>public.school.credit_payment</code>.
+     */
+    public Integer getCreditPayment() {
+        return (Integer) get(3);
+    }
+
+    /**
+     * Setter for <code>public.school.monthly_payment</code>.
+     */
+    public void setMonthlyPayment(Integer value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>public.school.monthly_payment</code>.
+     */
+    public Integer getMonthlyPayment() {
+        return (Integer) get(4);
+    }
+
+    /**
+     * Setter for <code>public.school.yearly_payment</code>.
+     */
+    public void setYearlyPayment(Integer value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>public.school.yearly_payment</code>.
+     */
+    public Integer getYearlyPayment() {
+        return (Integer) get(5);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -83,12 +125,15 @@ public class SchoolRecord extends UpdatableRecordImpl<SchoolRecord> {
     /**
      * Create a detached, initialised SchoolRecord
      */
-    public SchoolRecord(Integer id, String name, String address) {
+    public SchoolRecord(Integer id, String name, String address, Integer creditPayment, Integer monthlyPayment, Integer yearlyPayment) {
         super(School.SCHOOL);
 
         setId(id);
         setName(name);
         setAddress(address);
+        setCreditPayment(creditPayment);
+        setMonthlyPayment(monthlyPayment);
+        setYearlyPayment(yearlyPayment);
         resetChangedOnNotNull();
     }
 }

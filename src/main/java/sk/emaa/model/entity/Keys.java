@@ -40,7 +40,7 @@ public class Keys {
     public static final UniqueKey<SchoolRecord> SCHOOL_PKEY = Internal.createUniqueKey(School.SCHOOL, DSL.name("school_pkey"), new TableField[] { School.SCHOOL.ID }, true);
     public static final UniqueKey<StudentRecord> STUDENT_PKEY = Internal.createUniqueKey(Student.STUDENT, DSL.name("student_pkey"), new TableField[] { Student.STUDENT.ID }, true);
     public static final UniqueKey<TrainingRecord> TRAINING_PKEY = Internal.createUniqueKey(Training.TRAINING, DSL.name("training_pkey"), new TableField[] { Training.TRAINING.ID }, true);
-    public static final UniqueKey<UserAccountRecord> USERS_PKEY = Internal.createUniqueKey(UserAccount.USER_ACCOUNT, DSL.name("users_pkey"), new TableField[] { UserAccount.USER_ACCOUNT.ID }, true);
+    public static final UniqueKey<UserAccountRecord> USER_ACCOUNT_PKEY = Internal.createUniqueKey(UserAccount.USER_ACCOUNT, DSL.name("user_account_pkey"), new TableField[] { UserAccount.USER_ACCOUNT.ID }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -51,5 +51,5 @@ public class Keys {
     public static final ForeignKey<CreditTransactionRecord, StudentRecord> CREDIT_TRANSACTION__CREDIT_TRANSACTION_STUDENT_ID_FKEY = Internal.createForeignKey(CreditTransaction.CREDIT_TRANSACTION, DSL.name("credit_transaction_student_id_fkey"), new TableField[] { CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID }, Keys.STUDENT_PKEY, new TableField[] { Student.STUDENT.ID }, true);
     public static final ForeignKey<StudentRecord, SchoolRecord> STUDENT__STUDENT_SCHOOL_ID_FKEY = Internal.createForeignKey(Student.STUDENT, DSL.name("student_school_id_fkey"), new TableField[] { Student.STUDENT.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
     public static final ForeignKey<TrainingRecord, SchoolRecord> TRAINING__TRAINING_SCHOOL_ID_FKEY = Internal.createForeignKey(Training.TRAINING, DSL.name("training_school_id_fkey"), new TableField[] { Training.TRAINING.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
-    public static final ForeignKey<UserAccountRecord, SchoolRecord> USER_ACCOUNT__USERS_SCHOOL_ID_FKEY = Internal.createForeignKey(UserAccount.USER_ACCOUNT, DSL.name("users_school_id_fkey"), new TableField[] { UserAccount.USER_ACCOUNT.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
+    public static final ForeignKey<UserAccountRecord, SchoolRecord> USER_ACCOUNT__USER_ACCOUNT_SCHOOL_ID_FKEY = Internal.createForeignKey(UserAccount.USER_ACCOUNT, DSL.name("user_account_school_id_fkey"), new TableField[] { UserAccount.USER_ACCOUNT.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
 }

@@ -133,6 +133,13 @@ public class AttendanceService {
 	            paid = (count != null && count > 0);
 	        } else if (AppConstants.paymentType_credit.equals(paymentType)) {
 	            paid = credit > 0;
+	        } else if (AppConstants.paymentType_yearly.equals(paymentType)) {
+	        	Integer count = dsl.selectCount()
+	                .from(CreditTransaction.CREDIT_TRANSACTION)
+	                .where(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID.eq(studentId))
+	                .and(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION.eq(String.valueOf(year)))
+	                .fetchOne(0, Integer.class);
+		        paid = (count == 1);
 	        } else {
 	            paid = true; // NO_PAYMENT
 	        }

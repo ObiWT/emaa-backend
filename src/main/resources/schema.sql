@@ -2,7 +2,10 @@
 CREATE TABLE school (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    address VARCHAR(200)
+    address VARCHAR(200),
+    credit_payment INT,
+    monthly_payment INT,
+    yearly_payment INT
 );
 
 -- Používateľ (tréner/admin)
