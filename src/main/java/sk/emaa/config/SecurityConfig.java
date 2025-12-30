@@ -1,5 +1,7 @@
 package sk.emaa.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import java.util.Arrays;
 
 import org.slf4j.Logger;
@@ -11,34 +13,44 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static org.springframework.security.config.Customizer.withDefaults;
+import lombok.RequiredArgsConstructor;
+import sk.emaa.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+	
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
 		logger.info("SecurityConfig: Vytváram SecurityFilterChain");
 		
-        http
-            .cors(withDefaults()) // aktivuje CORS podľa nižšieho beanu
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/**").permitAll()
-                .anyRequest().authenticated()
-            );
-        
-        logger.info("SecurityConfig: SecurityFilterChain hotový");
+		http
+        .cors(withDefaults())
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(
+                "/api/login"
+            ).permitAll()
+            .anyRequest().authenticated()
+        )
+        // 👇 KRITICKÉ
+        .addFilterBefore(
+            jwtAuthenticationFilter,
+            UsernamePasswordAuthenticationFilter.class
+        );
 
-        return http.build();
+		return http.build();
     }
 
 	@Bean

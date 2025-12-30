@@ -1,9 +1,14 @@
 package sk.emaa.security;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -12,55 +17,69 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import sk.emaa.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-	@Override
+    private final JwtProvider jwtProvider; // 👈 INJECTNUTÝ BEAN
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-		
-		logger.info("JwtAuthenticationFilter: Request Method = " + request.getMethod() + ", URI = " + request.getRequestURI());
 
-	    // OPTIONS request
-	    if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-	    	logger.info("JwtAuthenticationFilter: OPTIONS request - passing through");
-	        filterChain.doFilter(request, response);
-	        return;
-	    }
+        logger.info("JWT Filter: {} {}", request.getMethod(), request.getRequestURI());
+
+        // ✅ OPTIONS musí vždy prejsť
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // ✅ ak už je autentifikovaný, nepokračuj znova
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String authHeader = request.getHeader("Authorization");
-        logger.info("JwtAuthenticationFilter: Authorization header = " + authHeader);
 
-        // 🔹 ak v hlavičke nie je token, pokračuj normálne
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authHeader.substring(7); // odstráni "Bearer "
+        String token = authHeader.substring(7);
+
         try {
-            // 🔹 overenie tokenu
-            Claims claims = JwtUtil.validateToken(token);
+            Claims claims = jwtProvider.getClaims(token);
+
             String username = claims.getSubject();
+            String role = claims.get("role", String.class);
 
-            // tu by sa dala nastaviť autentifikácia do SecurityContextHolder
-            // napr. SecurityContextHolder.getContext().setAuthentication(...)
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
 
-            request.setAttribute("username", username); // pre jednoduché použitie
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            username,
+                            null,
+                            List.of(authority)
+                    );
+
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
         } catch (Exception e) {
-            // 🔹 token neplatný alebo expirovaný
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+            logger.error("JWT validation failed", e);
+            SecurityContextHolder.clearContext();
         }
 
-        // 🔹 ak je všetko OK, pokračuj ďalej
         filterChain.doFilter(request, response);
     }
 	

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import sk.emaa.model.entity.tables.School;
 import sk.emaa.model.entity.tables.UserAccount;
-import sk.emaa.security.JwtTokenProvider;
+import sk.emaa.security.JwtProvider;
 
 @Service
 @RequiredArgsConstructor
@@ -15,7 +15,7 @@ public class LoginService {
 
     private final DSLContext dsl;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
     
     public String login(String username, String password) {
     	var record = dsl.select(
@@ -47,6 +47,6 @@ public class LoginService {
         Integer schoolId = record.get(UserAccount.USER_ACCOUNT.SCHOOL_ID);
         String schoolName = record.get("school_name", String.class);
 
-        return jwtTokenProvider.createToken(usernameDb, "USER", schoolId, schoolName); // role môžeš pridať do tabuľky
+        return jwtProvider.createToken(usernameDb, "USER", schoolId, schoolName); // role môžeš pridať do tabuľky
     }
 }

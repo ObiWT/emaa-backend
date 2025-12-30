@@ -1,6 +1,5 @@
 package sk.emaa.security;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -10,25 +9,26 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 
 @Component
-public class JwtTokenProvider {
+@RequiredArgsConstructor
+public class JwtProvider {
 
-    //@Value("${jwt.secret}")
-    //private String secretKey; // musí byť dostatočne dlhé, min 256 bitov pre HS256
+    @Value("${jwt.secret}")
+    private String secretKey; // musí byť Base64-encoded, min 256 bitov
 
     @Value("${jwt.expiration}")
-    private long validityInMs; // napr. 3600000 = 1 hodina
+    private long validityInMs; // napr. 7200000 = 2 hodiny
 
     private Key getSigningKey() {
-        // return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    /**
-     * Vytvorenie JWT tokenu pre daného používateľa a jeho rolu
-     */
+    // === Generovanie tokenu ===
     public String createToken(String username, String role, Integer schoolId, String schoolName) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("role", role);
@@ -42,28 +42,19 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
-                .signWith(getSigningKey()) // nový spôsob bez deprecated metódy
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-
-    /**
-     * Overenie platnosti tokenu
-     */
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder()
+    
+    public Claims getClaims(String token) {
+        return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
-                .parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    /**
-     * Získanie username z tokenu
-     */
+    // === Získanie username z tokenu ===
     public String getUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -73,9 +64,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    /**
-     * Získanie role z tokenu
-     */
+    // === Získanie role z tokenu ===
     public String getRole(String token) {
         return (String) Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -84,4 +73,5 @@ public class JwtTokenProvider {
                 .getBody()
                 .get("role");
     }
+    
 }
