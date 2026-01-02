@@ -54,7 +54,6 @@ public class JwtProvider {
                 .getBody();
     }
 
-    // === Získanie username z tokenu ===
     public String getUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -63,8 +62,24 @@ public class JwtProvider {
                 .getBody()
                 .getSubject();
     }
+    
+    public Integer getSchoolId(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
 
-    // === Získanie role z tokenu ===
+        return claims.get("schoolId", Integer.class);
+    }
+    
+    public Integer getSchoolIdFromAuthHeader(String authHeader) {
+    	// získanie tokenu z headeru "Bearer <token>"
+    	String token = authHeader.substring(7);
+
+        return getSchoolId(token);
+    }
+    
     public String getRole(String token) {
         return (String) Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())

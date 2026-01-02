@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
+import sk.emaa.dto.ChangeAddressDto;
 import sk.emaa.dto.ChangePaymentsDto;
 import sk.emaa.model.entity.tables.School;
 import sk.emaa.model.entity.tables.UserAccount;
@@ -38,6 +39,18 @@ public class SettingsService {
                 .set(School.SCHOOL.CREDIT_PAYMENT, newPayments.credit())
                 .set(School.SCHOOL.MONTHLY_PAYMENT, newPayments.monthly())
                 .set(School.SCHOOL.YEARLY_PAYMENT, newPayments.yearly())
+                .where(School.SCHOOL.ID.eq(schoolId))
+                .execute();
+
+        if (updated == 0) {
+        	throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Škola s id=" + schoolId + " nenájdená");
+        }
+		
+	}
+	
+	public void changeAddress(Integer schoolId, ChangeAddressDto newAddress) {
+		int updated = dsl.update(School.SCHOOL)
+                .set(School.SCHOOL.ADDRESS, newAddress.newAddress())
                 .where(School.SCHOOL.ID.eq(schoolId))
                 .execute();
 
