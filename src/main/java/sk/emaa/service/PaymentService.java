@@ -18,16 +18,47 @@ public class PaymentService {
 	private final DSLContext dsl;
 	
 	public CreditTransactionRecord payForMonth(CreditTransactionDto creditTransactionDto) {
-        return dsl.insertInto(CreditTransaction.CREDIT_TRANSACTION)
-                  .set(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID, creditTransactionDto.studentId())
-                  .set(CreditTransaction.CREDIT_TRANSACTION.AMOUNT, creditTransactionDto.amount())
-                  .set(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION, creditTransactionDto.description())
-                  .set(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE, AppConstants.paymentType_monthly)
-                  .returning()
-                  .fetchOne();
+	    // najprv check, či už existuje platba za rovnaký mesiac/rok
+	    boolean exists = dsl.fetchExists(
+	        dsl.selectOne()
+	           .from(CreditTransaction.CREDIT_TRANSACTION)
+	           .where(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID.eq(creditTransactionDto.studentId()))
+	           .and(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION.eq(creditTransactionDto.description()))
+	           .and(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE.eq(AppConstants.paymentType_monthly))
+	    );
+
+	    if (exists) {
+	        throw new IllegalStateException(
+	            "Platba za mesiac " + creditTransactionDto.description() + " už bola zadaná."
+	        );
+	    }
+
+	    // ak neexistuje, vložíme nový záznam
+	    return dsl.insertInto(CreditTransaction.CREDIT_TRANSACTION)
+	              .set(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID, creditTransactionDto.studentId())
+	              .set(CreditTransaction.CREDIT_TRANSACTION.AMOUNT, creditTransactionDto.amount())
+	              .set(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION, creditTransactionDto.description())
+	              .set(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE, AppConstants.paymentType_monthly)
+	              .returning()
+	              .fetchOne();
     }
 	
 	public CreditTransactionRecord payForYear(CreditTransactionDto creditTransactionDto) {
+		// najprv check, či už existuje platba za rovnaký mesiac/rok
+	    boolean exists = dsl.fetchExists(
+	        dsl.selectOne()
+	           .from(CreditTransaction.CREDIT_TRANSACTION)
+	           .where(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID.eq(creditTransactionDto.studentId()))
+	           .and(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION.eq(creditTransactionDto.description()))
+	           .and(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE.eq(AppConstants.paymentType_yearly))
+	    );
+
+	    if (exists) {
+	        throw new IllegalStateException(
+	            "Platba za rok " + creditTransactionDto.description() + " už bola zadaná."
+	        );
+	    }
+		
         return dsl.insertInto(CreditTransaction.CREDIT_TRANSACTION)
                   .set(CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID, creditTransactionDto.studentId())
                   .set(CreditTransaction.CREDIT_TRANSACTION.AMOUNT, creditTransactionDto.amount())
