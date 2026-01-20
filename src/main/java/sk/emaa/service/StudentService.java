@@ -1,6 +1,7 @@
 package sk.emaa.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.jooq.DSLContext;
@@ -18,6 +19,8 @@ import sk.emaa.util.AppConstants;
 @Service
 @RequiredArgsConstructor
 public class StudentService {
+	
+	private DateTimeFormatter birthdateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 	
 	private final DSLContext dsl;
 	
@@ -104,7 +107,7 @@ public class StudentService {
 		    record.getGlutenFree(),
 		    record.getActive(),
 		    record.getCredit(),
-		    record.getBirthdate() != null ? record.getBirthdate().toString() : null,
+		    record.getBirthdate() != null ? record.getBirthdate().format(birthdateFormatter) : null,
 		    record.getPaymentType(),
 		    record.getBasePaymentAmount(),
 		    record.getGrade()
@@ -134,7 +137,7 @@ public class StudentService {
 	    } else {
 	        record.setCredit(0);
 	    }
-	    record.setBirthdate(dto.birthdate() != null && !dto.birthdate().isBlank() ? LocalDate.parse(dto.birthdate()) : null);
+	    record.setBirthdate(dto.birthdate() != null && !dto.birthdate().isBlank() ? LocalDate.parse(dto.birthdate(), birthdateFormatter) : null);
 	    record.setPaymentType(dto.paymentType());
 	    record.setBasePaymentAmount(dto.basePaymentAmount());
 	    record.setGrade(dto.grade());
