@@ -24,7 +24,7 @@ public class PaymentController {
     public ResponseEntity<String> payForMonth(@RequestBody CreditTransactionDto creditTransactionDto) throws IllegalStateException {
         try {
             paymentService.payForMonth(creditTransactionDto);
-            return ResponseEntity.ok("Platba za mesiac " + creditTransactionDto.description() + " bola úspešne zadaná.");
+            return ResponseEntity.ok("Platba za mesiac " + creditTransactionDto.description() + " bola úspešne zadaná");
         } catch (IllegalStateException e) {
             // duplicitná platba alebo iný biznis problém
             return ResponseEntity

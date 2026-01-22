@@ -2,6 +2,7 @@ package sk.emaa.service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -32,11 +33,27 @@ import sk.emaa.util.AppConstants;
 @RequiredArgsConstructor
 public class AttendanceService {
 	
+	private DateTimeFormatter trainingDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+	
 	private final DSLContext dsl;
 
-	public void addTraining(TrainingDto training) {
+	public void addTraining(TrainingDto training) throws IllegalStateException {
 	    dsl.transaction(configuration -> {
 	        DSLContext dsl = DSL.using(configuration);
+	        
+	        // najprv check, či už existuje tréning pre túto školu a dátum
+	        boolean exists = dsl.fetchExists(
+	            dsl.selectOne()
+	               .from(Training.TRAINING)
+	               .where(Training.TRAINING.SCHOOL_ID.eq(training.schoolId()))
+	               .and(Training.TRAINING.DATE.eq(training.date()))
+	        );
+
+	        if (exists) {
+	            throw new IllegalStateException("Tréning s dátumom " + training.date().format(trainingDateFormatter) + " už existuje");
+	        }
+
+	        // ak neexistuje, vložíme nový tréning a attendance
 
 	        // 1️. Vloženie nového tréningu a získanie ID
 	        TrainingRecord trainingRecord = dsl.insertInto(Training.TRAINING)

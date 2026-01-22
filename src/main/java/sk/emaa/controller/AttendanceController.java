@@ -1,5 +1,6 @@
 package sk.emaa.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,8 +24,16 @@ public class AttendanceController {
 	private final AttendanceService attendanceService;
 
 	@PostMapping("/training")
-    public void addTraining(@RequestBody TrainingDto request) {
-		attendanceService.addTraining(request);
+    public ResponseEntity<String> addTraining(@RequestBody TrainingDto request) {
+		try {
+			attendanceService.addTraining(request);
+			return ResponseEntity.ok().build();
+		} catch (IllegalStateException e) {
+            // duplicitný tréning alebo iný biznis problém
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 	
 	@GetMapping("/attendance/{schoolId}/{month}/{year}")
