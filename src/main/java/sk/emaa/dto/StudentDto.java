@@ -20,6 +20,7 @@ public record StudentDto(
     String birthdate, // ISO string, napr. "2008-04-15"
     String paymentType, // 'MONTHLY' | 'YEARLY'  | 'CREDIT' | 'NO_PAYMENT'
     Integer basePaymentAmount,
-    Integer grade
+    Integer grade,
+    String nationalId
 ) {}
 

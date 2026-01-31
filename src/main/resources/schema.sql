@@ -38,7 +38,8 @@ CREATE TABLE student (
     base_payment_amount INT,
     grade INT,
     birthdate DATE,
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP DEFAULT NOW(),
+    national_id VARCHAR(50)
 );
 
 -- Tréning

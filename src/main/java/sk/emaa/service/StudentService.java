@@ -110,7 +110,8 @@ public class StudentService {
 		    record.getBirthdate() != null ? record.getBirthdate().format(birthdateFormatter) : null,
 		    record.getPaymentType(),
 		    record.getBasePaymentAmount(),
-		    record.getGrade()
+		    record.getGrade(),
+		    record.getNationalId()
 		);
 	    return dto;
 	}
@@ -141,6 +142,7 @@ public class StudentService {
 	    record.setPaymentType(dto.paymentType());
 	    record.setBasePaymentAmount(dto.basePaymentAmount());
 	    record.setGrade(dto.grade());
+	    record.setNationalId(dto.nationalId());
 	    return record;
 	}
 

@@ -168,6 +168,11 @@ public class Student extends TableImpl<StudentRecord> {
      */
     public final TableField<StudentRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
 
+    /**
+     * The column <code>public.student.national_id</code>.
+     */
+    public final TableField<StudentRecord, String> NATIONAL_ID = createField(DSL.name("national_id"), SQLDataType.VARCHAR(50), this, "");
+
     private Student(Name alias, Table<StudentRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
