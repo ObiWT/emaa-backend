@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import sk.emaa.dto.AttendanceDto;
 import sk.emaa.dto.AttendanceItemDto;
 import sk.emaa.dto.StudentAttendanceDto;
+import sk.emaa.dto.TrainingAttendanceDto;
 import sk.emaa.dto.TrainingDto;
 import sk.emaa.model.entity.tables.Attendance;
 import sk.emaa.model.entity.tables.CreditTransaction;
@@ -86,6 +87,42 @@ public class AttendanceService {
 	    });
 	}
 	
+	@Transactional
+	public void deleteTraining(int trainingId) {
+
+	    // 1. Načítaj všetkých študentov, ktorí boli na tréningu prítomní
+	    //    a platia kreditom
+	    var records = dsl.select(
+	                Student.STUDENT.ID,
+	                Student.STUDENT.CREDIT
+	            )
+	            .from(Attendance.ATTENDANCE)
+	            .join(Student.STUDENT)
+	                .on(Student.STUDENT.ID.eq(Attendance.ATTENDANCE.STUDENT_ID))
+	            .where(Attendance.ATTENDANCE.TRAINING_ID.eq(trainingId))
+	            .and(Attendance.ATTENDANCE.PRESENT.isTrue())
+	            .and(Student.STUDENT.PAYMENT_TYPE.eq(AppConstants.paymentType_credit))
+	            .fetch();
+
+	    // 2. Vráť kredit každému takému študentovi
+	    for (var r : records) {
+	        int studentId = r.get(Student.STUDENT.ID);
+	        int credit = r.get(Student.STUDENT.CREDIT);
+
+	        dsl.update(Student.STUDENT)
+	           .set(Student.STUDENT.CREDIT, credit + 1)
+	           .where(Student.STUDENT.ID.eq(studentId))
+	           .execute();
+	    }
+
+	    // 3. Zmaž tréning
+	    //    attendance aj credit_transaction sa zmažú cez ON DELETE CASCADE
+	    dsl.deleteFrom(Training.TRAINING)
+	       .where(Training.TRAINING.ID.eq(trainingId))
+	       .execute();
+	}
+
+	
 	public AttendanceDto getAttendance(int schoolId, int month, int year) {
 
 	    YearMonth yearMonth = YearMonth.of(year, month);
@@ -122,7 +159,7 @@ public class AttendanceService {
 	    Map<Integer, Integer> credits = new HashMap<>();
 	    Map<Integer, String> paymentTypes = new HashMap<>();
 	    Map<Integer, Integer> basePaymentAmounts = new HashMap<>();
-	    Set<LocalDate> trainingDates = new TreeSet<>();
+	    Set<TrainingAttendanceDto> trainingDates = new TreeSet<>();
 	    Map<Integer, Boolean> paidMap = new HashMap<>();
 
 	    for (var r : records) {
@@ -135,6 +172,7 @@ public class AttendanceService {
 	        LocalDate date = r.get("training_date", LocalDate.class);
 	        Boolean present = r.get(Attendance.ATTENDANCE.PRESENT);
 	        int attendanceId = r.get("attendance_id", Integer.class);
+	        int trainingId = r.get("training_id", Integer.class);
 	        
 	        boolean paid;
 	        if (AppConstants.paymentType_monthly.equals(paymentType)) {
@@ -161,7 +199,7 @@ public class AttendanceService {
 	            paid = true; // NO_PAYMENT
 	        }
 
-	        trainingDates.add(date);
+	        trainingDates.add(new TrainingAttendanceDto(trainingId, date));
 	        studentIds.putIfAbsent(studentId, studentId);
 	        firstnames.putIfAbsent(studentId, firstname);
 	        lastnames.putIfAbsent(studentId, lastname);
@@ -197,7 +235,7 @@ public class AttendanceService {
 	}
 	
 	@Transactional
-	public void updateAttendance(int attendanceId, boolean present) {
+	public void updateAttendance(int attendanceId, int trainingId, boolean present) {
 	    // 1. Načítaj Attendance + Student
 	    var record = dsl.select(
 	            Attendance.ATTENDANCE.PRESENT,
@@ -248,6 +286,7 @@ public class AttendanceService {
 	                .set(CreditTransaction.CREDIT_TRANSACTION.AMOUNT, delta * basePaymentAmount) // vynasobim cenou jedneho treningu
 	                .set(CreditTransaction.CREDIT_TRANSACTION.DESCRIPTION, delta > 0 ? "Vrátenie kreditu" : "Odpočet kreditu")
 	                .set(CreditTransaction.CREDIT_TRANSACTION.PAYMENT_TYPE, AppConstants.paymentType_credit)
+	                .set(CreditTransaction.CREDIT_TRANSACTION.TRAINING_ID, trainingId)
 	                .execute();
 	        }
 	    }

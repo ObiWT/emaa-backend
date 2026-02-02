@@ -34,6 +34,7 @@ import org.jooq.impl.TableImpl;
 import sk.emaa.model.entity.Keys;
 import sk.emaa.model.entity.Public;
 import sk.emaa.model.entity.tables.Attendance.AttendancePath;
+import sk.emaa.model.entity.tables.CreditTransaction.CreditTransactionPath;
 import sk.emaa.model.entity.tables.School.SchoolPath;
 import sk.emaa.model.entity.tables.records.TrainingRecord;
 
@@ -179,6 +180,19 @@ public class Training extends TableImpl<TrainingRecord> {
             _attendance = new AttendancePath(this, null, Keys.ATTENDANCE__ATTENDANCE_TRAINING_ID_FKEY.getInverseKey());
 
         return _attendance;
+    }
+
+    private transient CreditTransactionPath _creditTransaction;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.credit_transaction</code> table
+     */
+    public CreditTransactionPath creditTransaction() {
+        if (_creditTransaction == null)
+            _creditTransaction = new CreditTransactionPath(this, null, Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_TRAINING_ID_FKEY.getInverseKey());
+
+        return _creditTransaction;
     }
 
     @Override

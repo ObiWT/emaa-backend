@@ -34,6 +34,7 @@ import org.jooq.impl.TableImpl;
 import sk.emaa.model.entity.Keys;
 import sk.emaa.model.entity.Public;
 import sk.emaa.model.entity.tables.Student.StudentPath;
+import sk.emaa.model.entity.tables.Training.TrainingPath;
 import sk.emaa.model.entity.tables.records.CreditTransactionRecord;
 
 
@@ -87,6 +88,11 @@ public class CreditTransaction extends TableImpl<CreditTransactionRecord> {
      * The column <code>public.credit_transaction.created_at</code>.
      */
     public final TableField<CreditTransactionRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>public.credit_transaction.training_id</code>.
+     */
+    public final TableField<CreditTransactionRecord, Integer> TRAINING_ID = createField(DSL.name("training_id"), SQLDataType.INTEGER, this, "");
 
     private CreditTransaction(Name alias, Table<CreditTransactionRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -167,7 +173,7 @@ public class CreditTransaction extends TableImpl<CreditTransactionRecord> {
 
     @Override
     public List<ForeignKey<CreditTransactionRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_STUDENT_ID_FKEY);
+        return Arrays.asList(Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_STUDENT_ID_FKEY, Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_TRAINING_ID_FKEY);
     }
 
     private transient StudentPath _student;
@@ -180,6 +186,18 @@ public class CreditTransaction extends TableImpl<CreditTransactionRecord> {
             _student = new StudentPath(this, Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_STUDENT_ID_FKEY, null);
 
         return _student;
+    }
+
+    private transient TrainingPath _training;
+
+    /**
+     * Get the implicit join path to the <code>public.training</code> table.
+     */
+    public TrainingPath training() {
+        if (_training == null)
+            _training = new TrainingPath(this, Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_TRAINING_ID_FKEY, null);
+
+        return _training;
     }
 
     @Override

@@ -2,6 +2,7 @@ package sk.emaa.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,15 +37,28 @@ public class AttendanceController {
         }
     }
 	
+	@DeleteMapping("/training/{trainingId}")
+    public ResponseEntity<String> deleteTraining(@PathVariable int trainingId) {
+		try {
+			attendanceService.deleteTraining(trainingId);
+			return ResponseEntity.ok().build();
+		} catch (IllegalStateException e) {
+            // duplicitný tréning alebo iný biznis problém
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
+    }
+	
 	@GetMapping("/attendance/{schoolId}/{month}/{year}")
     public ResponseEntity<AttendanceDto> getAttendance(@PathVariable int schoolId, @PathVariable int month, @PathVariable int year) {
 		AttendanceDto dto = attendanceService.getAttendance(schoolId, month, year);
 		return ResponseEntity.ok(dto);
     }
 	
-	@PatchMapping("/attendance/{attendanceId}")
-	public ResponseEntity<?> updateAttendance(@PathVariable int attendanceId, @RequestParam boolean present) {
-		attendanceService.updateAttendance(attendanceId, present);
+	@PatchMapping("/attendance/{attendanceId}/{trainingId}")
+	public ResponseEntity<?> updateAttendance(@PathVariable int attendanceId, @PathVariable int trainingId, @RequestParam boolean present) {
+		attendanceService.updateAttendance(attendanceId, trainingId, present);
 		return ResponseEntity.ok().build();
 	}
 	
