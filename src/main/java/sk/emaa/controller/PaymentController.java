@@ -21,27 +21,23 @@ public class PaymentController {
 	private final PaymentService paymentService;
 	
 	@PostMapping("/payment/monthly")
-    public ResponseEntity<String> payForMonth(@RequestBody CreditTransactionDto creditTransactionDto) throws IllegalStateException {
+    public ResponseEntity<Void> payForMonth(@RequestBody CreditTransactionDto creditTransactionDto) throws IllegalStateException {
         try {
             paymentService.payForMonth(creditTransactionDto);
-            return ResponseEntity.ok("Platba za mesiac " + creditTransactionDto.description() + " bola úspešne zadaná");
+            return ResponseEntity.ok().build();
         } catch (IllegalStateException e) {
             // duplicitná platba alebo iný biznis problém
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 
     @PostMapping("/payment/yearly")
-    public ResponseEntity<String> payForYear(@RequestBody CreditTransactionDto creditTransactionDto) throws IllegalStateException {
+    public ResponseEntity<Void> payForYear(@RequestBody CreditTransactionDto creditTransactionDto) throws IllegalStateException {
         try {
             paymentService.payForYear(creditTransactionDto);
-            return ResponseEntity.ok("Platba za rok " + creditTransactionDto.description() + " bola úspešne zadaná.");
+            return ResponseEntity.ok().build();
         } catch (IllegalStateException e) {
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 	
