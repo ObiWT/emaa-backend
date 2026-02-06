@@ -111,7 +111,8 @@ public class StudentService {
 		    record.getPaymentType(),
 		    record.getBasePaymentAmount(),
 		    record.getGrade(),
-		    record.getNationalId()
+		    record.getNationalId(),
+		    record.getStudentType()
 		);
 	    return dto;
 	}
@@ -143,6 +144,7 @@ public class StudentService {
 	    record.setBasePaymentAmount(dto.basePaymentAmount());
 	    record.setGrade(dto.grade());
 	    record.setNationalId(dto.nationalId());
+	    record.setStudentType(dto.studentType());
 	    return record;
 	}
 

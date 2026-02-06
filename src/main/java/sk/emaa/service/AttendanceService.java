@@ -136,6 +136,7 @@ public class AttendanceService {
 	            Student.STUDENT.PAYMENT_TYPE,
 	            Student.STUDENT.BASE_PAYMENT_AMOUNT,
 	            Student.STUDENT.CREDIT,
+	            Student.STUDENT.STUDENT_TYPE,
 	            Training.TRAINING.ID.as("training_id"),
 	            Training.TRAINING.DATE.as("training_date"),
 	            Attendance.ATTENDANCE.ID.as("attendance_id"),
@@ -157,6 +158,7 @@ public class AttendanceService {
 	    Map<Integer, String> firstnames = new HashMap<>();
 	    Map<Integer, String> lastnames = new HashMap<>();
 	    Map<Integer, Integer> credits = new HashMap<>();
+	    Map<Integer, String> studentTypes = new HashMap<>();
 	    Map<Integer, String> paymentTypes = new HashMap<>();
 	    Map<Integer, Integer> basePaymentAmounts = new HashMap<>();
 	    Set<TrainingAttendanceDto> trainingDates = new TreeSet<>();
@@ -169,6 +171,7 @@ public class AttendanceService {
 	        String paymentType = r.get(Student.STUDENT.PAYMENT_TYPE);
 	        int basePaymentAmount = Optional.ofNullable(r.get(Student.STUDENT.BASE_PAYMENT_AMOUNT)).orElse(0);
 	        int credit = r.get(Student.STUDENT.CREDIT);
+	        String studentType = r.get(Student.STUDENT.STUDENT_TYPE);
 	        LocalDate date = r.get("training_date", LocalDate.class);
 	        Boolean present = r.get(Attendance.ATTENDANCE.PRESENT);
 	        int attendanceId = r.get("attendance_id", Integer.class);
@@ -203,6 +206,7 @@ public class AttendanceService {
 	        studentIds.putIfAbsent(studentId, studentId);
 	        firstnames.putIfAbsent(studentId, firstname);
 	        lastnames.putIfAbsent(studentId, lastname);
+	        studentTypes.putIfAbsent(studentId, studentType);
 	        credits.putIfAbsent(studentId, credit);
 	        paymentTypes.putIfAbsent(studentId, paymentType);
 	        basePaymentAmounts.putIfAbsent(studentId, basePaymentAmount);
@@ -221,6 +225,7 @@ public class AttendanceService {
 	                firstnames.get(entry.getKey()),
 	                lastnames.get(entry.getKey()),
 	                credits.get(entry.getKey()),
+	                studentTypes.get(entry.getKey()),
 	                paymentTypes.get(entry.getKey()),
 	                basePaymentAmounts.get(entry.getKey()),
 	                paidMap.get(entry.getKey()),

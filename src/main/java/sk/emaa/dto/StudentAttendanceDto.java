@@ -8,6 +8,7 @@ public record StudentAttendanceDto (
 		String firstname, 
 		String lastname,
 		int credit,
+		String studentType,
 		String paymentType,
 		int basePaymentAmount,
 		boolean paid, 

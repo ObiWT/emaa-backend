@@ -13,10 +13,13 @@ import org.jooq.impl.SchemaImpl;
 
 import sk.emaa.model.entity.tables.Attendance;
 import sk.emaa.model.entity.tables.CreditTransaction;
+import sk.emaa.model.entity.tables.Role;
 import sk.emaa.model.entity.tables.School;
 import sk.emaa.model.entity.tables.Student;
+import sk.emaa.model.entity.tables.StudentType;
 import sk.emaa.model.entity.tables.Training;
 import sk.emaa.model.entity.tables.UserAccount;
+import sk.emaa.model.entity.tables.UserRole;
 
 
 /**
@@ -43,6 +46,11 @@ public class Public extends SchemaImpl {
     public final CreditTransaction CREDIT_TRANSACTION = CreditTransaction.CREDIT_TRANSACTION;
 
     /**
+     * The table <code>public.role</code>.
+     */
+    public final Role ROLE = Role.ROLE;
+
+    /**
      * The table <code>public.school</code>.
      */
     public final School SCHOOL = School.SCHOOL;
@@ -53,6 +61,11 @@ public class Public extends SchemaImpl {
     public final Student STUDENT = Student.STUDENT;
 
     /**
+     * The table <code>public.student_type</code>.
+     */
+    public final StudentType STUDENT_TYPE = StudentType.STUDENT_TYPE;
+
+    /**
      * The table <code>public.training</code>.
      */
     public final Training TRAINING = Training.TRAINING;
@@ -61,6 +74,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.user_account</code>.
      */
     public final UserAccount USER_ACCOUNT = UserAccount.USER_ACCOUNT;
+
+    /**
+     * The table <code>public.user_role</code>.
+     */
+    public final UserRole USER_ROLE = UserRole.USER_ROLE;
 
     /**
      * No further instances allowed
@@ -80,10 +98,13 @@ public class Public extends SchemaImpl {
         return Arrays.asList(
             Attendance.ATTENDANCE,
             CreditTransaction.CREDIT_TRANSACTION,
+            Role.ROLE,
             School.SCHOOL,
             Student.STUDENT,
+            StudentType.STUDENT_TYPE,
             Training.TRAINING,
-            UserAccount.USER_ACCOUNT
+            UserAccount.USER_ACCOUNT,
+            UserRole.USER_ROLE
         );
     }
 }

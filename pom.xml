@@ -67,7 +67,7 @@
           <artifactId>postgresql</artifactId>
       </dependency>
 
-      <!-- asi nepotrebujem, ke dmam JOOQ :-) -->
+      <!-- asi nepotrebujem, ked mam JOOQ :-) -->
       <dependency>
           <groupId>org.hibernate</groupId>
           <artifactId>hibernate-core</artifactId>

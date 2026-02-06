@@ -21,6 +21,7 @@ public record StudentDto(
     String paymentType, // 'MONTHLY' | 'YEARLY'  | 'CREDIT' | 'NO_PAYMENT'
     Integer basePaymentAmount,
     Integer grade,
-    String nationalId
+    String nationalId,
+    String studentType // STUDENT | INSTRUCTOR
 ) {}
 

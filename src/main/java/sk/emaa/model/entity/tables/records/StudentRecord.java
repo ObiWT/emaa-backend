@@ -329,6 +329,20 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         return (String) get(21);
     }
 
+    /**
+     * Setter for <code>public.student.student_type</code>.
+     */
+    public void setStudentType(String value) {
+        set(22, value);
+    }
+
+    /**
+     * Getter for <code>public.student.student_type</code>.
+     */
+    public String getStudentType() {
+        return (String) get(22);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -352,7 +366,7 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     /**
      * Create a detached, initialised StudentRecord
      */
-    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean glutenFree, Boolean active, Integer credit, String paymentType, Integer basePaymentAmount, Integer grade, LocalDate birthdate, LocalDateTime createdAt, String nationalId) {
+    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean glutenFree, Boolean active, Integer credit, String paymentType, Integer basePaymentAmount, Integer grade, LocalDate birthdate, LocalDateTime createdAt, String nationalId, String studentType) {
         super(Student.STUDENT);
 
         setId(id);
@@ -377,6 +391,7 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         setBirthdate(birthdate);
         setCreatedAt(createdAt);
         setNationalId(nationalId);
+        setStudentType(studentType);
         resetChangedOnNotNull();
     }
 }

@@ -6,10 +6,13 @@ package sk.emaa.model.entity;
 
 import sk.emaa.model.entity.tables.Attendance;
 import sk.emaa.model.entity.tables.CreditTransaction;
+import sk.emaa.model.entity.tables.Role;
 import sk.emaa.model.entity.tables.School;
 import sk.emaa.model.entity.tables.Student;
+import sk.emaa.model.entity.tables.StudentType;
 import sk.emaa.model.entity.tables.Training;
 import sk.emaa.model.entity.tables.UserAccount;
+import sk.emaa.model.entity.tables.UserRole;
 
 
 /**
@@ -29,6 +32,11 @@ public class Tables {
     public static final CreditTransaction CREDIT_TRANSACTION = CreditTransaction.CREDIT_TRANSACTION;
 
     /**
+     * The table <code>public.role</code>.
+     */
+    public static final Role ROLE = Role.ROLE;
+
+    /**
      * The table <code>public.school</code>.
      */
     public static final School SCHOOL = School.SCHOOL;
@@ -39,6 +47,11 @@ public class Tables {
     public static final Student STUDENT = Student.STUDENT;
 
     /**
+     * The table <code>public.student_type</code>.
+     */
+    public static final StudentType STUDENT_TYPE = StudentType.STUDENT_TYPE;
+
+    /**
      * The table <code>public.training</code>.
      */
     public static final Training TRAINING = Training.TRAINING;
@@ -47,4 +60,9 @@ public class Tables {
      * The table <code>public.user_account</code>.
      */
     public static final UserAccount USER_ACCOUNT = UserAccount.USER_ACCOUNT;
+
+    /**
+     * The table <code>public.user_role</code>.
+     */
+    public static final UserRole USER_ROLE = UserRole.USER_ROLE;
 }

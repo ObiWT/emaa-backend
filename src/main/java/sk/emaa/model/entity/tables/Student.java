@@ -39,6 +39,7 @@ import sk.emaa.model.entity.Public;
 import sk.emaa.model.entity.tables.Attendance.AttendancePath;
 import sk.emaa.model.entity.tables.CreditTransaction.CreditTransactionPath;
 import sk.emaa.model.entity.tables.School.SchoolPath;
+import sk.emaa.model.entity.tables.StudentType.StudentTypePath;
 import sk.emaa.model.entity.tables.records.StudentRecord;
 
 
@@ -173,6 +174,11 @@ public class Student extends TableImpl<StudentRecord> {
      */
     public final TableField<StudentRecord, String> NATIONAL_ID = createField(DSL.name("national_id"), SQLDataType.VARCHAR(50), this, "");
 
+    /**
+     * The column <code>public.student.student_type</code>.
+     */
+    public final TableField<StudentRecord, String> STUDENT_TYPE = createField(DSL.name("student_type"), SQLDataType.VARCHAR(20).defaultValue(DSL.field(DSL.raw("'STUDENT'::character varying"), SQLDataType.VARCHAR)), this, "");
+
     private Student(Name alias, Table<StudentRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
@@ -252,7 +258,7 @@ public class Student extends TableImpl<StudentRecord> {
 
     @Override
     public List<ForeignKey<StudentRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.STUDENT__STUDENT_SCHOOL_ID_FKEY);
+        return Arrays.asList(Keys.STUDENT__STUDENT_SCHOOL_ID_FKEY, Keys.STUDENT__STUDENT_STUDENT_TYPE_FKEY);
     }
 
     private transient SchoolPath _school;
@@ -265,6 +271,18 @@ public class Student extends TableImpl<StudentRecord> {
             _school = new SchoolPath(this, Keys.STUDENT__STUDENT_SCHOOL_ID_FKEY, null);
 
         return _school;
+    }
+
+    private transient StudentTypePath _studentType;
+
+    /**
+     * Get the implicit join path to the <code>public.student_type</code> table.
+     */
+    public StudentTypePath studentType() {
+        if (_studentType == null)
+            _studentType = new StudentTypePath(this, Keys.STUDENT__STUDENT_STUDENT_TYPE_FKEY, null);
+
+        return _studentType;
     }
 
     private transient AttendancePath _attendance;

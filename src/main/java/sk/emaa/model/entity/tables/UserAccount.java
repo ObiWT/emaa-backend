@@ -32,7 +32,9 @@ import org.jooq.impl.TableImpl;
 
 import sk.emaa.model.entity.Keys;
 import sk.emaa.model.entity.Public;
+import sk.emaa.model.entity.tables.Role.RolePath;
 import sk.emaa.model.entity.tables.School.SchoolPath;
+import sk.emaa.model.entity.tables.UserRole.UserRolePath;
 import sk.emaa.model.entity.tables.records.UserAccountRecord;
 
 
@@ -169,6 +171,27 @@ public class UserAccount extends TableImpl<UserAccountRecord> {
             _school = new SchoolPath(this, Keys.USER_ACCOUNT__USER_ACCOUNT_SCHOOL_ID_FKEY, null);
 
         return _school;
+    }
+
+    private transient UserRolePath _userRole;
+
+    /**
+     * Get the implicit to-many join path to the <code>public.user_role</code>
+     * table
+     */
+    public UserRolePath userRole() {
+        if (_userRole == null)
+            _userRole = new UserRolePath(this, null, Keys.USER_ROLE__USER_ROLE_USER_ID_FKEY.getInverseKey());
+
+        return _userRole;
+    }
+
+    /**
+     * Get the implicit many-to-many join path to the <code>public.role</code>
+     * table
+     */
+    public RolePath role() {
+        return userRole().role();
     }
 
     @Override
