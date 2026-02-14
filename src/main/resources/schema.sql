@@ -96,5 +96,33 @@ CREATE TABLE credit_transaction (
     description VARCHAR(200),
     payment_type VARCHAR(20) NOT NULL DEFAULT 'CREDIT',
     created_at TIMESTAMP DEFAULT NOW(),
-    training_id INT REFERENCES training(id) ON DELETE CASCADE    
+    training_id INT REFERENCES training(id) ON DELETE CASCADE,
+    martial_art_id INT REFERENCES martial_art(id)
 );
+
+CREATE TABLE martial_art (
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(30) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    program_type VARCHAR(20) NOT NULL
+        CHECK (program_type IN ('CONTINUOUS', 'COURSE')),
+    variant VARCHAR(30),                 -- CLASSIC / WEAPON / NULL
+    school_id INT REFERENCES school(id),
+    active BOOLEAN DEFAULT TRUE,
+    UNIQUE (code, school_id)
+);
+
+-- Prepojenie študent ↔ bojové umenie / kurz
+CREATE TABLE student_martial_art (
+    student_id INT NOT NULL REFERENCES student(id) ON DELETE CASCADE,
+    martial_art_id INT NOT NULL REFERENCES martial_art(id) ON DELETE CASCADE,
+    active BOOLEAN DEFAULT TRUE,
+    PRIMARY KEY (student_id, martial_art_id)
+);
+
+-- Indexy (výkon)
+CREATE INDEX idx_sma_student ON student_martial_art(student_id);
+CREATE INDEX idx_sma_martial_art ON student_martial_art(martial_art_id);
+
+ALTER TABLE training
+ADD COLUMN martial_art_id INT REFERENCES martial_art(id);

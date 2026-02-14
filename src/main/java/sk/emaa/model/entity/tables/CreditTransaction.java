@@ -33,6 +33,7 @@ import org.jooq.impl.TableImpl;
 
 import sk.emaa.model.entity.Keys;
 import sk.emaa.model.entity.Public;
+import sk.emaa.model.entity.tables.MartialArt.MartialArtPath;
 import sk.emaa.model.entity.tables.Student.StudentPath;
 import sk.emaa.model.entity.tables.Training.TrainingPath;
 import sk.emaa.model.entity.tables.records.CreditTransactionRecord;
@@ -93,6 +94,11 @@ public class CreditTransaction extends TableImpl<CreditTransactionRecord> {
      * The column <code>public.credit_transaction.training_id</code>.
      */
     public final TableField<CreditTransactionRecord, Integer> TRAINING_ID = createField(DSL.name("training_id"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.credit_transaction.martial_art_id</code>.
+     */
+    public final TableField<CreditTransactionRecord, Integer> MARTIAL_ART_ID = createField(DSL.name("martial_art_id"), SQLDataType.INTEGER, this, "");
 
     private CreditTransaction(Name alias, Table<CreditTransactionRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -173,7 +179,19 @@ public class CreditTransaction extends TableImpl<CreditTransactionRecord> {
 
     @Override
     public List<ForeignKey<CreditTransactionRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_STUDENT_ID_FKEY, Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_TRAINING_ID_FKEY);
+        return Arrays.asList(Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_MARTIAL_ART_ID_FKEY, Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_STUDENT_ID_FKEY, Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_TRAINING_ID_FKEY);
+    }
+
+    private transient MartialArtPath _martialArt;
+
+    /**
+     * Get the implicit join path to the <code>public.martial_art</code> table.
+     */
+    public MartialArtPath martialArt() {
+        if (_martialArt == null)
+            _martialArt = new MartialArtPath(this, Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_MARTIAL_ART_ID_FKEY, null);
+
+        return _martialArt;
     }
 
     private transient StudentPath _student;

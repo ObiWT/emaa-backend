@@ -62,6 +62,20 @@ public class TrainingRecord extends UpdatableRecordImpl<TrainingRecord> {
         return (Integer) get(2);
     }
 
+    /**
+     * Setter for <code>public.training.martial_art_id</code>.
+     */
+    public void setMartialArtId(Integer value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>public.training.martial_art_id</code>.
+     */
+    public Integer getMartialArtId() {
+        return (Integer) get(3);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -85,12 +99,13 @@ public class TrainingRecord extends UpdatableRecordImpl<TrainingRecord> {
     /**
      * Create a detached, initialised TrainingRecord
      */
-    public TrainingRecord(Integer id, LocalDate date, Integer schoolId) {
+    public TrainingRecord(Integer id, LocalDate date, Integer schoolId, Integer martialArtId) {
         super(Training.TRAINING);
 
         setId(id);
         setDate(date);
         setSchoolId(schoolId);
+        setMartialArtId(martialArtId);
         resetChangedOnNotNull();
     }
 }

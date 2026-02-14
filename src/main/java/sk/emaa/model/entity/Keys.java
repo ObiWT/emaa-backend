@@ -12,17 +12,21 @@ import org.jooq.impl.Internal;
 
 import sk.emaa.model.entity.tables.Attendance;
 import sk.emaa.model.entity.tables.CreditTransaction;
+import sk.emaa.model.entity.tables.MartialArt;
 import sk.emaa.model.entity.tables.Role;
 import sk.emaa.model.entity.tables.School;
 import sk.emaa.model.entity.tables.Student;
+import sk.emaa.model.entity.tables.StudentMartialArt;
 import sk.emaa.model.entity.tables.StudentType;
 import sk.emaa.model.entity.tables.Training;
 import sk.emaa.model.entity.tables.UserAccount;
 import sk.emaa.model.entity.tables.UserRole;
 import sk.emaa.model.entity.tables.records.AttendanceRecord;
 import sk.emaa.model.entity.tables.records.CreditTransactionRecord;
+import sk.emaa.model.entity.tables.records.MartialArtRecord;
 import sk.emaa.model.entity.tables.records.RoleRecord;
 import sk.emaa.model.entity.tables.records.SchoolRecord;
+import sk.emaa.model.entity.tables.records.StudentMartialArtRecord;
 import sk.emaa.model.entity.tables.records.StudentRecord;
 import sk.emaa.model.entity.tables.records.StudentTypeRecord;
 import sk.emaa.model.entity.tables.records.TrainingRecord;
@@ -43,10 +47,13 @@ public class Keys {
 
     public static final UniqueKey<AttendanceRecord> ATTENDANCE_PKEY = Internal.createUniqueKey(Attendance.ATTENDANCE, DSL.name("attendance_pkey"), new TableField[] { Attendance.ATTENDANCE.ID }, true);
     public static final UniqueKey<CreditTransactionRecord> CREDIT_TRANSACTION_PKEY = Internal.createUniqueKey(CreditTransaction.CREDIT_TRANSACTION, DSL.name("credit_transaction_pkey"), new TableField[] { CreditTransaction.CREDIT_TRANSACTION.ID }, true);
+    public static final UniqueKey<MartialArtRecord> MARTIAL_ART_CODE_SCHOOL_ID_KEY = Internal.createUniqueKey(MartialArt.MARTIAL_ART, DSL.name("martial_art_code_school_id_key"), new TableField[] { MartialArt.MARTIAL_ART.CODE, MartialArt.MARTIAL_ART.SCHOOL_ID }, true);
+    public static final UniqueKey<MartialArtRecord> MARTIAL_ART_PKEY = Internal.createUniqueKey(MartialArt.MARTIAL_ART, DSL.name("martial_art_pkey"), new TableField[] { MartialArt.MARTIAL_ART.ID }, true);
     public static final UniqueKey<RoleRecord> ROLE_CODE_KEY = Internal.createUniqueKey(Role.ROLE, DSL.name("role_code_key"), new TableField[] { Role.ROLE.CODE }, true);
     public static final UniqueKey<RoleRecord> ROLE_PKEY = Internal.createUniqueKey(Role.ROLE, DSL.name("role_pkey"), new TableField[] { Role.ROLE.ID }, true);
     public static final UniqueKey<SchoolRecord> SCHOOL_PKEY = Internal.createUniqueKey(School.SCHOOL, DSL.name("school_pkey"), new TableField[] { School.SCHOOL.ID }, true);
     public static final UniqueKey<StudentRecord> STUDENT_PKEY = Internal.createUniqueKey(Student.STUDENT, DSL.name("student_pkey"), new TableField[] { Student.STUDENT.ID }, true);
+    public static final UniqueKey<StudentMartialArtRecord> STUDENT_MARTIAL_ART_PKEY = Internal.createUniqueKey(StudentMartialArt.STUDENT_MARTIAL_ART, DSL.name("student_martial_art_pkey"), new TableField[] { StudentMartialArt.STUDENT_MARTIAL_ART.STUDENT_ID, StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID }, true);
     public static final UniqueKey<StudentTypeRecord> STUDENT_TYPE_PKEY = Internal.createUniqueKey(StudentType.STUDENT_TYPE, DSL.name("student_type_pkey"), new TableField[] { StudentType.STUDENT_TYPE.CODE }, true);
     public static final UniqueKey<TrainingRecord> TRAINING_PKEY = Internal.createUniqueKey(Training.TRAINING, DSL.name("training_pkey"), new TableField[] { Training.TRAINING.ID }, true);
     public static final UniqueKey<UserAccountRecord> USER_ACCOUNT_PKEY = Internal.createUniqueKey(UserAccount.USER_ACCOUNT, DSL.name("user_account_pkey"), new TableField[] { UserAccount.USER_ACCOUNT.ID }, true);
@@ -58,10 +65,15 @@ public class Keys {
 
     public static final ForeignKey<AttendanceRecord, StudentRecord> ATTENDANCE__ATTENDANCE_STUDENT_ID_FKEY = Internal.createForeignKey(Attendance.ATTENDANCE, DSL.name("attendance_student_id_fkey"), new TableField[] { Attendance.ATTENDANCE.STUDENT_ID }, Keys.STUDENT_PKEY, new TableField[] { Student.STUDENT.ID }, true);
     public static final ForeignKey<AttendanceRecord, TrainingRecord> ATTENDANCE__ATTENDANCE_TRAINING_ID_FKEY = Internal.createForeignKey(Attendance.ATTENDANCE, DSL.name("attendance_training_id_fkey"), new TableField[] { Attendance.ATTENDANCE.TRAINING_ID }, Keys.TRAINING_PKEY, new TableField[] { Training.TRAINING.ID }, true);
+    public static final ForeignKey<CreditTransactionRecord, MartialArtRecord> CREDIT_TRANSACTION__CREDIT_TRANSACTION_MARTIAL_ART_ID_FKEY = Internal.createForeignKey(CreditTransaction.CREDIT_TRANSACTION, DSL.name("credit_transaction_martial_art_id_fkey"), new TableField[] { CreditTransaction.CREDIT_TRANSACTION.MARTIAL_ART_ID }, Keys.MARTIAL_ART_PKEY, new TableField[] { MartialArt.MARTIAL_ART.ID }, true);
     public static final ForeignKey<CreditTransactionRecord, StudentRecord> CREDIT_TRANSACTION__CREDIT_TRANSACTION_STUDENT_ID_FKEY = Internal.createForeignKey(CreditTransaction.CREDIT_TRANSACTION, DSL.name("credit_transaction_student_id_fkey"), new TableField[] { CreditTransaction.CREDIT_TRANSACTION.STUDENT_ID }, Keys.STUDENT_PKEY, new TableField[] { Student.STUDENT.ID }, true);
     public static final ForeignKey<CreditTransactionRecord, TrainingRecord> CREDIT_TRANSACTION__CREDIT_TRANSACTION_TRAINING_ID_FKEY = Internal.createForeignKey(CreditTransaction.CREDIT_TRANSACTION, DSL.name("credit_transaction_training_id_fkey"), new TableField[] { CreditTransaction.CREDIT_TRANSACTION.TRAINING_ID }, Keys.TRAINING_PKEY, new TableField[] { Training.TRAINING.ID }, true);
+    public static final ForeignKey<MartialArtRecord, SchoolRecord> MARTIAL_ART__MARTIAL_ART_SCHOOL_ID_FKEY = Internal.createForeignKey(MartialArt.MARTIAL_ART, DSL.name("martial_art_school_id_fkey"), new TableField[] { MartialArt.MARTIAL_ART.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
     public static final ForeignKey<StudentRecord, SchoolRecord> STUDENT__STUDENT_SCHOOL_ID_FKEY = Internal.createForeignKey(Student.STUDENT, DSL.name("student_school_id_fkey"), new TableField[] { Student.STUDENT.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
     public static final ForeignKey<StudentRecord, StudentTypeRecord> STUDENT__STUDENT_STUDENT_TYPE_FKEY = Internal.createForeignKey(Student.STUDENT, DSL.name("student_student_type_fkey"), new TableField[] { Student.STUDENT.STUDENT_TYPE }, Keys.STUDENT_TYPE_PKEY, new TableField[] { StudentType.STUDENT_TYPE.CODE }, true);
+    public static final ForeignKey<StudentMartialArtRecord, MartialArtRecord> STUDENT_MARTIAL_ART__STUDENT_MARTIAL_ART_MARTIAL_ART_ID_FKEY = Internal.createForeignKey(StudentMartialArt.STUDENT_MARTIAL_ART, DSL.name("student_martial_art_martial_art_id_fkey"), new TableField[] { StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID }, Keys.MARTIAL_ART_PKEY, new TableField[] { MartialArt.MARTIAL_ART.ID }, true);
+    public static final ForeignKey<StudentMartialArtRecord, StudentRecord> STUDENT_MARTIAL_ART__STUDENT_MARTIAL_ART_STUDENT_ID_FKEY = Internal.createForeignKey(StudentMartialArt.STUDENT_MARTIAL_ART, DSL.name("student_martial_art_student_id_fkey"), new TableField[] { StudentMartialArt.STUDENT_MARTIAL_ART.STUDENT_ID }, Keys.STUDENT_PKEY, new TableField[] { Student.STUDENT.ID }, true);
+    public static final ForeignKey<TrainingRecord, MartialArtRecord> TRAINING__TRAINING_MARTIAL_ART_ID_FKEY = Internal.createForeignKey(Training.TRAINING, DSL.name("training_martial_art_id_fkey"), new TableField[] { Training.TRAINING.MARTIAL_ART_ID }, Keys.MARTIAL_ART_PKEY, new TableField[] { MartialArt.MARTIAL_ART.ID }, true);
     public static final ForeignKey<TrainingRecord, SchoolRecord> TRAINING__TRAINING_SCHOOL_ID_FKEY = Internal.createForeignKey(Training.TRAINING, DSL.name("training_school_id_fkey"), new TableField[] { Training.TRAINING.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
     public static final ForeignKey<UserAccountRecord, SchoolRecord> USER_ACCOUNT__USER_ACCOUNT_SCHOOL_ID_FKEY = Internal.createForeignKey(UserAccount.USER_ACCOUNT, DSL.name("user_account_school_id_fkey"), new TableField[] { UserAccount.USER_ACCOUNT.SCHOOL_ID }, Keys.SCHOOL_PKEY, new TableField[] { School.SCHOOL.ID }, true);
     public static final ForeignKey<UserRoleRecord, RoleRecord> USER_ROLE__USER_ROLE_ROLE_ID_FKEY = Internal.createForeignKey(UserRole.USER_ROLE, DSL.name("user_role_role_id_fkey"), new TableField[] { UserRole.USER_ROLE.ROLE_ID }, Keys.ROLE_PKEY, new TableField[] { Role.ROLE.ID }, true);

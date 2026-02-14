@@ -30,6 +30,7 @@ import org.jooq.impl.TableImpl;
 
 import sk.emaa.model.entity.Keys;
 import sk.emaa.model.entity.Public;
+import sk.emaa.model.entity.tables.MartialArt.MartialArtPath;
 import sk.emaa.model.entity.tables.Student.StudentPath;
 import sk.emaa.model.entity.tables.Training.TrainingPath;
 import sk.emaa.model.entity.tables.UserAccount.UserAccountPath;
@@ -162,6 +163,19 @@ public class School extends TableImpl<SchoolRecord> {
     @Override
     public UniqueKey<SchoolRecord> getPrimaryKey() {
         return Keys.SCHOOL_PKEY;
+    }
+
+    private transient MartialArtPath _martialArt;
+
+    /**
+     * Get the implicit to-many join path to the <code>public.martial_art</code>
+     * table
+     */
+    public MartialArtPath martialArt() {
+        if (_martialArt == null)
+            _martialArt = new MartialArtPath(this, null, Keys.MARTIAL_ART__MARTIAL_ART_SCHOOL_ID_FKEY.getInverseKey());
+
+        return _martialArt;
     }
 
     private transient StudentPath _student;

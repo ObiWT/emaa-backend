@@ -13,9 +13,11 @@ import org.jooq.impl.SchemaImpl;
 
 import sk.emaa.model.entity.tables.Attendance;
 import sk.emaa.model.entity.tables.CreditTransaction;
+import sk.emaa.model.entity.tables.MartialArt;
 import sk.emaa.model.entity.tables.Role;
 import sk.emaa.model.entity.tables.School;
 import sk.emaa.model.entity.tables.Student;
+import sk.emaa.model.entity.tables.StudentMartialArt;
 import sk.emaa.model.entity.tables.StudentType;
 import sk.emaa.model.entity.tables.Training;
 import sk.emaa.model.entity.tables.UserAccount;
@@ -46,6 +48,11 @@ public class Public extends SchemaImpl {
     public final CreditTransaction CREDIT_TRANSACTION = CreditTransaction.CREDIT_TRANSACTION;
 
     /**
+     * The table <code>public.martial_art</code>.
+     */
+    public final MartialArt MARTIAL_ART = MartialArt.MARTIAL_ART;
+
+    /**
      * The table <code>public.role</code>.
      */
     public final Role ROLE = Role.ROLE;
@@ -59,6 +66,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.student</code>.
      */
     public final Student STUDENT = Student.STUDENT;
+
+    /**
+     * The table <code>public.student_martial_art</code>.
+     */
+    public final StudentMartialArt STUDENT_MARTIAL_ART = StudentMartialArt.STUDENT_MARTIAL_ART;
 
     /**
      * The table <code>public.student_type</code>.
@@ -98,9 +110,11 @@ public class Public extends SchemaImpl {
         return Arrays.asList(
             Attendance.ATTENDANCE,
             CreditTransaction.CREDIT_TRANSACTION,
+            MartialArt.MARTIAL_ART,
             Role.ROLE,
             School.SCHOOL,
             Student.STUDENT,
+            StudentMartialArt.STUDENT_MARTIAL_ART,
             StudentType.STUDENT_TYPE,
             Training.TRAINING,
             UserAccount.USER_ACCOUNT,

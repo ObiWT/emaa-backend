@@ -38,7 +38,9 @@ import sk.emaa.model.entity.Keys;
 import sk.emaa.model.entity.Public;
 import sk.emaa.model.entity.tables.Attendance.AttendancePath;
 import sk.emaa.model.entity.tables.CreditTransaction.CreditTransactionPath;
+import sk.emaa.model.entity.tables.MartialArt.MartialArtPath;
 import sk.emaa.model.entity.tables.School.SchoolPath;
+import sk.emaa.model.entity.tables.StudentMartialArt.StudentMartialArtPath;
 import sk.emaa.model.entity.tables.StudentType.StudentTypePath;
 import sk.emaa.model.entity.tables.records.StudentRecord;
 
@@ -309,6 +311,27 @@ public class Student extends TableImpl<StudentRecord> {
             _creditTransaction = new CreditTransactionPath(this, null, Keys.CREDIT_TRANSACTION__CREDIT_TRANSACTION_STUDENT_ID_FKEY.getInverseKey());
 
         return _creditTransaction;
+    }
+
+    private transient StudentMartialArtPath _studentMartialArt;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.student_martial_art</code> table
+     */
+    public StudentMartialArtPath studentMartialArt() {
+        if (_studentMartialArt == null)
+            _studentMartialArt = new StudentMartialArtPath(this, null, Keys.STUDENT_MARTIAL_ART__STUDENT_MARTIAL_ART_STUDENT_ID_FKEY.getInverseKey());
+
+        return _studentMartialArt;
+    }
+
+    /**
+     * Get the implicit many-to-many join path to the
+     * <code>public.martial_art</code> table
+     */
+    public MartialArtPath martialArt() {
+        return studentMartialArt().martialArt();
     }
 
     @Override

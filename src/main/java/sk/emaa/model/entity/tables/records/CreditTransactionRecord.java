@@ -118,6 +118,20 @@ public class CreditTransactionRecord extends UpdatableRecordImpl<CreditTransacti
         return (Integer) get(6);
     }
 
+    /**
+     * Setter for <code>public.credit_transaction.martial_art_id</code>.
+     */
+    public void setMartialArtId(Integer value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>public.credit_transaction.martial_art_id</code>.
+     */
+    public Integer getMartialArtId() {
+        return (Integer) get(7);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -141,7 +155,7 @@ public class CreditTransactionRecord extends UpdatableRecordImpl<CreditTransacti
     /**
      * Create a detached, initialised CreditTransactionRecord
      */
-    public CreditTransactionRecord(Integer id, Integer studentId, Integer amount, String description, String paymentType, LocalDateTime createdAt, Integer trainingId) {
+    public CreditTransactionRecord(Integer id, Integer studentId, Integer amount, String description, String paymentType, LocalDateTime createdAt, Integer trainingId, Integer martialArtId) {
         super(CreditTransaction.CREDIT_TRANSACTION);
 
         setId(id);
@@ -151,6 +165,7 @@ public class CreditTransactionRecord extends UpdatableRecordImpl<CreditTransacti
         setPaymentType(paymentType);
         setCreatedAt(createdAt);
         setTrainingId(trainingId);
+        setMartialArtId(martialArtId);
         resetChangedOnNotNull();
     }
 }

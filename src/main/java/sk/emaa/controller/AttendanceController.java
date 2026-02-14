@@ -50,9 +50,9 @@ public class AttendanceController {
         }
     }
 	
-	@GetMapping("/attendance/{schoolId}/{month}/{year}")
-    public ResponseEntity<AttendanceDto> getAttendance(@PathVariable int schoolId, @PathVariable int month, @PathVariable int year) {
-		AttendanceDto dto = attendanceService.getAttendance(schoolId, month, year);
+	@GetMapping("/attendance/{schoolId}/{month}/{year}/{martialArtId}")
+    public ResponseEntity<AttendanceDto> getAttendance(@PathVariable int schoolId, @PathVariable int month, @PathVariable int year, @PathVariable int martialArtId) {
+		AttendanceDto dto = attendanceService.getAttendance(schoolId, month, year, martialArtId);
 		return ResponseEntity.ok(dto);
     }
 	

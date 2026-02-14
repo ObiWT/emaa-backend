@@ -26,6 +26,7 @@ import sk.emaa.dto.TrainingDto;
 import sk.emaa.model.entity.tables.Attendance;
 import sk.emaa.model.entity.tables.CreditTransaction;
 import sk.emaa.model.entity.tables.Student;
+import sk.emaa.model.entity.tables.StudentMartialArt;
 import sk.emaa.model.entity.tables.Training;
 import sk.emaa.model.entity.tables.records.TrainingRecord;
 import sk.emaa.util.AppConstants;
@@ -48,6 +49,7 @@ public class AttendanceService {
 	               .from(Training.TRAINING)
 	               .where(Training.TRAINING.SCHOOL_ID.eq(training.schoolId()))
 	               .and(Training.TRAINING.DATE.eq(training.date()))
+	               .and(Training.TRAINING.MARTIAL_ART_ID.eq(training.martialArtId()))
 	        );
 
 	        if (exists) {
@@ -60,6 +62,7 @@ public class AttendanceService {
 	        TrainingRecord trainingRecord = dsl.insertInto(Training.TRAINING)
 	            .set(Training.TRAINING.SCHOOL_ID, training.schoolId())
 	            .set(Training.TRAINING.DATE, training.date())
+	            .set(Training.TRAINING.MARTIAL_ART_ID, training.martialArtId())
 	            .returning(Training.TRAINING.ID)
 	            .fetchOne();
 
@@ -69,7 +72,7 @@ public class AttendanceService {
 
 	        int trainingId = trainingRecord.getId();
 
-	        // 2. Hromadné vloženie študentov do attendance cez INSERT ... SELECT
+	        // 2. Hromadné vloženie študentov do attendance podla bojoveho umenia
 	        dsl.insertInto(Attendance.ATTENDANCE,
 	                Attendance.ATTENDANCE.STUDENT_ID,
 	                Attendance.ATTENDANCE.TRAINING_ID,
@@ -78,10 +81,15 @@ public class AttendanceService {
 	                dsl.select(
 	                        Student.STUDENT.ID,
 	                        DSL.val(trainingId),
-	                        DSL.val(false)
+	                        DSL.val(false) // default: neprítomný
 	                    )
 	                    .from(Student.STUDENT)
+	                    .join(StudentMartialArt.STUDENT_MARTIAL_ART)
+	                        .on(StudentMartialArt.STUDENT_MARTIAL_ART.STUDENT_ID.eq(Student.STUDENT.ID))
 	                    .where(Student.STUDENT.SCHOOL_ID.eq(training.schoolId()))
+	                    .and(StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID.eq(training.martialArtId()))
+	                    .and(StudentMartialArt.STUDENT_MARTIAL_ART.ACTIVE.eq(true)) // aktivny pre dane bojove umenie
+	                    .and(Student.STUDENT.ACTIVE.eq(true)) // globálne aktívny
 	            )
 	            .execute();
 	    });
@@ -90,8 +98,7 @@ public class AttendanceService {
 	@Transactional
 	public void deleteTraining(int trainingId) {
 
-	    // 1. Načítaj všetkých študentov, ktorí boli na tréningu prítomní
-	    //    a platia kreditom
+	    // 1. Načítaj všetkých študentov, ktorí boli na tréningu prítomní a platia kreditom
 	    var records = dsl.select(
 	                Student.STUDENT.ID,
 	                Student.STUDENT.CREDIT
@@ -115,15 +122,14 @@ public class AttendanceService {
 	           .execute();
 	    }
 
-	    // 3. Zmaž tréning
-	    //    attendance aj credit_transaction sa zmažú cez ON DELETE CASCADE
+	    // 3. Zmaž tréning, attendance aj credit_transaction sa zmažú cez ON DELETE CASCADE
 	    dsl.deleteFrom(Training.TRAINING)
 	       .where(Training.TRAINING.ID.eq(trainingId))
 	       .execute();
 	}
 
 	
-	public AttendanceDto getAttendance(int schoolId, int month, int year) {
+	public AttendanceDto getAttendance(int schoolId, int month, int year, int martialArtId) {
 
 	    YearMonth yearMonth = YearMonth.of(year, month);
 	    LocalDate start = yearMonth.atDay(1);
@@ -149,6 +155,7 @@ public class AttendanceService {
 	            .on(Training.TRAINING.ID.eq(Attendance.ATTENDANCE.TRAINING_ID))
 	        .where(Student.STUDENT.SCHOOL_ID.eq(schoolId))
 	        .and(Training.TRAINING.DATE.between(start, end))
+	        .and(Training.TRAINING.MARTIAL_ART_ID.eq(martialArtId)) // optional filter
 	        .and(Student.STUDENT.ACTIVE.isTrue())
 	        .orderBy(Student.STUDENT.LASTNAME.asc(), Training.TRAINING.DATE.asc())
 	        .fetch();

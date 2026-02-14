@@ -22,6 +22,11 @@ public record StudentDto(
     Integer basePaymentAmount,
     Integer grade,
     String nationalId,
-    String studentType // STUDENT | INSTRUCTOR
+    String studentType, // STUDENT | INSTRUCTOR
+    Boolean wingTsun,
+    Boolean wingTsunKids,
+    Boolean chiKung,
+    Boolean escrima,
+    Boolean chanbara
 ) {}
 

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-    private final JwtProvider jwtProvider; // 👈 INJECTNUTÝ BEAN
+    private final JwtProvider jwtProvider; // INJECTNUTÝ BEAN
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -35,13 +37,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         logger.info("JWT Filter: {} {}", request.getMethod(), request.getRequestURI());
 
-        // ✅ OPTIONS musí vždy prejsť
+        // OPTIONS musí vždy prejsť
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // ✅ ak už je autentifikovaný, nepokračuj znova
+        // ak už je autentifikovaný, nepokračuj znova
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
@@ -75,12 +77,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        } catch (Exception e) {
-            logger.error("JWT validation failed", e);
+        } catch (ExpiredJwtException e) {
+            logger.info("JWT expired");
+            SecurityContextHolder.clearContext();
+        } catch (JwtException e) {
+            logger.warn("Invalid JWT");
             SecurityContextHolder.clearContext();
         }
-
+        
         filterChain.doFilter(request, response);
+    }
+    
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return "/api/login".equals(request.getServletPath());
     }
 	
 }

@@ -35,6 +35,7 @@ import sk.emaa.model.entity.Keys;
 import sk.emaa.model.entity.Public;
 import sk.emaa.model.entity.tables.Attendance.AttendancePath;
 import sk.emaa.model.entity.tables.CreditTransaction.CreditTransactionPath;
+import sk.emaa.model.entity.tables.MartialArt.MartialArtPath;
 import sk.emaa.model.entity.tables.School.SchoolPath;
 import sk.emaa.model.entity.tables.records.TrainingRecord;
 
@@ -74,6 +75,11 @@ public class Training extends TableImpl<TrainingRecord> {
      * The column <code>public.training.school_id</code>.
      */
     public final TableField<TrainingRecord, Integer> SCHOOL_ID = createField(DSL.name("school_id"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.training.martial_art_id</code>.
+     */
+    public final TableField<TrainingRecord, Integer> MARTIAL_ART_ID = createField(DSL.name("martial_art_id"), SQLDataType.INTEGER, this, "");
 
     private Training(Name alias, Table<TrainingRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -154,7 +160,19 @@ public class Training extends TableImpl<TrainingRecord> {
 
     @Override
     public List<ForeignKey<TrainingRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.TRAINING__TRAINING_SCHOOL_ID_FKEY);
+        return Arrays.asList(Keys.TRAINING__TRAINING_MARTIAL_ART_ID_FKEY, Keys.TRAINING__TRAINING_SCHOOL_ID_FKEY);
+    }
+
+    private transient MartialArtPath _martialArt;
+
+    /**
+     * Get the implicit join path to the <code>public.martial_art</code> table.
+     */
+    public MartialArtPath martialArt() {
+        if (_martialArt == null)
+            _martialArt = new MartialArtPath(this, Keys.TRAINING__TRAINING_MARTIAL_ART_ID_FKEY, null);
+
+        return _martialArt;
     }
 
     private transient SchoolPath _school;
