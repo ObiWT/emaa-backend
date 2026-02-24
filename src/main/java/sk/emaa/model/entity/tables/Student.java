@@ -179,7 +179,7 @@ public class Student extends TableImpl<StudentRecord> {
     /**
      * The column <code>public.student.student_type</code>.
      */
-    public final TableField<StudentRecord, String> STUDENT_TYPE = createField(DSL.name("student_type"), SQLDataType.VARCHAR(20).defaultValue(DSL.field(DSL.raw("'STUDENT'::character varying"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<StudentRecord, String> STUDENT_TYPE = createField(DSL.name("student_type"), SQLDataType.VARCHAR(20), this, "");
 
     private Student(Name alias, Table<StudentRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

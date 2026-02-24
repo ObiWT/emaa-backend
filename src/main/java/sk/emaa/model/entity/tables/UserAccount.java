@@ -79,6 +79,11 @@ public class UserAccount extends TableImpl<UserAccountRecord> {
      */
     public final TableField<UserAccountRecord, Integer> SCHOOL_ID = createField(DSL.name("school_id"), SQLDataType.INTEGER, this, "");
 
+    /**
+     * The column <code>public.user_account.active</code>.
+     */
+    public final TableField<UserAccountRecord, Boolean> ACTIVE = createField(DSL.name("active"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("true"), SQLDataType.BOOLEAN)), this, "");
+
     private UserAccount(Name alias, Table<UserAccountRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
@@ -154,6 +159,11 @@ public class UserAccount extends TableImpl<UserAccountRecord> {
     @Override
     public UniqueKey<UserAccountRecord> getPrimaryKey() {
         return Keys.USER_ACCOUNT_PKEY;
+    }
+
+    @Override
+    public List<UniqueKey<UserAccountRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.USER_ACCOUNT_USERNAME_KEY);
     }
 
     @Override
