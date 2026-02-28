@@ -74,20 +74,6 @@ public class UserAccountRecord extends UpdatableRecordImpl<UserAccountRecord> {
         return (Integer) get(3);
     }
 
-    /**
-     * Setter for <code>public.user_account.active</code>.
-     */
-    public void setActive(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>public.user_account.active</code>.
-     */
-    public Boolean getActive() {
-        return (Boolean) get(4);
-    }
-
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -111,14 +97,13 @@ public class UserAccountRecord extends UpdatableRecordImpl<UserAccountRecord> {
     /**
      * Create a detached, initialised UserAccountRecord
      */
-    public UserAccountRecord(Integer id, String username, String password, Integer schoolId, Boolean active) {
+    public UserAccountRecord(Integer id, String username, String password, Integer schoolId) {
         super(UserAccount.USER_ACCOUNT);
 
         setId(id);
         setUsername(username);
         setPassword(password);
         setSchoolId(schoolId);
-        setActive(active);
         resetChangedOnNotNull();
     }
 }

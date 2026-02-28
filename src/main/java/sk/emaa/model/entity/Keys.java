@@ -57,7 +57,6 @@ public class Keys {
     public static final UniqueKey<StudentTypeRecord> STUDENT_TYPE_PKEY = Internal.createUniqueKey(StudentType.STUDENT_TYPE, DSL.name("student_type_pkey"), new TableField[] { StudentType.STUDENT_TYPE.CODE }, true);
     public static final UniqueKey<TrainingRecord> TRAINING_PKEY = Internal.createUniqueKey(Training.TRAINING, DSL.name("training_pkey"), new TableField[] { Training.TRAINING.ID }, true);
     public static final UniqueKey<UserAccountRecord> USER_ACCOUNT_PKEY = Internal.createUniqueKey(UserAccount.USER_ACCOUNT, DSL.name("user_account_pkey"), new TableField[] { UserAccount.USER_ACCOUNT.ID }, true);
-    public static final UniqueKey<UserAccountRecord> USER_ACCOUNT_USERNAME_KEY = Internal.createUniqueKey(UserAccount.USER_ACCOUNT, DSL.name("user_account_username_key"), new TableField[] { UserAccount.USER_ACCOUNT.USERNAME }, true);
     public static final UniqueKey<UserRoleRecord> USER_ROLE_PKEY = Internal.createUniqueKey(UserRole.USER_ROLE, DSL.name("user_role_pkey"), new TableField[] { UserRole.USER_ROLE.USER_ID, UserRole.USER_ROLE.ROLE_ID }, true);
 
     // -------------------------------------------------------------------------
