@@ -43,8 +43,8 @@ public class StudentController {
 	}
 	
 	@PostMapping("/student/{id}/add-credit")
-    public StudentDto addCredit(@PathVariable int id, @RequestParam int amount, @RequestParam int basePaymentAmount) {
-        return studentService.addCredit(id, amount, basePaymentAmount);
+    public StudentDto addCredit(@PathVariable int id, @RequestParam int martialArtId,@RequestParam int amount, @RequestParam int basePaymentAmount) {
+        return studentService.addCredit(id, martialArtId, amount, basePaymentAmount);
     }
 
 }

@@ -142,26 +142,6 @@ public class Student extends TableImpl<StudentRecord> {
     public final TableField<StudentRecord, Boolean> ACTIVE = createField(DSL.name("active"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("true"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>public.student.credit</code>.
-     */
-    public final TableField<StudentRecord, Integer> CREDIT = createField(DSL.name("credit"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>public.student.payment_type</code>.
-     */
-    public final TableField<StudentRecord, String> PAYMENT_TYPE = createField(DSL.name("payment_type"), SQLDataType.VARCHAR(10), this, "");
-
-    /**
-     * The column <code>public.student.base_payment_amount</code>.
-     */
-    public final TableField<StudentRecord, Integer> BASE_PAYMENT_AMOUNT = createField(DSL.name("base_payment_amount"), SQLDataType.INTEGER, this, "");
-
-    /**
-     * The column <code>public.student.grade</code>.
-     */
-    public final TableField<StudentRecord, Integer> GRADE = createField(DSL.name("grade"), SQLDataType.INTEGER, this, "");
-
-    /**
      * The column <code>public.student.birthdate</code>.
      */
     public final TableField<StudentRecord, LocalDate> BIRTHDATE = createField(DSL.name("birthdate"), SQLDataType.LOCALDATE, this, "");
@@ -180,6 +160,26 @@ public class Student extends TableImpl<StudentRecord> {
      * The column <code>public.student.student_type</code>.
      */
     public final TableField<StudentRecord, String> STUDENT_TYPE = createField(DSL.name("student_type"), SQLDataType.VARCHAR(20).defaultValue(DSL.field(DSL.raw("'STUDENT'::character varying"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>public.student.grade</code>.
+     */
+    public final TableField<StudentRecord, Integer> GRADE = createField(DSL.name("grade"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.student.base_payment_amount</code>.
+     */
+    public final TableField<StudentRecord, Integer> BASE_PAYMENT_AMOUNT = createField(DSL.name("base_payment_amount"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.student.payment_type</code>.
+     */
+    public final TableField<StudentRecord, String> PAYMENT_TYPE = createField(DSL.name("payment_type"), SQLDataType.VARCHAR(10), this, "");
+
+    /**
+     * The column <code>public.student.credit</code>.
+     */
+    public final TableField<StudentRecord, Integer> CREDIT = createField(DSL.name("credit"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
 
     private Student(Name alias, Table<StudentRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

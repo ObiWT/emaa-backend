@@ -60,6 +60,62 @@ public class StudentMartialArtRecord extends UpdatableRecordImpl<StudentMartialA
         return (Boolean) get(2);
     }
 
+    /**
+     * Setter for <code>public.student_martial_art.grade</code>.
+     */
+    public void setGrade(Integer value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>public.student_martial_art.grade</code>.
+     */
+    public Integer getGrade() {
+        return (Integer) get(3);
+    }
+
+    /**
+     * Setter for <code>public.student_martial_art.base_payment_amount</code>.
+     */
+    public void setBasePaymentAmount(Integer value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>public.student_martial_art.base_payment_amount</code>.
+     */
+    public Integer getBasePaymentAmount() {
+        return (Integer) get(4);
+    }
+
+    /**
+     * Setter for <code>public.student_martial_art.payment_type</code>.
+     */
+    public void setPaymentType(String value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>public.student_martial_art.payment_type</code>.
+     */
+    public String getPaymentType() {
+        return (String) get(5);
+    }
+
+    /**
+     * Setter for <code>public.student_martial_art.credit</code>.
+     */
+    public void setCredit(Integer value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>public.student_martial_art.credit</code>.
+     */
+    public Integer getCredit() {
+        return (Integer) get(6);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -83,12 +139,16 @@ public class StudentMartialArtRecord extends UpdatableRecordImpl<StudentMartialA
     /**
      * Create a detached, initialised StudentMartialArtRecord
      */
-    public StudentMartialArtRecord(Integer studentId, Integer martialArtId, Boolean active) {
+    public StudentMartialArtRecord(Integer studentId, Integer martialArtId, Boolean active, Integer grade, Integer basePaymentAmount, String paymentType, Integer credit) {
         super(StudentMartialArt.STUDENT_MARTIAL_ART);
 
         setStudentId(studentId);
         setMartialArtId(martialArtId);
         setActive(active);
+        setGrade(grade);
+        setBasePaymentAmount(basePaymentAmount);
+        setPaymentType(paymentType);
+        setCredit(credit);
         resetChangedOnNotNull();
     }
 }

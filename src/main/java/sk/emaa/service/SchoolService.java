@@ -28,10 +28,7 @@ public class SchoolService {
     	SchoolDto dto = new SchoolDto(
 	    	record.getId(),
 	    	record.getName(),
-		    record.getAddress(),
-		    record.getCreditPayment(),
-		    record.getMonthlyPayment(),
-		    record.getYearlyPayment()
+		    record.getAddress()
 		);
 	    return dto;
 	}

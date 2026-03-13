@@ -72,11 +72,6 @@ CREATE TABLE student (
     vegetarian BOOLEAN DEFAULT FALSE,
     gluten_free BOOLEAN DEFAULT FALSE,
     active BOOLEAN DEFAULT TRUE,
-    credit INT DEFAULT 0,
-    payment_type VARCHAR(10)
-        CHECK (payment_type IN ('MONTHLY', 'YEARLY', 'CREDIT', 'NO_PAYMENT')),
-    base_payment_amount INT,
-    grade INT,
     birthdate DATE,
     created_at TIMESTAMP DEFAULT NOW(),
     national_id VARCHAR(50),
@@ -125,9 +120,13 @@ CREATE TABLE user_role (
 );
 
 CREATE TABLE student_martial_art (
-    student_id INT NOT NULL REFERENCES student(id) ON DELETE CASCADE,
-    martial_art_id INT NOT NULL REFERENCES martial_art(id) ON DELETE CASCADE,
-    active BOOLEAN DEFAULT TRUE,
+    student_id          INT NOT NULL REFERENCES student(id) ON DELETE CASCADE,
+    martial_art_id      INT NOT NULL REFERENCES martial_art(id) ON DELETE CASCADE,
+    active              BOOLEAN DEFAULT TRUE,
+    grade               INT,
+    base_payment_amount INT,
+    payment_type        VARCHAR(10) CHECK (payment_type IN ('MONTHLY', 'YEARLY', 'CREDIT', 'NO_PAYMENT')),
+    credit              INT DEFAULT 0,
     PRIMARY KEY (student_id, martial_art_id)
 );
 

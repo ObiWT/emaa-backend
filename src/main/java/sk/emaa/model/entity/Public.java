@@ -13,6 +13,7 @@ import org.jooq.impl.SchemaImpl;
 
 import sk.emaa.model.entity.tables.Attendance;
 import sk.emaa.model.entity.tables.CreditTransaction;
+import sk.emaa.model.entity.tables.FlywaySchemaHistory;
 import sk.emaa.model.entity.tables.MartialArt;
 import sk.emaa.model.entity.tables.Role;
 import sk.emaa.model.entity.tables.School;
@@ -46,6 +47,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.credit_transaction</code>.
      */
     public final CreditTransaction CREDIT_TRANSACTION = CreditTransaction.CREDIT_TRANSACTION;
+
+    /**
+     * The table <code>public.flyway_schema_history</code>.
+     */
+    public final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
 
     /**
      * The table <code>public.martial_art</code>.
@@ -110,6 +116,7 @@ public class Public extends SchemaImpl {
         return Arrays.asList(
             Attendance.ATTENDANCE,
             CreditTransaction.CREDIT_TRANSACTION,
+            FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
             MartialArt.MARTIAL_ART,
             Role.ROLE,
             School.SCHOOL,

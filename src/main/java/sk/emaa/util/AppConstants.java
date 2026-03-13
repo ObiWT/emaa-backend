@@ -11,4 +11,7 @@ public final class AppConstants {
     public static final String paymentType_credit = "CREDIT";
     public static final String paymentType_noPayment = "NO_PAYMENT";
     
+    public static final String PROGRAM_TYPE_CONTINUOUS = "CONTINUOUS";
+    public static final String PROGRAM_TYPE_COURSE = "COURSE";
+    
 }

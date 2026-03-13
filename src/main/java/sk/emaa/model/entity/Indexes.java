@@ -9,6 +9,7 @@ import org.jooq.OrderField;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
+import sk.emaa.model.entity.tables.FlywaySchemaHistory;
 import sk.emaa.model.entity.tables.StudentMartialArt;
 
 
@@ -22,6 +23,7 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
+    public static final Index FLYWAY_SCHEMA_HISTORY_S_IDX = Internal.createIndex(DSL.name("flyway_schema_history_s_idx"), FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS }, false);
     public static final Index IDX_SMA_MARTIAL_ART = Internal.createIndex(DSL.name("idx_sma_martial_art"), StudentMartialArt.STUDENT_MARTIAL_ART, new OrderField[] { StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID }, false);
     public static final Index IDX_SMA_STUDENT = Internal.createIndex(DSL.name("idx_sma_student"), StudentMartialArt.STUDENT_MARTIAL_ART, new OrderField[] { StudentMartialArt.STUDENT_MARTIAL_ART.STUDENT_ID }, false);
 }

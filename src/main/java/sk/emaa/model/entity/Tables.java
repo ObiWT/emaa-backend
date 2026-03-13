@@ -6,6 +6,7 @@ package sk.emaa.model.entity;
 
 import sk.emaa.model.entity.tables.Attendance;
 import sk.emaa.model.entity.tables.CreditTransaction;
+import sk.emaa.model.entity.tables.FlywaySchemaHistory;
 import sk.emaa.model.entity.tables.MartialArt;
 import sk.emaa.model.entity.tables.Role;
 import sk.emaa.model.entity.tables.School;
@@ -32,6 +33,11 @@ public class Tables {
      * The table <code>public.credit_transaction</code>.
      */
     public static final CreditTransaction CREDIT_TRANSACTION = CreditTransaction.CREDIT_TRANSACTION;
+
+    /**
+     * The table <code>public.flyway_schema_history</code>.
+     */
+    public static final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
 
     /**
      * The table <code>public.martial_art</code>.

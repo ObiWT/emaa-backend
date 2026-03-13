@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.jooq.Check;
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
@@ -27,6 +28,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -73,6 +75,26 @@ public class StudentMartialArt extends TableImpl<StudentMartialArtRecord> {
      * The column <code>public.student_martial_art.active</code>.
      */
     public final TableField<StudentMartialArtRecord, Boolean> ACTIVE = createField(DSL.name("active"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("true"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>public.student_martial_art.grade</code>.
+     */
+    public final TableField<StudentMartialArtRecord, Integer> GRADE = createField(DSL.name("grade"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.student_martial_art.base_payment_amount</code>.
+     */
+    public final TableField<StudentMartialArtRecord, Integer> BASE_PAYMENT_AMOUNT = createField(DSL.name("base_payment_amount"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.student_martial_art.payment_type</code>.
+     */
+    public final TableField<StudentMartialArtRecord, String> PAYMENT_TYPE = createField(DSL.name("payment_type"), SQLDataType.VARCHAR(10), this, "");
+
+    /**
+     * The column <code>public.student_martial_art.credit</code>.
+     */
+    public final TableField<StudentMartialArtRecord, Integer> CREDIT = createField(DSL.name("credit"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
 
     private StudentMartialArt(Name alias, Table<StudentMartialArtRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -178,6 +200,13 @@ public class StudentMartialArt extends TableImpl<StudentMartialArtRecord> {
             _student = new StudentPath(this, Keys.STUDENT_MARTIAL_ART__STUDENT_MARTIAL_ART_STUDENT_ID_FKEY, null);
 
         return _student;
+    }
+
+    @Override
+    public List<Check<StudentMartialArtRecord>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("student_martial_art_payment_type_check"), "(((payment_type)::text = ANY ((ARRAY['MONTHLY'::character varying, 'YEARLY'::character varying, 'CREDIT'::character varying, 'NO_PAYMENT'::character varying])::text[])))", true)
+        );
     }
 
     @Override

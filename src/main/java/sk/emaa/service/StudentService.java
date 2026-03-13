@@ -3,7 +3,6 @@ package sk.emaa.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import sk.emaa.dto.StudentDto;
+import sk.emaa.dto.StudentMartialArtDto;
 import sk.emaa.model.entity.tables.CreditTransaction;
 import sk.emaa.model.entity.tables.MartialArt;
 import sk.emaa.model.entity.tables.Student;
@@ -23,41 +23,36 @@ import sk.emaa.util.AppConstants;
 @RequiredArgsConstructor
 public class StudentService {
 	
-	private DateTimeFormatter birthdateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private DateTimeFormatter birthdateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 	
-	private final DSLContext dsl;
+    private final DSLContext dsl;
 	
-	public List<StudentDto> loadStudents(int schoolId) {
-		List<StudentRecord> students = dsl.selectFrom(Student.STUDENT)
-				.where(Student.STUDENT.SCHOOL_ID.eq(schoolId))
-				.orderBy(Student.STUDENT.CREATED_AT.asc())
-				.fetch();
+    public List<StudentDto> loadStudents(int schoolId) {
+        List<StudentRecord> students = dsl.selectFrom(Student.STUDENT)
+                .where(Student.STUDENT.SCHOOL_ID.eq(schoolId))
+                .orderBy(Student.STUDENT.CREATED_AT.asc())
+                .fetch();
 		
-		return students.stream()
-        	.map(this::mapToDto)
-        	.toList();
-	}
+        return students.stream()
+            .map(this::mapToDto)
+            .toList();
+    }
 
-	public void createStudent(StudentDto student) {
+    public void createStudent(StudentDto student) {
         StudentRecord studentRecord = mapToRecord(student);
-
-        // ID nezahrnúť do INSERT-u
         studentRecord.changed(Student.STUDENT.ID, false);
 
         dsl.transaction(configuration -> {
             DSLContext ctx = DSL.using(configuration);
 
-            // 1. Insert študenta
             ctx.insertInto(Student.STUDENT)
                .set(studentRecord)
                .execute();
 
-            // 2. Získať ID nového študenta
             Integer studentId = ctx.select(DSL.max(Student.STUDENT.ID))
                                    .from(Student.STUDENT)
                                    .fetchOne(0, Integer.class);
 
-            // 3. Uložiť bojové umenia podľa checkboxov
             saveStudentMartialArts(ctx, studentId, student);
         });
     }
@@ -72,82 +67,75 @@ public class StudentService {
                .where(Student.STUDENT.ID.eq(student.id()))
                .execute();
 
-            // update bojových umení
             saveStudentMartialArts(ctx, student.id(), student);
         });
     }
 
     private void saveStudentMartialArts(DSLContext ctx, int studentId, StudentDto dto) {
-        // Mapovanie checkbox -> martial_art.code
-        Map<String, Boolean> martialArtsMap = Map.of(
-                "WING_TSUN", dto.wingTsun(),
-                "WING_TSUN_KIDS", dto.wingTsunKids(),
-                "CHI_KUNG", dto.chiKung(),
-                "ESCRIMA", dto.escrima(),
-                "CHANBARA", dto.chanbara()
-        );
+        if (dto.martialArts() == null) return;
 
-        for (Map.Entry<String, Boolean> entry : martialArtsMap.entrySet()) {
-            // zisti školu pre dané martial art
-            Integer martialArtId = ctx.select(MartialArt.MARTIAL_ART.ID)
-                                      .from(MartialArt.MARTIAL_ART)
-                                      .where(MartialArt.MARTIAL_ART.CODE.eq(entry.getKey()))
-                                      .fetchOne(0, Integer.class);
-            if (martialArtId == null) continue;
+        for (StudentMartialArtDto sma : dto.martialArts()) {
+            if (sma.martialArtId() == null) continue;
 
-            // skontroluj, či už existuje záznam
             boolean exists = ctx.fetchExists(
-                    ctx.selectOne()
-                       .from(StudentMartialArt.STUDENT_MARTIAL_ART)
-                       .where(StudentMartialArt.STUDENT_MARTIAL_ART.STUDENT_ID.eq(studentId))
-                       .and(StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID.eq(martialArtId))
+                ctx.selectOne()
+                   .from(StudentMartialArt.STUDENT_MARTIAL_ART)
+                   .where(StudentMartialArt.STUDENT_MARTIAL_ART.STUDENT_ID.eq(studentId))
+                   .and(StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID.eq(sma.martialArtId()))
             );
 
             if (exists) {
-                // update existujúceho
                 ctx.update(StudentMartialArt.STUDENT_MARTIAL_ART)
-                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.ACTIVE, entry.getValue())
+                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.ACTIVE, sma.active())
+                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.GRADE, sma.grade())
+                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.BASE_PAYMENT_AMOUNT, sma.basePaymentAmount())
+                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.PAYMENT_TYPE, sma.paymentType())
                    .where(StudentMartialArt.STUDENT_MARTIAL_ART.STUDENT_ID.eq(studentId))
-                   .and(StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID.eq(martialArtId))
+                   .and(StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID.eq(sma.martialArtId()))
                    .execute();
             } else {
-                // insert nového
                 ctx.insertInto(StudentMartialArt.STUDENT_MARTIAL_ART)
                    .set(StudentMartialArt.STUDENT_MARTIAL_ART.STUDENT_ID, studentId)
-                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID, martialArtId)
-                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.ACTIVE, entry.getValue())
+                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID, sma.martialArtId())
+                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.ACTIVE, sma.active())
+                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.GRADE, sma.grade())
+                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.BASE_PAYMENT_AMOUNT, sma.basePaymentAmount())
+                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.PAYMENT_TYPE, sma.paymentType())
+                   .set(StudentMartialArt.STUDENT_MARTIAL_ART.CREDIT, sma.credit() != null ? sma.credit() : 0)
                    .execute();
             }
         }
     }
     
     public StudentDto getStudent(int id) {
-		StudentRecord student = dsl.selectFrom(Student.STUDENT)
+        StudentRecord student = dsl.selectFrom(Student.STUDENT)
                 .where(Student.STUDENT.ID.eq(id))
                 .fetchOne();
-		return student != null ? mapToDto(student) : null; // alebo Optional<StudentDto>
-	}
+        return student != null ? mapToDto(student) : null;
+    }
 	
-	public StudentDto addCredit(int studentId, int amountToAdd, int basePaymentAmount) {
+    public StudentDto addCredit(int studentId, int martialArtId, int amountToAdd, int basePaymentAmount) {
         return dsl.<StudentDto>transactionResult(configuration -> {
             DSLContext ctx = DSL.using(configuration);
 
-            // 1️. Zvýš kredit študenta
-            ctx.update(Student.STUDENT)
-               .set(Student.STUDENT.CREDIT, Student.STUDENT.CREDIT.plus(amountToAdd))
-               .where(Student.STUDENT.ID.eq(studentId))
+            // 1. Zvýš kredit v student_martial_art
+            ctx.update(StudentMartialArt.STUDENT_MARTIAL_ART)
+               .set(StudentMartialArt.STUDENT_MARTIAL_ART.CREDIT,
+                    StudentMartialArt.STUDENT_MARTIAL_ART.CREDIT.plus(amountToAdd))
+               .where(StudentMartialArt.STUDENT_MARTIAL_ART.STUDENT_ID.eq(studentId))
+               .and(StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID.eq(martialArtId))
                .execute();
 
-            // 2️. Záznam o dobití do CREDIT_TRANSACTION
+            // 2. Záznam o dobití do CREDIT_TRANSACTION
             CreditTransactionRecord tx = ctx.newRecord(CreditTransaction.CREDIT_TRANSACTION);
             tx.setStudentId(studentId);
+            tx.setMartialArtId(martialArtId);
             tx.setAmount(amountToAdd * basePaymentAmount);
             tx.setDescription("DOBITIE KREDITU");
             tx.setPaymentType(AppConstants.paymentType_credit);
-            //tx.setCreatedAt(LocalDateTime.now()); // môžeš aj vynechať, keďže má DEFAULT NOW()
-            tx.store(); 
+            tx.store();
 
-            // 3️. Načítaj aktualizovaného študenta
+            // 3. Načítaj aktualizovaného študenta
             StudentRecord updated = ctx.selectFrom(Student.STUDENT)
                     .where(Student.STUDENT.ID.eq(studentId))
                     .fetchOne();
@@ -157,13 +145,32 @@ public class StudentService {
     }
 	
     private StudentDto mapToDto(StudentRecord record) {
-        // najprv načítame aktívne bojové umenia pre študenta
-        Map<String, Boolean> martialArtsMap = dsl.select(MartialArt.MARTIAL_ART.CODE, StudentMartialArt.STUDENT_MARTIAL_ART.ACTIVE)
-                .from(StudentMartialArt.STUDENT_MARTIAL_ART)
-                .join(MartialArt.MARTIAL_ART)
+        // Načítaj všetky bojové umenia pre študenta vrátane per-BU údajov
+        List<StudentMartialArtDto> martialArts = dsl
+            .select(
+                MartialArt.MARTIAL_ART.ID,
+                MartialArt.MARTIAL_ART.CODE,
+                MartialArt.MARTIAL_ART.NAME,
+                StudentMartialArt.STUDENT_MARTIAL_ART.ACTIVE,
+                StudentMartialArt.STUDENT_MARTIAL_ART.GRADE,
+                StudentMartialArt.STUDENT_MARTIAL_ART.BASE_PAYMENT_AMOUNT,
+                StudentMartialArt.STUDENT_MARTIAL_ART.PAYMENT_TYPE,
+                StudentMartialArt.STUDENT_MARTIAL_ART.CREDIT
+            )
+            .from(StudentMartialArt.STUDENT_MARTIAL_ART)
+            .join(MartialArt.MARTIAL_ART)
                 .on(StudentMartialArt.STUDENT_MARTIAL_ART.MARTIAL_ART_ID.eq(MartialArt.MARTIAL_ART.ID))
-                .where(StudentMartialArt.STUDENT_MARTIAL_ART.STUDENT_ID.eq(record.getId()))
-                .fetchMap(MartialArt.MARTIAL_ART.CODE, StudentMartialArt.STUDENT_MARTIAL_ART.ACTIVE);
+            .where(StudentMartialArt.STUDENT_MARTIAL_ART.STUDENT_ID.eq(record.getId()))
+            .fetch(r -> new StudentMartialArtDto(
+                r.get(MartialArt.MARTIAL_ART.ID),
+                r.get(MartialArt.MARTIAL_ART.CODE),
+                r.get(MartialArt.MARTIAL_ART.NAME),
+                r.get(StudentMartialArt.STUDENT_MARTIAL_ART.ACTIVE),
+                r.get(StudentMartialArt.STUDENT_MARTIAL_ART.GRADE),
+                r.get(StudentMartialArt.STUDENT_MARTIAL_ART.BASE_PAYMENT_AMOUNT),
+                r.get(StudentMartialArt.STUDENT_MARTIAL_ART.PAYMENT_TYPE),
+                r.get(StudentMartialArt.STUDENT_MARTIAL_ART.CREDIT)
+            ));
 
         return new StudentDto(
                 record.getId(),
@@ -181,24 +188,16 @@ public class StudentService {
                 record.getVegetarian(),
                 record.getGlutenFree(),
                 record.getActive(),
-                record.getCredit(),
                 record.getBirthdate() != null ? record.getBirthdate().format(birthdateFormatter) : null,
-                record.getPaymentType(),
-                record.getBasePaymentAmount(),
-                record.getGrade(),
                 record.getNationalId(),
                 record.getStudentType(),
-                martialArtsMap.getOrDefault("WING_TSUN", false),
-                martialArtsMap.getOrDefault("WING_TSUN_KIDS", false),
-                martialArtsMap.getOrDefault("CHI_KUNG", false),
-                martialArtsMap.getOrDefault("ESCRIMA", false),
-                martialArtsMap.getOrDefault("CHANBARA", false)
+                martialArts
         );
     }
 	
     private StudentRecord mapToRecord(StudentDto dto) {
         StudentRecord record = dsl.newRecord(Student.STUDENT);
-        record.setId(dto.id()); // pri create môže byť null
+        record.setId(dto.id());
         record.setFirstname(dto.firstname());
         record.setLastname(dto.lastname());
         record.setGender(dto.gender());
@@ -213,18 +212,10 @@ public class StudentService {
         record.setVegetarian(dto.vegetarian());
         record.setGlutenFree(dto.glutenFree());
         record.setActive(dto.active());
-        if ("CREDIT".equals(dto.paymentType())) {
-            record.setCredit(dto.credit());
-        } else {
-            record.setCredit(0);
-        }
-        record.setBirthdate(dto.birthdate() != null && !dto.birthdate().isBlank() ? LocalDate.parse(dto.birthdate(), birthdateFormatter) : null);
-        record.setPaymentType(dto.paymentType());
-        record.setBasePaymentAmount(dto.basePaymentAmount());
-        record.setGrade(dto.grade());
+        record.setBirthdate(dto.birthdate() != null && !dto.birthdate().isBlank()
+            ? LocalDate.parse(dto.birthdate(), birthdateFormatter) : null);
         record.setNationalId(dto.nationalId());
         record.setStudentType(dto.studentType());
         return record;
     }
-
 }

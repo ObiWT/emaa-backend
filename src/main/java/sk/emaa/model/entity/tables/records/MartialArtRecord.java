@@ -116,6 +116,62 @@ public class MartialArtRecord extends UpdatableRecordImpl<MartialArtRecord> {
         return (Boolean) get(6);
     }
 
+    /**
+     * Setter for <code>public.martial_art.credit_payment</code>.
+     */
+    public void setCreditPayment(Integer value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>public.martial_art.credit_payment</code>.
+     */
+    public Integer getCreditPayment() {
+        return (Integer) get(7);
+    }
+
+    /**
+     * Setter for <code>public.martial_art.monthly_payment</code>.
+     */
+    public void setMonthlyPayment(Integer value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>public.martial_art.monthly_payment</code>.
+     */
+    public Integer getMonthlyPayment() {
+        return (Integer) get(8);
+    }
+
+    /**
+     * Setter for <code>public.martial_art.yearly_payment</code>.
+     */
+    public void setYearlyPayment(Integer value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>public.martial_art.yearly_payment</code>.
+     */
+    public Integer getYearlyPayment() {
+        return (Integer) get(9);
+    }
+
+    /**
+     * Setter for <code>public.martial_art.color</code>.
+     */
+    public void setColor(String value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>public.martial_art.color</code>.
+     */
+    public String getColor() {
+        return (String) get(10);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -139,7 +195,7 @@ public class MartialArtRecord extends UpdatableRecordImpl<MartialArtRecord> {
     /**
      * Create a detached, initialised MartialArtRecord
      */
-    public MartialArtRecord(Integer id, String code, String name, String programType, String variant, Integer schoolId, Boolean active) {
+    public MartialArtRecord(Integer id, String code, String name, String programType, String variant, Integer schoolId, Boolean active, Integer creditPayment, Integer monthlyPayment, Integer yearlyPayment, String color) {
         super(MartialArt.MARTIAL_ART);
 
         setId(id);
@@ -149,6 +205,10 @@ public class MartialArtRecord extends UpdatableRecordImpl<MartialArtRecord> {
         setVariant(variant);
         setSchoolId(schoolId);
         setActive(active);
+        setCreditPayment(creditPayment);
+        setMonthlyPayment(monthlyPayment);
+        setYearlyPayment(yearlyPayment);
+        setColor(color);
         resetChangedOnNotNull();
     }
 }

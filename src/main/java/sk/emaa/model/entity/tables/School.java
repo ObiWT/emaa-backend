@@ -73,21 +73,6 @@ public class School extends TableImpl<SchoolRecord> {
      */
     public final TableField<SchoolRecord, String> ADDRESS = createField(DSL.name("address"), SQLDataType.VARCHAR(200), this, "");
 
-    /**
-     * The column <code>public.school.credit_payment</code>.
-     */
-    public final TableField<SchoolRecord, Integer> CREDIT_PAYMENT = createField(DSL.name("credit_payment"), SQLDataType.INTEGER, this, "");
-
-    /**
-     * The column <code>public.school.monthly_payment</code>.
-     */
-    public final TableField<SchoolRecord, Integer> MONTHLY_PAYMENT = createField(DSL.name("monthly_payment"), SQLDataType.INTEGER, this, "");
-
-    /**
-     * The column <code>public.school.yearly_payment</code>.
-     */
-    public final TableField<SchoolRecord, Integer> YEARLY_PAYMENT = createField(DSL.name("yearly_payment"), SQLDataType.INTEGER, this, "");
-
     private School(Name alias, Table<SchoolRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

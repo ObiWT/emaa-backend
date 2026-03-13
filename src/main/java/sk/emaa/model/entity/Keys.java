@@ -12,6 +12,7 @@ import org.jooq.impl.Internal;
 
 import sk.emaa.model.entity.tables.Attendance;
 import sk.emaa.model.entity.tables.CreditTransaction;
+import sk.emaa.model.entity.tables.FlywaySchemaHistory;
 import sk.emaa.model.entity.tables.MartialArt;
 import sk.emaa.model.entity.tables.Role;
 import sk.emaa.model.entity.tables.School;
@@ -23,6 +24,7 @@ import sk.emaa.model.entity.tables.UserAccount;
 import sk.emaa.model.entity.tables.UserRole;
 import sk.emaa.model.entity.tables.records.AttendanceRecord;
 import sk.emaa.model.entity.tables.records.CreditTransactionRecord;
+import sk.emaa.model.entity.tables.records.FlywaySchemaHistoryRecord;
 import sk.emaa.model.entity.tables.records.MartialArtRecord;
 import sk.emaa.model.entity.tables.records.RoleRecord;
 import sk.emaa.model.entity.tables.records.SchoolRecord;
@@ -47,6 +49,7 @@ public class Keys {
 
     public static final UniqueKey<AttendanceRecord> ATTENDANCE_PKEY = Internal.createUniqueKey(Attendance.ATTENDANCE, DSL.name("attendance_pkey"), new TableField[] { Attendance.ATTENDANCE.ID }, true);
     public static final UniqueKey<CreditTransactionRecord> CREDIT_TRANSACTION_PKEY = Internal.createUniqueKey(CreditTransaction.CREDIT_TRANSACTION, DSL.name("credit_transaction_pkey"), new TableField[] { CreditTransaction.CREDIT_TRANSACTION.ID }, true);
+    public static final UniqueKey<FlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, DSL.name("flyway_schema_history_pk"), new TableField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
     public static final UniqueKey<MartialArtRecord> MARTIAL_ART_CODE_SCHOOL_ID_KEY = Internal.createUniqueKey(MartialArt.MARTIAL_ART, DSL.name("martial_art_code_school_id_key"), new TableField[] { MartialArt.MARTIAL_ART.CODE, MartialArt.MARTIAL_ART.SCHOOL_ID }, true);
     public static final UniqueKey<MartialArtRecord> MARTIAL_ART_PKEY = Internal.createUniqueKey(MartialArt.MARTIAL_ART, DSL.name("martial_art_pkey"), new TableField[] { MartialArt.MARTIAL_ART.ID }, true);
     public static final UniqueKey<RoleRecord> ROLE_CODE_KEY = Internal.createUniqueKey(Role.ROLE, DSL.name("role_code_key"), new TableField[] { Role.ROLE.CODE }, true);

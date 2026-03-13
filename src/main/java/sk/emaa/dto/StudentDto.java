@@ -1,10 +1,12 @@
 package sk.emaa.dto;
 
+import java.util.List;
+
 public record StudentDto(
     Integer id,
     String firstname,
     String lastname,
-    String gender, // 'M' | 'F'
+    String gender,
     String idCard,
     String street,
     String streetNo,
@@ -16,17 +18,8 @@ public record StudentDto(
     Boolean vegetarian,
     Boolean glutenFree,
     Boolean active,
-    Integer credit,
-    String birthdate, // ISO string, napr. "2008-04-15"
-    String paymentType, // 'MONTHLY' | 'YEARLY'  | 'CREDIT' | 'NO_PAYMENT'
-    Integer basePaymentAmount,
-    Integer grade,
+    String birthdate,
     String nationalId,
-    String studentType, // STUDENT | INSTRUCTOR
-    Boolean wingTsun,
-    Boolean wingTsunKids,
-    Boolean chiKung,
-    Boolean escrima,
-    Boolean chanbara
+    String studentType,
+    List<StudentMartialArtDto> martialArts
 ) {}
-

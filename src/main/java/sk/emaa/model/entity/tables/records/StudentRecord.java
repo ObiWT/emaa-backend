@@ -232,115 +232,115 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     }
 
     /**
-     * Setter for <code>public.student.credit</code>.
-     */
-    public void setCredit(Integer value) {
-        set(15, value);
-    }
-
-    /**
-     * Getter for <code>public.student.credit</code>.
-     */
-    public Integer getCredit() {
-        return (Integer) get(15);
-    }
-
-    /**
-     * Setter for <code>public.student.payment_type</code>.
-     */
-    public void setPaymentType(String value) {
-        set(16, value);
-    }
-
-    /**
-     * Getter for <code>public.student.payment_type</code>.
-     */
-    public String getPaymentType() {
-        return (String) get(16);
-    }
-
-    /**
-     * Setter for <code>public.student.base_payment_amount</code>.
-     */
-    public void setBasePaymentAmount(Integer value) {
-        set(17, value);
-    }
-
-    /**
-     * Getter for <code>public.student.base_payment_amount</code>.
-     */
-    public Integer getBasePaymentAmount() {
-        return (Integer) get(17);
-    }
-
-    /**
-     * Setter for <code>public.student.grade</code>.
-     */
-    public void setGrade(Integer value) {
-        set(18, value);
-    }
-
-    /**
-     * Getter for <code>public.student.grade</code>.
-     */
-    public Integer getGrade() {
-        return (Integer) get(18);
-    }
-
-    /**
      * Setter for <code>public.student.birthdate</code>.
      */
     public void setBirthdate(LocalDate value) {
-        set(19, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>public.student.birthdate</code>.
      */
     public LocalDate getBirthdate() {
-        return (LocalDate) get(19);
+        return (LocalDate) get(15);
     }
 
     /**
      * Setter for <code>public.student.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(20, value);
+        set(16, value);
     }
 
     /**
      * Getter for <code>public.student.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(20);
+        return (LocalDateTime) get(16);
     }
 
     /**
      * Setter for <code>public.student.national_id</code>.
      */
     public void setNationalId(String value) {
-        set(21, value);
+        set(17, value);
     }
 
     /**
      * Getter for <code>public.student.national_id</code>.
      */
     public String getNationalId() {
-        return (String) get(21);
+        return (String) get(17);
     }
 
     /**
      * Setter for <code>public.student.student_type</code>.
      */
     public void setStudentType(String value) {
-        set(22, value);
+        set(18, value);
     }
 
     /**
      * Getter for <code>public.student.student_type</code>.
      */
     public String getStudentType() {
-        return (String) get(22);
+        return (String) get(18);
+    }
+
+    /**
+     * Setter for <code>public.student.grade</code>.
+     */
+    public void setGrade(Integer value) {
+        set(19, value);
+    }
+
+    /**
+     * Getter for <code>public.student.grade</code>.
+     */
+    public Integer getGrade() {
+        return (Integer) get(19);
+    }
+
+    /**
+     * Setter for <code>public.student.base_payment_amount</code>.
+     */
+    public void setBasePaymentAmount(Integer value) {
+        set(20, value);
+    }
+
+    /**
+     * Getter for <code>public.student.base_payment_amount</code>.
+     */
+    public Integer getBasePaymentAmount() {
+        return (Integer) get(20);
+    }
+
+    /**
+     * Setter for <code>public.student.payment_type</code>.
+     */
+    public void setPaymentType(String value) {
+        set(21, value);
+    }
+
+    /**
+     * Getter for <code>public.student.payment_type</code>.
+     */
+    public String getPaymentType() {
+        return (String) get(21);
+    }
+
+    /**
+     * Setter for <code>public.student.credit</code>.
+     */
+    public void setCredit(Integer value) {
+        set(22, value);
+    }
+
+    /**
+     * Getter for <code>public.student.credit</code>.
+     */
+    public Integer getCredit() {
+        return (Integer) get(22);
     }
 
     // -------------------------------------------------------------------------
@@ -366,7 +366,7 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
     /**
      * Create a detached, initialised StudentRecord
      */
-    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean glutenFree, Boolean active, Integer credit, String paymentType, Integer basePaymentAmount, Integer grade, LocalDate birthdate, LocalDateTime createdAt, String nationalId, String studentType) {
+    public StudentRecord(Integer id, String firstname, String lastname, String gender, String idCard, String street, String streetNo, String city, String zipCode, String mobil, String email, Integer schoolId, Boolean vegetarian, Boolean glutenFree, Boolean active, LocalDate birthdate, LocalDateTime createdAt, String nationalId, String studentType, Integer grade, Integer basePaymentAmount, String paymentType, Integer credit) {
         super(Student.STUDENT);
 
         setId(id);
@@ -384,14 +384,14 @@ public class StudentRecord extends UpdatableRecordImpl<StudentRecord> {
         setVegetarian(vegetarian);
         setGlutenFree(glutenFree);
         setActive(active);
-        setCredit(credit);
-        setPaymentType(paymentType);
-        setBasePaymentAmount(basePaymentAmount);
-        setGrade(grade);
         setBirthdate(birthdate);
         setCreatedAt(createdAt);
         setNationalId(nationalId);
         setStudentType(studentType);
+        setGrade(grade);
+        setBasePaymentAmount(basePaymentAmount);
+        setPaymentType(paymentType);
+        setCredit(credit);
         resetChangedOnNotNull();
     }
 }

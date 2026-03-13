@@ -41,9 +41,11 @@ public class PaymentController {
         }
     }
 	
-	@GetMapping("/payment/{studentId}")
-	public CreditTransactionDto getLastPayment(@PathVariable int studentId) {
-		return paymentService.getLastPayment(studentId);
-	}
+    @GetMapping("/payment/{studentId}/{martialArtId}")
+    public CreditTransactionDto getLastPayment(
+            @PathVariable int studentId,
+            @PathVariable int martialArtId) {
+        return paymentService.getLastPayment(studentId, martialArtId);
+    }
 	
 }

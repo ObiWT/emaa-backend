@@ -98,6 +98,26 @@ public class MartialArt extends TableImpl<MartialArtRecord> {
      */
     public final TableField<MartialArtRecord, Boolean> ACTIVE = createField(DSL.name("active"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("true"), SQLDataType.BOOLEAN)), this, "");
 
+    /**
+     * The column <code>public.martial_art.credit_payment</code>.
+     */
+    public final TableField<MartialArtRecord, Integer> CREDIT_PAYMENT = createField(DSL.name("credit_payment"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.martial_art.monthly_payment</code>.
+     */
+    public final TableField<MartialArtRecord, Integer> MONTHLY_PAYMENT = createField(DSL.name("monthly_payment"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.martial_art.yearly_payment</code>.
+     */
+    public final TableField<MartialArtRecord, Integer> YEARLY_PAYMENT = createField(DSL.name("yearly_payment"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.martial_art.color</code>.
+     */
+    public final TableField<MartialArtRecord, String> COLOR = createField(DSL.name("color"), SQLDataType.VARCHAR(20).defaultValue(DSL.field(DSL.raw("'brown'::character varying"), SQLDataType.VARCHAR)), this, "");
+
     private MartialArt(Name alias, Table<MartialArtRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
